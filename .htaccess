@@ -1,0 +1,28 @@
+RewriteEngine On
+
+# 1. www → non-www (ТОЛЬКО это, без HTTPS логики)
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+# 2. 404
+ErrorDocument 404 /404.html
+
+# 3. защита папок
+Options -Indexes
+
+
+# =========================
+# 🔥 FIX XML / SITEMAP (Яндекс ошибка)
+# =========================
+
+# sitemap.xml должен отдаваться как XML
+<Files "sitemap.xml">
+    ForceType application/xml
+    Header set Content-Type "application/xml; charset=utf-8"
+</Files>
+
+# все XML файлы сайта
+AddType application/xml .xml
+
+# UTF-8 фикс для корректного парсинга
+AddDefaultCharset UTF-8

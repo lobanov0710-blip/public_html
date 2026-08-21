@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /tools/
+Disallow: /templates/
+
+Sitemap: https://transfer-servis52.ru/sitemap.xml

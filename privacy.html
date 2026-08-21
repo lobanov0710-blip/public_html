@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Политика конфиденциальности | Comfort Transfer</title>
+
+<meta name="description" content="Политика конфиденциальности сервиса Comfort Transfer. Правила обработки и защиты персональных данных пользователей.">
+
+<meta name="robots" content="index, follow">
+
+<link rel="canonical" href="https://transfer-servis52.ru/privacy.html">
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f6fa;
+    margin:0;
+    padding:40px 20px;
+    color:#222;
+    line-height:1.7;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:#fff;
+    padding:40px;
+    border-radius:16px;
+    box-shadow:0 10px 35px rgba(0,0,0,.08);
+}
+
+h1{
+    margin-top:0;
+    margin-bottom:30px;
+}
+
+h2{
+    margin-top:30px;
+    margin-bottom:10px;
+}
+
+ul{
+    padding-left:20px;
+}
+
+.back-home{
+    margin-top:40px;
+    padding:20px;
+    text-align:center;
+    background:#f5f7fb;
+    border-radius:12px;
+}
+
+.home-btn{
+    display:inline-block;
+    margin-top:12px;
+    padding:12px 22px;
+    background:#111827;
+    color:#fff;
+    text-decoration:none;
+    border-radius:10px;
+    transition:.25s;
+}
+
+.home-btn:hover{
+    background:#000;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Политика конфиденциальности</h1>
+
+<p>Настоящая Политика конфиденциальности определяет порядок обработки и защиты персональных данных пользователей сайта transfer-servis52.ru.</p>
+
+<h2>1. Общие положения</h2>
+
+<p>Используя сайт, пользователь подтверждает согласие с настоящей Политикой конфиденциальности и условиями обработки персональных данных.</p>
+
+<h2>2. Какие данные собираются</h2>
+
+<p>При использовании сайта могут обрабатываться:</p>
+
+<ul>
+<li>Имя пользователя</li>
+<li>Номер телефона</li>
+<li>Маршрут поездки</li>
+<li>Дата поездки</li>
+<li>Комментарий к заявке</li>
+<li>Технические данные устройства и браузера</li>
+</ul>
+
+<h2>3. Цели обработки данных</h2>
+
+<ul>
+<li>Обработка заявок</li>
+<li>Связь с клиентом</li>
+<li>Организация поездки</li>
+<li>Улучшение качества сервиса</li>
+<li>Работа сайта и аналитика</li>
+</ul>
+
+<h2>4. Защита данных</h2>
+
+<p>Мы принимаем необходимые технические и организационные меры для защиты персональных данных пользователей от неправомерного доступа, изменения или уничтожения.</p>
+
+<h2>5. Передача третьим лицам</h2>
+
+<p>Персональные данные не передаются третьим лицам, за исключением случаев, предусмотренных законодательством.</p>
+
+<h2>6. Cookies</h2>
+
+<p>Сайт может использовать cookies для корректной работы и анализа посещаемости.</p>
+
+<h2>7. Контакты</h2>
+
+<p>
+Comfort Transfer<br>
+Телефон: +7 (920) 251-51-03
+</p>
+
+<div class="back-home">
+    <p>Через <span id="timer">20</span> сек. произойдёт возврат на главную страницу</p>
+    <a href="/" class="home-btn">Вернуться сейчас</a>
+</div>
+
+</div>
+
+<script>
+let seconds = 20;
+const timer = document.getElementById("timer");
+
+const countdown = setInterval(() => {
+    seconds--;
+    timer.textContent = seconds;
+
+    if(seconds <= 0){
+        clearInterval(countdown);
+        window.location.href="/";
+    }
+},1000);
+</script>
+
+</body>
+</html>

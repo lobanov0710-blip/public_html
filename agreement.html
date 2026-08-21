@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Согласие на обработку персональных данных | Comfort Transfer</title>
+
+<meta name="description" content="Согласие на обработку персональных данных сервиса Comfort Transfer.">
+
+<meta name="robots" content="index, follow">
+
+<link rel="canonical" href="https://transfer-servis52.ru/agreement.html">
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f6fa;
+    margin:0;
+    padding:40px 20px;
+    color:#222;
+    line-height:1.7;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:#fff;
+    padding:40px;
+    border-radius:16px;
+    box-shadow:0 10px 35px rgba(0,0,0,.08);
+}
+
+h1{
+    margin-top:0;
+    margin-bottom:30px;
+}
+
+h2{
+    margin-top:30px;
+    margin-bottom:10px;
+}
+
+ul{
+    padding-left:20px;
+}
+
+.back-home{
+    margin-top:40px;
+    padding:20px;
+    text-align:center;
+    background:#f5f7fb;
+    border-radius:12px;
+}
+
+.home-btn{
+    display:inline-block;
+    margin-top:12px;
+    padding:12px 22px;
+    background:#111827;
+    color:#fff;
+    text-decoration:none;
+    border-radius:10px;
+    transition:.25s;
+}
+
+.home-btn:hover{
+    background:#000;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Согласие на обработку персональных данных</h1>
+
+<p>Оставляя заявку на сайте transfer-servis52.ru, пользователь подтверждает согласие на обработку своих персональных данных.</p>
+
+<h2>Какие данные могут обрабатываться</h2>
+
+<ul>
+<li>Имя</li>
+<li>Телефон</li>
+<li>Маршрут поездки</li>
+<li>Дата поездки</li>
+<li>Комментарий к заявке</li>
+</ul>
+
+<h2>Цели обработки</h2>
+
+<ul>
+<li>Обработка заявки</li>
+<li>Связь с клиентом</li>
+<li>Организация и выполнение трансфера</li>
+<li>Повышение качества обслуживания</li>
+</ul>
+
+<h2>Срок действия согласия</h2>
+
+<p>Согласие действует до достижения целей обработки данных либо до момента его отзыва пользователем.</p>
+
+<h2>Подтверждение пользователя</h2>
+
+<p>Пользователь подтверждает, что ознакомился с Политикой конфиденциальности и понимает порядок обработки персональных данных.</p>
+
+<div class="back-home">
+    <p>Через <span id="timer">15</span> сек. произойдёт возврат на главную страницу</p>
+    <a href="/" class="home-btn">Вернуться сейчас</a>
+</div>
+
+</div>
+
+<script>
+let seconds = 15;
+const timer = document.getElementById("timer");
+
+const countdown = setInterval(() => {
+    seconds--;
+    timer.textContent = seconds;
+
+    if(seconds <= 0){
+        clearInterval(countdown);
+        window.location.href="/";
+    }
+},1000);
+</script>
+
+</body>
+</html>

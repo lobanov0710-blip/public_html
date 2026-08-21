@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вход водителя</title>
+
+<link rel="stylesheet" href="/drivers/style.css">
+</head>
+
+<body>
+
+<div class="auth-wrapper">
+
+  <div class="auth-card">
+
+    <h1>🚖 Вход водителя</h1>
+    <p>Введите телефон и пароль</p>
+
+    <div class="form-group">
+      <input id="phone" placeholder="Телефон">
+    </div>
+
+    <div class="form-group">
+      <input id="password" type="password" placeholder="Пароль">
+    </div>
+
+    <button id="loginBtn">Войти</button>
+
+    <div id="status" class="status"></div>
+
+  </div>
+
+</div>
+
+<script>
+const API = "https://restless-leaf-4a87.lobanov0710.workers.dev";
+
+const phone = document.getElementById("phone");
+const password = document.getElementById("password");
+const btn = document.getElementById("loginBtn");
+const status = document.getElementById("status");
+
+function show(msg, type = "error") {
+  status.textContent = msg;
+  status.className = "status show " + type;
+}
+
+btn.onclick = async () => {
+
+  const phoneVal = phone.value.trim();
+  const passVal = password.value.trim();
+
+  if (!phoneVal || !passVal) {
+    return show("Введите телефон и пароль");
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Проверка...";
+
+  try {
+
+    const res = await fetch(`${API}/drivers/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        phone: phoneVal,
+        password: passVal
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return show(data.error || "Ошибка входа");
+    }
+
+    localStorage.setItem("driver_token", data.token);
+
+    show("Успешный вход", "success");
+
+    setTimeout(() => {
+      location.href = "/drivers/panel.html";
+    }, 600);
+
+  } catch (e) {
+    show("Ошибка сети");
+  }
+
+  btn.disabled = false;
+  btn.textContent = "Войти";
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Междугородний трансфер из Нижнего Новгорода по России | Комфорт и безопасность 24/7</title>
+
+<meta name="description" content="Междугородние трансферы из Нижнего Новгорода по России, ДНР и ЛНР. Комфортные поездки 24/7 с фиксированной ценой, опытные водители и подача авто вовремя." />
+
+<meta name="robots" content="index, follow" />
+
+<link rel="canonical" href="https://transfer-servis52.ru/" />
+
+<link rel="icon" href="/images/favicon.png" type="image/png">
+
+<link rel="alternate" type="application/rss+xml" title="RSS Feed"
+  href="https://transfer-servis52.ru/rss.xml">
+
+<meta name="theme-color" content="#05080c">
+
+<!-- OPEN GRAPH -->
+
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="Междугородний трансфер из Нижнего Новгорода по России" />
+<meta property="og:description" content="Комфортные и безопасные поездки 24/7 с фиксированной ценой." />
+<meta property="og:url" content="https://transfer-servis52.ru/" />
+<meta property="og:image" content="https://transfer-servis52.ru/images/preview.jpg" />
+
+<!-- SCHEMA: SERVICE -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://transfer-servis52.ru/#website",
+      "url": "https://transfer-servis52.ru/",
+      "name": "Comfort Transfer",
+      "inLanguage": "ru-RU"
+    },
+
+    {
+      "@type": "WebPage",
+      "@id": "https://transfer-servis52.ru/#webpage",
+      "url": "https://transfer-servis52.ru/",
+      "name": "Междугородний трансфер из Нижнего Новгорода по России",
+      "description": "Комфортные и безопасные поездки 24/7 с фиксированной ценой.",
+      "inLanguage": "ru-RU",
+      "isPartOf": {
+        "@id": "https://transfer-servis52.ru/#website"
+      }
+    },
+
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://transfer-servis52.ru/#business",
+      "name": "Comfort Transfer",
+      "url": "https://transfer-servis52.ru/",
+      "telephone": "+7-920-251-51-03",
+      "image": "https://transfer-servis52.ru/images/preview.jpg",
+      "description": "Междугородний трансфер из Нижнего Новгорода по России. Комфортные и безопасные поездки 24/7 с фиксированной ценой.",
+      
+      "priceRange": "26000-150000 RUB",
+
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"
+          ],
+          "opens": "00:00",
+          "closes": "23:59"
+        }
+      ],
+
+      "areaServed": [
+        { "@type": "Place", "name": "Нижний Новгород" },
+        { "@type": "Place", "name": "Москва" },
+        { "@type": "Place", "name": "Санкт-Петербург" },
+        { "@type": "Place", "name": "Казань" },
+        { "@type": "Place", "name": "Ростов-на-Дону" },
+        { "@type": "Place", "name": "Сочи" },
+        { "@type": "Place", "name": "Екатеринбург" },
+        { "@type": "Place", "name": "Донецк" },
+        { "@type": "Place", "name": "Луганск" },
+        { "@type": "Place", "name": "Россия" }
+      ],
+
+      "sameAs": [
+        "https://transfer-servis52.ru/"
+      ]
+    }
+  ]
+}
+</script>
+
+<!-- FAQ -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Куда вы осуществляете поездки?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Мы выполняем междугородние трансферы из Нижнего Новгорода по всей России, включая ДНР и ЛНР."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Как формируется цена?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Стоимость зависит от расстояния, маршрута, времени подачи и класса автомобиля. Цена фиксируется заранее."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Работаете ли вы ночью?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Да, мы работаем круглосуточно, включая ночные и срочные поездки."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script src="/js/map.js"defer></script>
+<script src="/js/calculator.js"defer></script>
+<script src="/js/main.js"defer></script>
+<script src="/js/slider.js" defer></script>
+<script src="/js/form.js" defer></script>
+<script src="/js/scroll.js" defer></script>
+<script src="/js/observer.js" defer></script>
+<script src="/js/routes.js" defer></script>
+
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=108726003', 'ym');
+
+    ym(108726003, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/108726003" style="position:absolute; left:-9999px;" alt="Metrika" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+</head>
+
+<body>
+
+<header>
+    <h2>Междугородний трансфер Н.Новгород → Россия и Новороссия</h2>
+   <!-- <a href="/drivers/panel.html" class="auth-btn">
+  🚖 Войти / Регистрация водителя
+</a> -->
+</header>
+
+<!-- HERO (исправлен — теперь не пустой) -->
+<div class="hero">
+    <div class="hero-content">
+        <h1 class="fade-up">Комфортный трансфер из Н.Новгорода</h1>
+        <p class="fade-up delay-1">ДНР / ЛНР • Безопасно • 24/7</p>
+
+        <a href="#tgForm" class="hero-btn fade-up delay-2">
+            🚖 Заказать поездку
+        </a>
+    </div>
+</div>
+
+<!-- ✅ КАЛЬКУЛЯТОР -->
+<section id="calc">
+<h2>Рассчитать стоимость поездки</h2>
+
+<form id="calcForm">
+    <input type="text" id="from" placeholder="Откуда" required>
+    <input type="text" id="to" placeholder="Куда" required>
+
+    <div class="tariff-selector">
+
+      <div class="tariff-card active" data-tariff="comfort">
+        <div class="tariff-title">🚗 Comfort</div>
+        <div class="tariff-desc">Оптимальный вариант</div>
+      </div>
+
+      <div class="tariff-card" data-tariff="business">
+        <div class="tariff-title">🚘 Business</div>
+        <div class="tariff-desc">Повышенный комфорт</div>
+      </div>
+
+      <div class="tariff-card" data-tariff="minivan">
+        <div class="tariff-title">🚐 Minivan</div>
+        <div class="tariff-desc">Для 4-6 человек</div>
+      </div>
+
+    </div>
+
+    <button type="submit">Рассчитать</button>
+</form>
+
+<p id="result">Введите маршрут</p>
+</section>
+
+<section>
+  <h2>Маршрут на карте</h2>
+  <div id="map" style="height: 400px; border-radius: 12px;"></div>
+</section>
+
+<section>
+<h2>🚖 О компании — междугородний трансфер по России 24/7</h2>
+<p>Мы предоставляем профессиональные услуги междугородних перевозок по России, обеспечивая комфортные, безопасные и предсказуемые поездки на любые расстояния.</p>
+
+    <p>Работаем с частными клиентами, семьями и VIP-пассажирами, для которых важны надежность, пунктуальность и высокий уровень сервиса.</p>
+
+    <p>Наш сервис ориентирован на длительные маршруты, трансферы между городами и индивидуальные поездки без пересадок.</p>
+
+    <p>Наш приоритет — сделать каждую поездку максимально удобной, предсказуемой и безопасной, независимо от расстояния и направления.</p>
+
+  <h2>🚗 Наш автопарк и водители</h2>
+  <p>В распоряжении компании — современный и технически исправный автопарк, включающий комфортные и бизнес-автомобили.</p>
+  <p>Каждый водитель проходит отбор и имеет большой опыт междугородних поездок по России. Мы уделяем особое внимание безопасности движения, состоянию автомобилей и качеству обслуживания клиентов.</p>
+
+  <h2>🌍 Комфортные поездки без стресса</h2>
+  <p>Наша задача — сделать каждую поездку максимально удобной и спокойной. В дороге вы можете отдыхать, работать или просто наслаждаться маршрутом без лишних забот.</p>
+  <p>Мы обеспечиваем индивидуальный подход к каждому клиенту и адаптируем условия поездки под ваши пожелания.</p>
+</section>
+
+<section>
+<h2>🚘 Наши услуги</h2>
+<div class="services">
+    <div class="card"><h3>🛣 Междугородние поездки</h3>
+      <p>Комфортные трансферы между городами России без пересадок, ожиданий и попутчиков.</p></div>
+    <div class="card"><h3>✈️ Трансфер в аэропорты (Внуково, Шереметьево и другие)</h3>
+            <p>Встреча пассажиров в зоне прилёта с именной табличкой и помощь с багажом.</p></div>
+    <div class="card"><h3>👑 VIP-трансферы</h3>
+            <p>Поездки бизнес-класса на автомобилях повышенного комфорта с индивидуальным сервисом.</p></div>
+</div>
+</section>
+
+<section>
+<h2>⭐ Почему выбирают наш трансфер</h2>
+
+<div class="why-wrapper">
+    <div class="why-item"><h3>🚗 Опыт и надёжность</h3>
+            <p>Водители с большим стажем междугородних поездок. Мы знаем маршруты, дороги и особенности движения, что гарантирует спокойную и безопасную поездку.</p></div>
+    <div class="why-item"><h3>⏱ Точность во времени</h3>
+            <p>Мы ценим ваше время. Подача автомобиля всегда вовремя, без задержек и лишнего ожидания.</p></div>
+    <div class="why-item"><h3>🛡 Безопасность в приоритете</h3>
+            <p>Технически исправные автомобили, аккуратное вождение и контроль маршрута обеспечивают максимальную безопасность в пути.</p></div>
+    <div class="why-item"><h3>💼 Полная конфиденциальность</h3>
+            <p>Мы уважаем личное пространство клиентов. Ваши поездки остаются полностью конфиденциальными.</p></div>
+    <div class="why-item"><h3>📍 Без лишних остановок</h3>
+            <p>Маршрут строится максимально эффективно — только нужные остановки, без лишних задержек.</p></div>
+    <div class="why-item"><h3>⭐ Индивидуальный подход</h3>
+            <p>Каждая поездка адаптируется под ваши пожелания: комфорт, маршрут и условия поездки.</p></div>
+</div>
+</section>
+
+<section>
+    <h2>Популярные направления</h2>
+
+    <div class="routes-grid" id="routesGrid"></div>
+</section>
+
+<!-- АВТОПАРК -->
+<section>
+<h2>Автопарк</h2>
+
+<div class="car-slider">
+    <button class="car-btn prev" type="button">‹</button>
+
+    <div class="car-viewport">
+        <div class="car-track">
+
+            <div class="car-card">
+                <img src="images/solaris.webp" alt="Hyundai Solaris - экономичный седан для поездок">
+                <h3>Hyundai Solaris</h3>
+                <p>Комфортный и экономичный седан для поездок по городу и междугородних маршрутов.</p>
+            </div>
+
+            <div class="car-card">
+                <img src="images/rio.webp" alt="Rio">
+                <h3>Kia Rio</h3>
+                <p>Надёжный автомобиль с мягкой подвеской для дальних поездок.</p>
+            </div>
+
+            <div class="car-card">
+                <img src="images/emgrand.webp" alt="Emgrand">
+                <h3>Geely Emgrand</h3>
+                <p>Просторный и комфортный автомобиль для VIP-поездок.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <button class="car-btn next" type="button">›</button>
+</div>
+</section>
+
+<!-- ОТЗЫВЫ -->
+<section>
+<h2>Отзывы клиентов</h2>
+
+<div class="card"><p>"Ехали с ребёнком, переживала за дорогу, но всё прошло отлично. Удобный автомобиль, кондиционер, спокойная езда. Водитель вежливый, всегда учитывал наши пожелания. Очень удобный формат поездки без пересадок."</p>
+    <strong>— Марина, Нижегородская область</strong></div>
+<div class="card"><p>"Ехали в Ростов-на-Дону. Очень комфортная поездка, водитель приехал вовремя, помог с багажом. В салоне чисто, удобно, дорога прошла спокойно. Делали остановки, когда попросили. Остались довольны сервисом, будем обращаться ещё."</p>
+    <strong>— Ольга, Нижний Новгород</strong></div>
+<div class="card"><p>"Заказывал трансфер до ДНР. Всё прошло чётко и без проблем. Машина подана вовремя, водитель опытный, уверенно ведёт машину. Дорога длинная, но благодаря комфорту и остановкам доехали легко. Спасибо Дмитрию за поездку."</p>
+    <strong>— Сергей, Арзамас</strong></div>
+
+</section>
+
+<!-- ФОРМА -->
+<section>
+<h2>Отправить заявку</h2>
+
+<form id="tgForm" class="contact-form" autocomplete="on">
+
+<div class="form-row">
+    <input type="text" name="name" placeholder="Ваше имя" required>
+    <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" required>
+</div>
+
+<div class="form-row">
+    <input type="text" name="route" placeholder="Маршрут" required>
+</div>
+
+<div class="form-row">
+    <input type="date" name="date" required>
+    <textarea id="comment" name="comment" placeholder="Комментарий (необязательно)"></textarea>
+</div>
+
+<p style="font-size:14px; margin-bottom:10px;">
+⏱ Ответим в течение 5 минут
+</p>
+
+<div class="privacy-box">
+  <label>
+    <input type="checkbox" required>
+    Я согласен с обработкой персональных данных и принимаю
+    <a href="/privacy.html" target="_blank">Политику конфиденциальности</a>
+  </label>
+</div>
+
+<button type="submit" class="btn">📩 Отправить заявку</button>
+
+<p style="text-align:center;font-size:12px;opacity:0.7;">
+🔒 Данные не передаются третьим лицам
+</p>
+
+</form>
+</section>
+
+<footer>
+© 2026 Comfort Transfer +79202515103
+<div class="footer-links">
+  <a href="/privacy.html">Политика конфиденциальности</a>
+  |
+  <a href="/agreement.html">Согласие на обработку данных</a>
+</div>
+<meta name="geo.region" content="RU">
+<meta name="geo.placename" content="Россия">
+</footer>
+
+<a href="tel:+79202515103" class="call-btn">📞</a>
+
+<button id="scrollTopBtn">↑</button>
+
+<div id="cookieBanner" class="cookie-banner">
+    <div class="cookie-content">
+        <p>
+            🍪 Мы используем cookies для корректной работы сайта и улучшения сервиса.
+            Продолжая пользоваться сайтом, вы соглашаетесь с использованием cookies и
+            <a href="/privacy.html" target="_blank">Политикой конфиденциальности</a>.
+        </p>
+
+        <div class="cookie-buttons">
+            <button id="acceptCookies">Принять</button>
+            <button id="declineCookies">Отклонить</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
