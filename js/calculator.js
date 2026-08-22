@@ -30,9 +30,7 @@ window.initCalculator = function () {
 
   function log(...args) {
 
-    if (
-      window.__calcDebug
-    ) {
+    if (window.__calcDebug) {
 
       console.log(
         "[CALC]",
@@ -111,7 +109,9 @@ window.initCalculator = function () {
   selectedTariff =
     String(
       selectedTariff
-    ).toLowerCase();
+    )
+      .trim()
+      .toLowerCase();
 
   let isLoading =
     false;
@@ -139,8 +139,8 @@ window.initCalculator = function () {
       String(
         tariff || ""
       )
-      .trim()
-      .toLowerCase();
+        .trim()
+        .toLowerCase();
 
     return (
       labels[key] ||
@@ -179,10 +179,7 @@ window.initCalculator = function () {
       );
     }
 
-    if (
-      hours > 0
-    ) {
-
+    if (hours > 0) {
       return `${hours} ч`;
     }
 
@@ -198,16 +195,17 @@ window.initCalculator = function () {
         Number(price) || 0
       );
 
-    return (
-      new Intl.NumberFormat(
+    return new Intl
+      .NumberFormat(
         "ru-RU"
       )
-      .format(value)
-    );
+      .format(
+        value
+      );
   }
 
   // ==========================
-  // FORM FIELD
+  // FIELD SETTER
   // ==========================
 
   function setFieldValue(
@@ -257,25 +255,33 @@ window.initCalculator = function () {
       return;
     }
 
-    // Полная версия,
-    // включая route GeoJSON.
+    // Полный результат расчёта
+    // хранится только в памяти страницы.
     window.__lastRouteData =
       data;
 
-    // В sessionStorage
-    // координаты маршрута
-    // не сохраняем.
+    // Для мобильной версии сохраняем
+    // компактную резервную копию.
     try {
 
       sessionStorage.setItem(
         "transferBookingData",
 
         JSON.stringify({
+          quoteId:
+            data.quoteId,
+
+          quoteExpiresAt:
+            data.quoteExpiresAt,
+
           from:
             data.from,
 
           to:
             data.to,
+
+          tariff:
+            data.tariff,
 
           distance:
             data.distance,
@@ -284,10 +290,7 @@ window.initCalculator = function () {
             data.duration,
 
           price:
-            data.price,
-
-          tariff:
-            data.tariff
+            data.price
         })
       );
 
@@ -306,6 +309,7 @@ window.initCalculator = function () {
 
     if (
       window.__lastRouteData &&
+      window.__lastRouteData.quoteId &&
       window.__lastRouteData.from &&
       window.__lastRouteData.to
     ) {
@@ -314,10 +318,6 @@ window.initCalculator = function () {
         window.__lastRouteData
       );
     }
-
-    // ==========================
-    // MOBILE FALLBACK
-    // ==========================
 
     try {
 
@@ -336,6 +336,7 @@ window.initCalculator = function () {
         );
 
       if (
+        data?.quoteId &&
         data?.from &&
         data?.to
       ) {
@@ -372,13 +373,11 @@ window.initCalculator = function () {
     ) {}
   }
 
-  // form.js может использовать
-  // эту функцию после успешного заказа.
   window.clearTransferBookingData =
     clearBookingData;
 
   // ==========================
-  // FILL BOOKING FORM
+  // BOOKING FORM
   // ==========================
 
   function fillBookingForm() {
@@ -388,12 +387,30 @@ window.initCalculator = function () {
 
     if (
       !data ||
+      !data.quoteId ||
       !data.from ||
       !data.to
     ) {
 
       console.warn(
-        "[CALC] no booking data"
+        "[CALC] no valid quote"
+      );
+
+      return false;
+    }
+
+    // Дополнительная локальная
+    // проверка срока quote.
+    if (
+      data.quoteExpiresAt &&
+      Number(data.quoteExpiresAt) <=
+        Date.now()
+    ) {
+
+      clearBookingData();
+
+      alert(
+        "Расчёт стоимости устарел. Рассчитайте маршрут заново."
       );
 
       return false;
@@ -427,10 +444,6 @@ window.initCalculator = function () {
       return false;
     }
 
-    // ==========================
-    // ROUTE
-    // ==========================
-
     const routeText =
       `${data.from} → ${data.to}`;
 
@@ -442,6 +455,9 @@ window.initCalculator = function () {
     log(
       "BOOKING FORM FILLED",
       {
+        quoteId:
+          data.quoteId,
+
         route:
           routeText,
 
@@ -459,10 +475,6 @@ window.initCalculator = function () {
       }
     );
 
-    // ==========================
-    // SCROLL
-    // ==========================
-
     bookingForm.scrollIntoView({
       behavior:
         "smooth",
@@ -470,10 +482,6 @@ window.initCalculator = function () {
       block:
         "start"
     });
-
-    // ==========================
-    // FOCUS
-    // ==========================
 
     setTimeout(
       () => {
@@ -580,27 +588,11 @@ window.initCalculator = function () {
 
     try {
 
-      const success =
-        await window
-          .TransferMap
-          .drawRoute(
-            route
-          );
-
-      if (
-        success
-      ) {
-
-        log(
-          "MAP ROUTE DISPLAYED"
+      await window
+        .TransferMap
+        .drawRoute(
+          route
         );
-
-      } else {
-
-        console.warn(
-          "[CALC] map rejected route"
-        );
-      }
 
     } catch (
       error
@@ -614,7 +606,7 @@ window.initCalculator = function () {
   }
 
   // ==========================
-  // TARIFF SELECTION
+  // TARIFF
   // ==========================
 
   document
@@ -655,8 +647,8 @@ window.initCalculator = function () {
                   .tariff ||
                 "comfort"
               )
-              .trim()
-              .toLowerCase();
+                .trim()
+                .toLowerCase();
 
             log(
               "TARIFF:",
@@ -668,7 +660,7 @@ window.initCalculator = function () {
     );
 
   // ==========================
-  // CALCULATOR SUBMIT
+  // CALCULATE
   // ==========================
 
   form.addEventListener(
@@ -677,15 +669,9 @@ window.initCalculator = function () {
 
       event.preventDefault();
 
-      if (
-        isLoading
-      ) {
+      if (isLoading) {
         return;
       }
-
-      // ==========================
-      // INPUT
-      // ==========================
 
       const from =
         fromInput
@@ -714,10 +700,6 @@ window.initCalculator = function () {
         return;
       }
 
-      // ==========================
-      // LOADING
-      // ==========================
-
       isLoading =
         true;
 
@@ -736,16 +718,9 @@ window.initCalculator = function () {
           "show"
         );
 
-      // Новый расчёт:
-      // старые данные заказа
-      // больше не используются.
       clearBookingData();
 
       try {
-
-        // ==========================
-        // API
-        // ==========================
 
         const response =
           await fetch(
@@ -796,7 +771,34 @@ window.initCalculator = function () {
         }
 
         // ==========================
-        // RESPONSE DATA
+        // QUOTE VALIDATION
+        // ==========================
+
+        const quoteId =
+          String(
+            data.quoteId || ""
+          )
+            .trim();
+
+        const quoteExpiresAt =
+          Number(
+            data.quoteExpiresAt
+          );
+
+        if (!quoteId) {
+
+          result.innerText =
+            "Ошибка создания расчёта";
+
+          console.error(
+            "[CALC] quoteId missing"
+          );
+
+          return;
+        }
+
+        // ==========================
+        // NUMBERS
         // ==========================
 
         const distance =
@@ -813,10 +815,6 @@ window.initCalculator = function () {
           Number(
             data.price
           );
-
-        // ==========================
-        // VALIDATION
-        // ==========================
 
         if (
           !Number.isFinite(
@@ -835,7 +833,7 @@ window.initCalculator = function () {
           !Number.isFinite(
             duration
           ) ||
-          duration < 0
+          duration <= 0
         ) {
 
           result.innerText =
@@ -848,7 +846,7 @@ window.initCalculator = function () {
           !Number.isFinite(
             price
           ) ||
-          price < 0
+          price <= 0
         ) {
 
           result.innerText =
@@ -858,15 +856,28 @@ window.initCalculator = function () {
         }
 
         // ==========================
-        // STORE RESULT
+        // SAVE RESULT
         // ==========================
 
         const routeData = {
+
+          quoteId,
+
+          quoteExpiresAt:
+            Number.isFinite(
+              quoteExpiresAt
+            )
+              ? quoteExpiresAt
+              : null,
+
           from,
+
           to,
 
           distance,
+
           duration,
+
           price,
 
           tariff:
@@ -887,7 +898,7 @@ window.initCalculator = function () {
         );
 
         // ==========================
-        // RESULT UI
+        // RESULT
         // ==========================
 
         result.innerHTML = `
@@ -919,9 +930,7 @@ window.initCalculator = function () {
             ".calc-book-btn"
           );
 
-        if (
-          bookingButton
-        ) {
+        if (bookingButton) {
 
           bookingButton
             .addEventListener(
@@ -930,17 +939,7 @@ window.initCalculator = function () {
 
                 event.preventDefault();
 
-                const success =
-                  fillBookingForm();
-
-                if (
-                  !success
-                ) {
-
-                  alert(
-                    "Сначала рассчитайте маршрут"
-                  );
-                }
+                fillBookingForm();
               }
             );
         }
@@ -949,9 +948,7 @@ window.initCalculator = function () {
         // MAP
         // ==========================
 
-        if (
-          data.route
-        ) {
+        if (data.route) {
 
           await showRouteOnMap(
             data.route
@@ -984,6 +981,7 @@ window.initCalculator = function () {
     }
   );
 };
+
 
 // ==========================
 // FALLBACK INIT

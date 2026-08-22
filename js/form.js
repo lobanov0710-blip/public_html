@@ -16,11 +16,8 @@ window.initForm = function () {
     return;
   }
 
-  // Защита от двойной
-  // инициализации.
   if (
-    form.dataset
-      .initialized ===
+    form.dataset.initialized ===
     "true"
   ) {
     return;
@@ -62,7 +59,9 @@ window.initForm = function () {
   ) {
 
     const field =
-      getField(name);
+      getField(
+        name
+      );
 
     if (!field) {
       return "";
@@ -70,7 +69,8 @@ window.initForm = function () {
 
     return String(
       field.value || ""
-    ).trim();
+    )
+      .trim();
   }
 
   function normalizeRoute(
@@ -89,13 +89,14 @@ window.initForm = function () {
   }
 
   // =========================
-  // CALCULATOR DATA
+  // QUOTE DATA
   // =========================
 
-  function getCalculatorData() {
+  function getQuoteData() {
 
     if (
       window.__lastRouteData &&
+      window.__lastRouteData.quoteId &&
       window.__lastRouteData.from &&
       window.__lastRouteData.to
     ) {
@@ -105,14 +106,12 @@ window.initForm = function () {
       );
     }
 
-    // Mobile fallback
     try {
 
       const saved =
-        sessionStorage
-          .getItem(
-            "transferBookingData"
-          );
+        sessionStorage.getItem(
+          "transferBookingData"
+        );
 
       if (!saved) {
         return null;
@@ -124,6 +123,7 @@ window.initForm = function () {
         );
 
       if (
+        data?.quoteId &&
         data?.from &&
         data?.to
       ) {
@@ -136,7 +136,7 @@ window.initForm = function () {
     ) {
 
       console.warn(
-        "[ORDER] storage error:",
+        "[ORDER] quote storage error:",
         error
       );
     }
@@ -144,7 +144,7 @@ window.initForm = function () {
     return null;
   }
 
-  function clearCalculatorData() {
+  function clearQuoteData() {
 
     if (
       typeof window
@@ -163,10 +163,9 @@ window.initForm = function () {
 
     try {
 
-      sessionStorage
-        .removeItem(
-          "transferBookingData"
-        );
+      sessionStorage.removeItem(
+        "transferBookingData"
+      );
 
     } catch (
       error
@@ -253,6 +252,8 @@ window.initForm = function () {
         "comment"
       );
 
+    // Базовые пользовательские
+    // данные.
     const payload = {
       name,
       phone,
@@ -262,24 +263,48 @@ window.initForm = function () {
     };
 
     // =========================
-    // ADD CALCULATOR DATA
+    // SERVER QUOTE
     // =========================
 
-    const calc =
-      getCalculatorData();
+    const quote =
+      getQuoteData();
 
     if (
-      !calc ||
-      !calc.from ||
-      !calc.to
+      !quote ||
+      !quote.quoteId
     ) {
 
+      // Ручная заявка.
+      // Backend примет её
+      // без серверной цены.
       return payload;
     }
 
+    // =========================
+    // EXPIRED
+    // =========================
+
+    if (
+      quote.quoteExpiresAt &&
+      Number(
+        quote.quoteExpiresAt
+      ) <= Date.now()
+    ) {
+
+      clearQuoteData();
+
+      throw new Error(
+        "Расчёт стоимости устарел. Рассчитайте маршрут заново."
+      );
+    }
+
+    // =========================
+    // ROUTE CHECK
+    // =========================
+
     const expectedRoute =
       normalizeRoute(
-        `${calc.from} → ${calc.to}`
+        `${quote.from} → ${quote.to}`
       );
 
     const currentRoute =
@@ -288,83 +313,42 @@ window.initForm = function () {
       );
 
     // Если клиент вручную
-    // изменил маршрут,
-    // не отправляем старую цену.
+    // изменил маршрут после расчёта,
+    // старый quoteId не используем.
     if (
       currentRoute !==
       expectedRoute
     ) {
 
       console.warn(
-        "[ORDER] route changed manually, calculator data ignored"
+        "[ORDER] route changed manually — quote ignored"
       );
 
       return payload;
     }
 
-    payload.from =
+    // =========================
+    // IMPORTANT
+    // =========================
+    //
+    // В /orders отправляем только
+    // серверный quoteId.
+    //
+    // НЕ отправляем:
+    //
+    // price
+    // distance
+    // duration
+    // tariff
+    // from
+    // to
+    //
+    // =========================
+
+    payload.quoteId =
       String(
-        calc.from
+        quote.quoteId
       );
-
-    payload.to =
-      String(
-        calc.to
-      );
-
-    payload.tariff =
-      String(
-        calc.tariff ||
-        "comfort"
-      );
-
-    const distance =
-      Number(
-        calc.distance
-      );
-
-    const duration =
-      Number(
-        calc.duration
-      );
-
-    const price =
-      Number(
-        calc.price
-      );
-
-    if (
-      Number.isFinite(
-        distance
-      ) &&
-      distance > 0
-    ) {
-
-      payload.distance =
-        distance;
-    }
-
-    if (
-      Number.isFinite(
-        duration
-      ) &&
-      duration >= 0
-    ) {
-
-      payload.duration =
-        duration;
-    }
-
-    if (
-      Number.isFinite(
-        price
-      ) &&
-      price >= 0
-    ) {
-
-      payload.price =
-        price;
-    }
 
     return payload;
   }
@@ -377,17 +361,15 @@ window.initForm = function () {
     payload
   ) {
 
-    if (
-      !payload.name
-    ) {
+    if (!payload.name) {
+
       return (
         "Введите имя"
       );
     }
 
-    if (
-      !payload.phone
-    ) {
+    if (!payload.phone) {
+
       return (
         "Введите телефон"
       );
@@ -401,10 +383,8 @@ window.initForm = function () {
         );
 
     if (
-      phoneDigits.length <
-        10 ||
-      phoneDigits.length >
-        15
+      phoneDigits.length < 10 ||
+      phoneDigits.length > 15
     ) {
 
       return (
@@ -412,18 +392,14 @@ window.initForm = function () {
       );
     }
 
-    if (
-      !payload.route
-    ) {
+    if (!payload.route) {
 
       return (
         "Введите маршрут"
       );
     }
 
-    if (
-      !payload.date
-    ) {
+    if (!payload.date) {
 
       return (
         "Выберите дату поездки"
@@ -441,17 +417,30 @@ window.initForm = function () {
     "submit",
     async event => {
 
-      event
-        .preventDefault();
+      event.preventDefault();
 
-      if (
-        loading
-      ) {
+      if (loading) {
         return;
       }
 
-      const payload =
-        buildOrderPayload();
+      let payload;
+
+      try {
+
+        payload =
+          buildOrderPayload();
+
+      } catch (
+        error
+      ) {
+
+        alert(
+          error?.message ||
+          "Ошибка данных расчёта"
+        );
+
+        return;
+      }
 
       const validationError =
         validate(
@@ -524,12 +513,23 @@ window.initForm = function () {
           data.ok !== true
         ) {
 
-          const message =
-            data?.error ||
-            `Ошибка сервера (${response.status})`;
+          if (
+            response.status ===
+              409 ||
+            data?.error ===
+              "quote expired or not found"
+          ) {
+
+            clearQuoteData();
+
+            throw new Error(
+              "Расчёт стоимости устарел. Рассчитайте маршрут заново."
+            );
+          }
 
           throw new Error(
-            message
+            data?.error ||
+            `Ошибка сервера (${response.status})`
           );
         }
 
@@ -544,12 +544,9 @@ window.initForm = function () {
 
         setSuccess();
 
-        // Очистка формы
         form.reset();
 
-        // Очистка старого
-        // расчёта.
-        clearCalculatorData();
+        clearQuoteData();
 
         setTimeout(
           resetButton,
