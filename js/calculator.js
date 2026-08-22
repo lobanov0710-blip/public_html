@@ -117,82 +117,142 @@ window.initCalculator = function () {
   // ==========================
   function fillBookingForm() {
 
-    const data = window.__lastRouteData;
+  const data =
+    window.__lastRouteData;
 
-    if (!data) {
-      console.warn("⚠ no calculated route data");
-      return false;
-    }
+  if (!data) {
+    console.warn(
+      "⚠ no calculated route data"
+    );
 
-    const bookingForm = document.getElementById("tgForm");
-
-    if (!bookingForm) {
-      console.error("❌ tgForm not found");
-      return false;
-    }
-
-    const routeField =
-      bookingForm.elements?.namedItem("route") ||
-      bookingForm.querySelector('[name="route"]');
-
-    const commentField =
-      bookingForm.elements?.namedItem("comment") ||
-      bookingForm.querySelector('[name="comment"]');
-
-    if (!routeField) {
-      console.error("❌ route field not found");
-      return false;
-    }
-
-    const routeText =
-      `${data.from} → ${data.to}`;
-
-    const commentText = [
-      `Расстояние: ${Number(data.distance).toFixed(1)} км`,
-      `Стоимость: ${formatPrice(data.price)} ₽`,
-      `Тариф: ${tariffLabel(data.tariff)}`,
-      `Время в пути: ${formatDuration(data.duration)}`
-    ].join("\n");
-
-    setFieldValue(routeField, routeText);
-
-    if (commentField) {
-      setFieldValue(commentField, commentText);
-    }
-
-    log("✅ BOOKING FORM FILLED", {
-      route: routeText,
-      comment: commentText
-    });
-
-    // Прокрутка к форме
-    bookingForm.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-
-    // Фокусируем первое незаполненное поле
-    setTimeout(() => {
-
-      const nameField =
-        bookingForm.elements?.namedItem("name");
-
-      const phoneField =
-        bookingForm.elements?.namedItem("phone");
-
-      if (nameField && !nameField.value.trim()) {
-        nameField.focus();
-        return;
-      }
-
-      if (phoneField && !phoneField.value.trim()) {
-        phoneField.focus();
-      }
-
-    }, 600);
-
-    return true;
+    return false;
   }
+
+  const bookingForm =
+    document.getElementById(
+      "tgForm"
+    );
+
+  if (!bookingForm) {
+    console.error(
+      "❌ tgForm not found"
+    );
+
+    return false;
+  }
+
+  const routeField =
+    bookingForm.elements?.namedItem(
+      "route"
+    ) ||
+    bookingForm.querySelector(
+      '[name="route"]'
+    );
+
+  if (!routeField) {
+    console.error(
+      "❌ route field not found"
+    );
+
+    return false;
+  }
+
+  // ==========================
+  // ROUTE
+  // ==========================
+
+  const routeText =
+    `${data.from} → ${data.to}`;
+
+  setFieldValue(
+    routeField,
+    routeText
+  );
+
+  // ==========================
+  // IMPORTANT
+  // ==========================
+  //
+  // Технические данные:
+  // tariff / distance /
+  // duration / price
+  //
+  // НЕ записываем в comment.
+  //
+  // Они уже находятся в:
+  // window.__lastRouteData
+  //
+  // и form.js передаёт их
+  // отдельными полями в /orders.
+  //
+  // Поле comment теперь только
+  // для комментария клиента.
+  // ==========================
+
+  log(
+    "✅ BOOKING FORM FILLED",
+    {
+      route: routeText,
+
+      tariff:
+        data.tariff,
+
+      distance:
+        data.distance,
+
+      duration:
+        data.duration,
+
+      price:
+        data.price
+    }
+  );
+
+  // ==========================
+  // SCROLL
+  // ==========================
+
+  bookingForm.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+  // ==========================
+  // FOCUS
+  // ==========================
+
+  setTimeout(() => {
+
+    const nameField =
+      bookingForm.elements?.namedItem(
+        "name"
+      );
+
+    const phoneField =
+      bookingForm.elements?.namedItem(
+        "phone"
+      );
+
+    if (
+      nameField &&
+      !nameField.value.trim()
+    ) {
+
+      nameField.focus();
+      return;
+    }
+
+    if (
+      phoneField &&
+      !phoneField.value.trim()
+    ) {
+      phoneField.focus();
+    }
+
+  }, 600);
+
+  return true;
+}
 
   // ==========================
   // MAP CHECK
