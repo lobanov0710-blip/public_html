@@ -1,150 +1,560 @@
-let map = null;
-let routeLine = null;
-let carMarker = null;
-let animationFrame = null;
+(() => {
 
-// ==========================
-// INIT MAP
-// ==========================
-function initMap() {
+  // ==========================
+  // PRIVATE STATE
+  // ==========================
 
-  const el = document.getElementById("map");
+  let map = null;
+  let routeLine = null;
+  let carMarker = null;
+  let animationFrame = null;
 
-  if (!el) {
-    console.warn("Map container not found");
-    return null;
+  // ==========================
+  // HELPERS
+  // ==========================
+
+  function hasLeaflet() {
+    return (
+      typeof window.L !== "undefined"
+    );
   }
 
-  if (typeof L === "undefined") {
-    console.warn("Leaflet not loaded");
-    return null;
+  function getMapElement() {
+    return document.getElementById(
+      "map"
+    );
   }
 
-  if (map) {
-    setTimeout(() => map.invalidateSize(), 300);
-    return map;
+  function isMapReady() {
+    return (
+      map &&
+      typeof map.fitBounds ===
+        "function"
+    );
   }
 
-  map = L.map(el).setView([55.75, 37.61], 5);
-
-  L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-      attribution: "© OpenStreetMap",
-      maxZoom: 18
-    }
-  ).addTo(map);
-
-  // 🔥 ВАЖНО: делаем глобальным, чтобы calculator.js видел карту
-  window.map = map;
-
-  setTimeout(() => {
-    map.invalidateSize();
-  }, 500);
-
-  return map;
-}
-
-// ==========================
-// DRAW ROUTE
-// ==========================
-async function drawRoute(geojson) {
-
-  console.log("DRAW ROUTE:", geojson);
-
-  let tries = 0;
-
-  while (
-    (typeof L === "undefined" || !document.getElementById("map")) &&
-    tries < 20
+  function invalidateMap(
+    delay = 0
   ) {
-    await new Promise(r => setTimeout(r, 300));
-    tries++;
+
+    if (!isMapReady()) {
+      return;
+    }
+
+    setTimeout(() => {
+
+      try {
+        map.invalidateSize(true);
+      } catch (error) {
+        console.warn(
+          "[MAP] invalidate error:",
+          error
+        );
+      }
+
+    }, delay);
   }
 
-  if (typeof L === "undefined") {
-    console.error("❌ Leaflet not loaded");
-    return;
-  }
+  // ==========================
+  // INIT MAP
+  // ==========================
 
-  if (!map) {
-    initMap();
-  }
+  function initMap() {
 
-  if (!map) {
-    console.error("❌ Map init failed");
-    return;
-  }
+    const element =
+      getMapElement();
 
-  // 🔥 FIX: защита от неправильного формата
-  if (!geojson || !geojson.coordinates || !Array.isArray(geojson.coordinates)) {
-    console.error("❌ Invalid route format", geojson);
-    return;
-  }
+    if (!element) {
 
-  const coords = geojson.coordinates.map(p => [p[1], p[0]]);
+      console.warn(
+        "[MAP] container not found"
+      );
 
-  if (routeLine) {
+      return null;
+    }
+
+    if (!hasLeaflet()) {
+
+      console.warn(
+        "[MAP] Leaflet not loaded"
+      );
+
+      return null;
+    }
+
+    // Уже создана
+    if (isMapReady()) {
+
+      invalidateMap(100);
+
+      window.map = map;
+
+      return map;
+    }
+
     try {
-      map.removeLayer(routeLine);
-    } catch (e) {}
+
+      map =
+        L.map(
+          element,
+          {
+            zoomControl: true
+          }
+        )
+        .setView(
+          [
+            55.75,
+            37.61
+          ],
+          5
+        );
+
+      L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          attribution:
+            "© OpenStreetMap",
+
+          maxZoom:
+            18
+        }
+      )
+      .addTo(map);
+
+      // Совместимость
+      // с текущим main.js.
+      window.map = map;
+
+      invalidateMap(300);
+
+      console.log(
+        "[MAP] initialized"
+      );
+
+      return map;
+
+    } catch (error) {
+
+      console.error(
+        "[MAP] init error:",
+        error
+      );
+
+      map = null;
+      window.map = null;
+
+      return null;
+    }
   }
 
-  routeLine = L.polyline(coords, {
-    color: "#ffcc00",
-    weight: 5
-  }).addTo(map);
+  // ==========================
+  // NORMALIZE ROUTE
+  // ==========================
 
-  map.fitBounds(routeLine.getBounds(), {
-    padding: [30, 30]
-  });
+  function normalizeRoute(
+    route
+  ) {
 
-  setTimeout(() => {
-    if (map) map.invalidateSize();
-  }, 300);
+    if (
+      !route ||
+      !Array.isArray(
+        route.coordinates
+      )
+    ) {
 
-  animateCar(coords);
-}
+      return [];
+    }
 
-// ==========================
-// CAR ANIMATION
-// ==========================
-function animateCar(coords) {
+    return route.coordinates
+      .map(point => {
 
-  if (!map || !coords?.length) return;
+        if (
+          !Array.isArray(point) ||
+          point.length < 2
+        ) {
+          return null;
+        }
 
-  if (carMarker) {
+        // Backend GeoJSON:
+        // [longitude, latitude]
+
+        const lng =
+          Number(point[0]);
+
+        const lat =
+          Number(point[1]);
+
+        if (
+          !Number.isFinite(lat) ||
+          !Number.isFinite(lng)
+        ) {
+          return null;
+        }
+
+        // Leaflet:
+        // [latitude, longitude]
+
+        return [
+          lat,
+          lng
+        ];
+      })
+      .filter(Boolean);
+  }
+
+  // ==========================
+  // STOP CAR
+  // ==========================
+
+  function stopCarAnimation() {
+
+    if (
+      animationFrame !== null
+    ) {
+
+      cancelAnimationFrame(
+        animationFrame
+      );
+
+      animationFrame = null;
+    }
+  }
+
+  // ==========================
+  // REMOVE CAR
+  // ==========================
+
+  function removeCar() {
+
+    stopCarAnimation();
+
+    if (
+      carMarker &&
+      isMapReady()
+    ) {
+
+      try {
+
+        map.removeLayer(
+          carMarker
+        );
+
+      } catch (error) {
+
+        console.warn(
+          "[MAP] remove car error:",
+          error
+        );
+      }
+    }
+
+    carMarker = null;
+  }
+
+  // ==========================
+  // CLEAR ROUTE
+  // ==========================
+
+  function clearRoute() {
+
+    removeCar();
+
+    if (
+      routeLine &&
+      isMapReady()
+    ) {
+
+      try {
+
+        map.removeLayer(
+          routeLine
+        );
+
+      } catch (error) {
+
+        console.warn(
+          "[MAP] remove route error:",
+          error
+        );
+      }
+    }
+
+    routeLine = null;
+  }
+
+  // ==========================
+  // CAR ANIMATION
+  // ==========================
+
+  function animateCar(
+    coordinates
+  ) {
+
+    if (
+      !isMapReady() ||
+      !hasLeaflet() ||
+      !Array.isArray(
+        coordinates
+      ) ||
+      coordinates.length < 2
+    ) {
+      return;
+    }
+
+    removeCar();
+
+    const carIcon =
+      L.icon({
+        iconUrl:
+          "/images/auto.png",
+
+        iconSize:
+          [40, 40],
+
+        iconAnchor:
+          [20, 20]
+      });
+
     try {
-      map.removeLayer(carMarker);
-    } catch (e) {}
+
+      carMarker =
+        L.marker(
+          coordinates[0],
+          {
+            icon:
+              carIcon
+          }
+        )
+        .addTo(map);
+
+    } catch (error) {
+
+      console.error(
+        "[MAP] car marker error:",
+        error
+      );
+
+      carMarker = null;
+
+      return;
+    }
+
+    let position = 0;
+
+    function move() {
+
+      if (
+        !carMarker ||
+        position >=
+          coordinates.length
+      ) {
+
+        animationFrame =
+          null;
+
+        return;
+      }
+
+      const point =
+        coordinates[
+          Math.floor(
+            position
+          )
+        ];
+
+      if (point) {
+
+        try {
+
+          carMarker.setLatLng(
+            point
+          );
+
+        } catch (error) {
+
+          console.warn(
+            "[MAP] car move error:",
+            error
+          );
+
+          animationFrame =
+            null;
+
+          return;
+        }
+      }
+
+      position += 0.6;
+
+      animationFrame =
+        requestAnimationFrame(
+          move
+        );
+    }
+
+    move();
   }
 
-  if (animationFrame) {
-    cancelAnimationFrame(animationFrame);
+  // ==========================
+  // DRAW ROUTE
+  // ==========================
+
+  async function drawRoute(
+    route
+  ) {
+
+    // Карта могла ещё не успеть
+    // инициализироваться.
+    if (!isMapReady()) {
+      initMap();
+    }
+
+    let tries = 0;
+
+    while (
+      !isMapReady() &&
+      tries < 20
+    ) {
+
+      await new Promise(
+        resolve =>
+          setTimeout(
+            resolve,
+            150
+          )
+      );
+
+      initMap();
+
+      tries++;
+    }
+
+    if (!isMapReady()) {
+
+      console.error(
+        "[MAP] map unavailable"
+      );
+
+      return false;
+    }
+
+    const coordinates =
+      normalizeRoute(
+        route
+      );
+
+    if (
+      coordinates.length < 2
+    ) {
+
+      console.error(
+        "[MAP] invalid route:",
+        route
+      );
+
+      return false;
+    }
+
+    // Старый маршрут
+    // и машина удаляются.
+    clearRoute();
+
+    try {
+
+      routeLine =
+        L.polyline(
+          coordinates,
+          {
+            color:
+              "#2b7cff",
+
+            weight:
+              5
+          }
+        )
+        .addTo(map);
+
+      const bounds =
+        routeLine.getBounds();
+
+      if (
+        bounds &&
+        typeof bounds.isValid ===
+          "function" &&
+        bounds.isValid()
+      ) {
+
+        map.fitBounds(
+          bounds,
+          {
+            padding:
+              [40, 40]
+          }
+        );
+      }
+
+      invalidateMap(100);
+
+      animateCar(
+        coordinates
+      );
+
+      console.log(
+        "[MAP] route drawn:",
+        coordinates.length,
+        "points"
+      );
+
+      return true;
+
+    } catch (error) {
+
+      console.error(
+        "[MAP] draw route error:",
+        error
+      );
+
+      clearRoute();
+
+      return false;
+    }
   }
 
-  const carIcon = L.icon({
-    iconUrl: "/images/auto.png",
-    iconSize: [40, 40],
-    iconAnchor: [20, 20]
-  });
+  // ==========================
+  // PUBLIC API
+  // ==========================
 
-  carMarker = L.marker(coords[0], {
-    icon: carIcon
-  }).addTo(map);
+  window.TransferMap = {
+    init:
+      initMap,
 
-  let i = 0;
+    drawRoute,
 
-  function move() {
+    clearRoute,
 
-    if (i >= coords.length) return;
+    invalidate:
+      invalidateMap,
 
-    carMarker.setLatLng(coords[Math.floor(i)]);
+    getMap() {
+      return map;
+    }
+  };
 
-    i += 0.5;
+  // ==========================
+  // LEGACY COMPATIBILITY
+  // ==========================
+  //
+  // main.js сейчас вызывает:
+  // window.initMap()
+  //
+  // Поэтому пока сохраняем
+  // старое имя.
+  // ==========================
 
-    animationFrame = requestAnimationFrame(move);
-  }
+  window.initMap =
+    initMap;
 
-  move();
-}
+  window.drawRoute =
+    drawRoute;
+
+})();

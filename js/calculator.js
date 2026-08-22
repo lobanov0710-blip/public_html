@@ -11,18 +11,29 @@ window.initCalculator = function () {
     return;
   }
 
-  window.__calcInitialized = true;
-  window.__calcDebug = true;
+  window.__calcInitialized =
+    true;
+
+  window.__calcDebug =
+    true;
 
   if (
     !("__lastRouteData" in window)
   ) {
-    window.__lastRouteData = null;
+    window.__lastRouteData =
+      null;
   }
+
+  // ==========================
+  // LOGGER
+  // ==========================
 
   function log(...args) {
 
-    if (window.__calcDebug) {
+    if (
+      window.__calcDebug
+    ) {
+
       console.log(
         "[CALC]",
         ...args
@@ -44,10 +55,13 @@ window.initCalculator = function () {
       "result"
     );
 
-  if (!form || !result) {
+  if (
+    !form ||
+    !result
+  ) {
 
     console.error(
-      "❌ calcForm/result not found"
+      "[CALC] calcForm/result not found"
     );
 
     return;
@@ -78,7 +92,7 @@ window.initCalculator = function () {
   ) {
 
     console.error(
-      "❌ calculator fields/button not found"
+      "[CALC] fields/button not found"
     );
 
     return;
@@ -99,10 +113,11 @@ window.initCalculator = function () {
       selectedTariff
     ).toLowerCase();
 
-  let isLoading = false;
+  let isLoading =
+    false;
 
   // ==========================
-  // HELPERS
+  // FORMATTERS
   // ==========================
 
   function tariffLabel(
@@ -120,12 +135,15 @@ window.initCalculator = function () {
         "Минивэн"
     };
 
+    const key =
+      String(
+        tariff || ""
+      )
+      .trim()
+      .toLowerCase();
+
     return (
-      labels[
-        String(
-          tariff || ""
-        ).toLowerCase()
-      ] ||
+      labels[key] ||
       "Комфорт"
     );
   }
@@ -154,13 +172,17 @@ window.initCalculator = function () {
       hours > 0 &&
       minutes > 0
     ) {
+
       return (
         `${hours} ч ` +
         `${minutes} мин`
       );
     }
 
-    if (hours > 0) {
+    if (
+      hours > 0
+    ) {
+
       return `${hours} ч`;
     }
 
@@ -176,12 +198,17 @@ window.initCalculator = function () {
         Number(price) || 0
       );
 
-    return new Intl
-      .NumberFormat(
+    return (
+      new Intl.NumberFormat(
         "ru-RU"
       )
-      .format(value);
+      .format(value)
+    );
   }
+
+  // ==========================
+  // FORM FIELD
+  // ==========================
 
   function setFieldValue(
     field,
@@ -193,13 +220,16 @@ window.initCalculator = function () {
     }
 
     field.value =
-      String(value ?? "");
+      String(
+        value ?? ""
+      );
 
     field.dispatchEvent(
       new Event(
         "input",
         {
-          bubbles: true
+          bubbles:
+            true
         }
       )
     );
@@ -208,14 +238,15 @@ window.initCalculator = function () {
       new Event(
         "change",
         {
-          bubbles: true
+          bubbles:
+            true
         }
       )
     );
   }
 
   // ==========================
-  // STORAGE
+  // BOOKING STORAGE
   // ==========================
 
   function saveBookingData(
@@ -226,18 +257,19 @@ window.initCalculator = function () {
       return;
     }
 
-    // Полная версия доступна
-    // в рамках текущей страницы.
+    // Полная версия,
+    // включая route GeoJSON.
     window.__lastRouteData =
       data;
 
-    // В sessionStorage НЕ кладём
-    // тысячи координат маршрута.
-    // Для заявки они не нужны.
+    // В sessionStorage
+    // координаты маршрута
+    // не сохраняем.
     try {
 
       sessionStorage.setItem(
         "transferBookingData",
+
         JSON.stringify({
           from:
             data.from,
@@ -259,10 +291,12 @@ window.initCalculator = function () {
         })
       );
 
-    } catch (error) {
+    } catch (
+      error
+    ) {
 
       console.warn(
-        "[CALC] storage error:",
+        "[CALC] storage save error:",
         error
       );
     }
@@ -297,16 +331,21 @@ window.initCalculator = function () {
       }
 
       const data =
-        JSON.parse(saved);
+        JSON.parse(
+          saved
+        );
 
       if (
         data?.from &&
         data?.to
       ) {
+
         return data;
       }
 
-    } catch (error) {
+    } catch (
+      error
+    ) {
 
       console.warn(
         "[CALC] storage read error:",
@@ -328,15 +367,18 @@ window.initCalculator = function () {
         "transferBookingData"
       );
 
-    } catch (error) {}
+    } catch (
+      error
+    ) {}
   }
 
-  // Делаем доступным form.js
+  // form.js может использовать
+  // эту функцию после успешного заказа.
   window.clearTransferBookingData =
     clearBookingData;
 
   // ==========================
-  // BOOKING FORM
+  // FILL BOOKING FORM
   // ==========================
 
   function fillBookingForm() {
@@ -351,7 +393,7 @@ window.initCalculator = function () {
     ) {
 
       console.warn(
-        "⚠ no calculated route data"
+        "[CALC] no booking data"
       );
 
       return false;
@@ -365,7 +407,7 @@ window.initCalculator = function () {
     if (!bookingForm) {
 
       console.error(
-        "❌ tgForm not found"
+        "[CALC] tgForm not found"
       );
 
       return false;
@@ -379,7 +421,7 @@ window.initCalculator = function () {
     if (!routeField) {
 
       console.error(
-        "❌ route field not found"
+        "[CALC] route field not found"
       );
 
       return false;
@@ -398,7 +440,7 @@ window.initCalculator = function () {
     );
 
     log(
-      "✅ BOOKING FORM FILLED",
+      "BOOKING FORM FILLED",
       {
         route:
           routeText,
@@ -452,11 +494,16 @@ window.initCalculator = function () {
         ) {
 
           try {
+
             nameField.focus({
               preventScroll:
                 true
             });
-          } catch (error) {
+
+          } catch (
+            error
+          ) {
+
             nameField.focus();
           }
 
@@ -469,11 +516,16 @@ window.initCalculator = function () {
         ) {
 
           try {
+
             phoneField.focus({
               preventScroll:
                 true
             });
-          } catch (error) {
+
+          } catch (
+            error
+          ) {
+
             phoneField.focus();
           }
         }
@@ -485,409 +537,68 @@ window.initCalculator = function () {
     return true;
   }
 
-  // Доступно для диагностики
   window.fillTransferBookingForm =
     fillBookingForm;
 
   // ==========================
-  // MAP HELPERS
+  // MAP
   // ==========================
 
-  function isLeafletMap(
-    map
-  ) {
-
-    return (
-      map &&
-      typeof map.fitBounds ===
-        "function"
-    );
-  }
-
-  function getMap() {
-    return (
-      window.map ||
-      null
-    );
-  }
-
-  function waitMapReady(
-    callback
-  ) {
-
-    let tries = 0;
-
-    const timer =
-      setInterval(
-        () => {
-
-          const map =
-            getMap();
-
-          if (
-            isLeafletMap(map)
-          ) {
-
-            clearInterval(
-              timer
-            );
-
-            try {
-
-              map.invalidateSize(
-                true
-              );
-
-            } catch (
-              error
-            ) {}
-
-            log(
-              "🗺 MAP READY"
-            );
-
-            callback(map);
-
-            return;
-          }
-
-          tries++;
-
-          if (
-            tries > 60
-          ) {
-
-            clearInterval(
-              timer
-            );
-
-            console.warn(
-              "❌ MAP TIMEOUT OR NOT LEAFLET"
-            );
-          }
-
-        },
-        200
-      );
-  }
-
-  function safeMapUpdate() {
-
-    const map =
-      getMap();
-
-    if (
-      !isLeafletMap(map)
-    ) {
-      return;
-    }
-
-    setTimeout(
-      () => {
-
-        try {
-
-          map.invalidateSize(
-            true
-          );
-
-        } catch (
-          error
-        ) {}
-
-      },
-      200
-    );
-  }
-
-  // ==========================
-  // CAR ANIMATION
-  // ==========================
-
-  function animateCar(
-    latlngs
-  ) {
-
-    const map =
-      getMap();
-
-    if (
-      !isLeafletMap(map) ||
-      !Array.isArray(
-        latlngs
-      ) ||
-      latlngs.length < 2
-    ) {
-      return;
-    }
-
-    if (
-      window.__carMarker
-    ) {
-
-      try {
-
-        map.removeLayer(
-          window.__carMarker
-        );
-
-      } catch (
-        error
-      ) {}
-
-      window.__carMarker =
-        null;
-    }
-
-    if (
-      window.__carAnimationFrame
-    ) {
-
-      cancelAnimationFrame(
-        window
-          .__carAnimationFrame
-      );
-
-      window
-        .__carAnimationFrame =
-        null;
-    }
-
-    if (
-      typeof L ===
-      "undefined"
-    ) {
-
-      console.warn(
-        "⚠ Leaflet not available"
-      );
-
-      return;
-    }
-
-    const carIcon =
-      L.icon({
-        iconUrl:
-          "/images/auto.png",
-
-        iconSize:
-          [40, 40],
-
-        iconAnchor:
-          [20, 20]
-      });
-
-    const marker =
-      L.marker(
-        latlngs[0],
-        {
-          icon:
-            carIcon
-        }
-      )
-      .addTo(map);
-
-    window.__carMarker =
-      marker;
-
-    let i = 0;
-
-    function step() {
-
-      if (
-        i >=
-        latlngs.length
-      ) {
-
-        window
-          .__carAnimationFrame =
-          null;
-
-        return;
-      }
-
-      const point =
-        latlngs[
-          Math.floor(i)
-        ];
-
-      if (point) {
-
-        marker.setLatLng(
-          point
-        );
-      }
-
-      i += 0.6;
-
-      window
-        .__carAnimationFrame =
-        requestAnimationFrame(
-          step
-        );
-    }
-
-    step();
-  }
-
-  // ==========================
-  // DRAW ROUTE
-  // ==========================
-
-  function drawRoute(
+  async function showRouteOnMap(
     route
   ) {
-
-    const map =
-      getMap();
-
-    if (
-      !isLeafletMap(map)
-    ) {
-
-      console.warn(
-        "⚠ map not ready"
-      );
-
-      return;
-    }
 
     if (
       !route ||
       !Array.isArray(
         route.coordinates
-      )
+      ) ||
+      route.coordinates.length < 2
     ) {
 
       console.warn(
-        "⚠ route missing coordinates",
-        route
+        "[CALC] route geometry missing"
       );
 
       return;
     }
 
     if (
-      route
-        .coordinates
-        .length < 2
+      !window.TransferMap ||
+      typeof window
+        .TransferMap
+        .drawRoute !==
+        "function"
     ) {
 
       console.warn(
-        "⚠ EMPTY OR TOO SHORT ROUTE"
+        "[CALC] TransferMap not available"
       );
 
       return;
     }
-
-    const latlngs =
-      route.coordinates
-        .map(
-          point => {
-
-            if (
-              !Array.isArray(
-                point
-              ) ||
-              point.length < 2
-            ) {
-              return null;
-            }
-
-            const lng =
-              Number(
-                point[0]
-              );
-
-            const lat =
-              Number(
-                point[1]
-              );
-
-            if (
-              !Number
-                .isFinite(
-                  lat
-                ) ||
-              !Number
-                .isFinite(
-                  lng
-                )
-            ) {
-
-              return null;
-            }
-
-            return [
-              lat,
-              lng
-            ];
-          }
-        )
-        .filter(Boolean);
-
-    if (
-      latlngs.length < 2
-    ) {
-
-      console.warn(
-        "⚠ INVALID COORDS OR TOO SHORT ROUTE"
-      );
-
-      return;
-    }
-
-    if (
-      window.__routeLine
-    ) {
-
-      try {
-
-        map.removeLayer(
-          window.__routeLine
-        );
-
-      } catch (
-        error
-      ) {}
-
-      window.__routeLine =
-        null;
-    }
-
-    window.__routeLine =
-      L.polyline(
-        latlngs,
-        {
-          color:
-            "#2b7cff",
-
-          weight:
-            5
-        }
-      )
-      .addTo(map);
 
     try {
 
-      const bounds =
-        window
-          .__routeLine
-          .getBounds();
+      const success =
+        await window
+          .TransferMap
+          .drawRoute(
+            route
+          );
 
       if (
-        bounds &&
-        typeof bounds.isValid ===
-          "function" &&
-        bounds.isValid()
+        success
       ) {
 
-        map.fitBounds(
-          bounds,
-          {
-            padding:
-              [50, 50]
-          }
+        log(
+          "MAP ROUTE DISPLAYED"
+        );
+
+      } else {
+
+        console.warn(
+          "[CALC] map rejected route"
         );
       }
 
@@ -895,19 +606,15 @@ window.initCalculator = function () {
       error
     ) {
 
-      console.warn(
-        "fitBounds error:",
+      console.error(
+        "[CALC] map error:",
         error
       );
     }
-
-    animateCar(
-      latlngs
-    );
   }
 
   // ==========================
-  // TARIFF
+  // TARIFF SELECTION
   // ==========================
 
   document
@@ -948,10 +655,11 @@ window.initCalculator = function () {
                   .tariff ||
                 "comfort"
               )
+              .trim()
               .toLowerCase();
 
             log(
-              "🚕 TARIFF:",
+              "TARIFF:",
               selectedTariff
             );
           }
@@ -974,6 +682,10 @@ window.initCalculator = function () {
       ) {
         return;
       }
+
+      // ==========================
+      // INPUT
+      // ==========================
 
       const from =
         fromInput
@@ -1006,7 +718,8 @@ window.initCalculator = function () {
       // LOADING
       // ==========================
 
-      isLoading = true;
+      isLoading =
+        true;
 
       button.disabled =
         true;
@@ -1023,8 +736,9 @@ window.initCalculator = function () {
           "show"
         );
 
-      // Новый расчёт =
-      // старые данные удаляем.
+      // Новый расчёт:
+      // старые данные заказа
+      // больше не используются.
       clearBookingData();
 
       try {
@@ -1049,6 +763,7 @@ window.initCalculator = function () {
                 JSON.stringify({
                   from,
                   to,
+
                   tariff:
                     selectedTariff
                 })
@@ -1062,15 +777,15 @@ window.initCalculator = function () {
               () => null
             );
 
-        console.log(
-          "ROUTE DATA:",
+        log(
+          "API RESPONSE:",
           data
         );
 
         if (
-          !data ||
           !response.ok ||
-          !data.ok
+          !data ||
+          data.ok !== true
         ) {
 
           result.innerText =
@@ -1081,7 +796,7 @@ window.initCalculator = function () {
         }
 
         // ==========================
-        // VALIDATE RESPONSE
+        // RESPONSE DATA
         // ==========================
 
         const distance =
@@ -1098,6 +813,10 @@ window.initCalculator = function () {
           Number(
             data.price
           );
+
+        // ==========================
+        // VALIDATION
+        // ==========================
 
         if (
           !Number.isFinite(
@@ -1139,12 +858,13 @@ window.initCalculator = function () {
         }
 
         // ==========================
-        // SAVE RESULT
+        // STORE RESULT
         // ==========================
 
         const routeData = {
           from,
           to,
+
           distance,
           duration,
           price,
@@ -1162,7 +882,7 @@ window.initCalculator = function () {
         );
 
         log(
-          "✅ CALCULATED:",
+          "CALCULATED:",
           routeData
         );
 
@@ -1191,7 +911,7 @@ window.initCalculator = function () {
           );
 
         // ==========================
-        // DIRECT BOOK BUTTON
+        // BOOK BUTTON
         // ==========================
 
         const bookingButton =
@@ -1229,32 +949,12 @@ window.initCalculator = function () {
         // MAP
         // ==========================
 
-        safeMapUpdate();
-
         if (
-          data.route &&
-          Array.isArray(
-            data.route
-              .coordinates
-          ) &&
           data.route
-            .coordinates
-            .length > 1
         ) {
 
-          waitMapReady(
-            () => {
-
-              drawRoute(
-                data.route
-              );
-            }
-          );
-
-        } else {
-
-          console.warn(
-            "⚠ no valid route received"
+          await showRouteOnMap(
+            data.route
           );
         }
 
@@ -1263,7 +963,7 @@ window.initCalculator = function () {
       ) {
 
         console.error(
-          "CALCULATOR ERROR:",
+          "[CALC] ERROR:",
           error
         );
 
@@ -1287,12 +987,6 @@ window.initCalculator = function () {
 
 // ==========================
 // FALLBACK INIT
-// ==========================
-//
-// main.js также вызывает
-// initCalculator().
-// Защита от двойной
-// инициализации находится выше.
 // ==========================
 
 document.addEventListener(
