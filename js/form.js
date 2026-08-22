@@ -8,40 +8,59 @@ window.initForm = function () {
   // =========================
 
   const form =
-    document.getElementById("tgForm");
+    document.getElementById(
+      "tgForm"
+    );
 
   if (!form) {
     return;
   }
 
-  // Защита от двойной инициализации
-  if (form.dataset.initialized === "true") {
+  // Защита от двойной
+  // инициализации.
+  if (
+    form.dataset
+      .initialized ===
+    "true"
+  ) {
     return;
   }
 
-  form.dataset.initialized = "true";
+  form.dataset.initialized =
+    "true";
 
   const btn =
     form.querySelector(
       'button[type="submit"]'
     );
 
-  let loading = false;
+  let loading =
+    false;
 
   // =========================
   // HELPERS
   // =========================
 
-  function getField(name) {
+  function getField(
+    name
+  ) {
+
     return (
-      form.elements?.namedItem(name) ||
+      form.elements
+        ?.namedItem(
+          name
+        ) ||
+
       form.querySelector(
         `[name="${name}"]`
       )
     );
   }
 
-  function getValue(name) {
+  function getValue(
+    name
+  ) {
+
     const field =
       getField(name);
 
@@ -54,35 +73,138 @@ window.initForm = function () {
     ).trim();
   }
 
-  function normalizeRoute(value) {
-    return String(value || "")
-      .replace(/\s+/g, " ")
+  function normalizeRoute(
+    value
+  ) {
+
+    return String(
+      value || ""
+    )
+      .replace(
+        /\s+/g,
+        " "
+      )
       .trim()
       .toLowerCase();
   }
 
+  // =========================
+  // CALCULATOR DATA
+  // =========================
+
+  function getCalculatorData() {
+
+    if (
+      window.__lastRouteData &&
+      window.__lastRouteData.from &&
+      window.__lastRouteData.to
+    ) {
+
+      return (
+        window.__lastRouteData
+      );
+    }
+
+    // Mobile fallback
+    try {
+
+      const saved =
+        sessionStorage
+          .getItem(
+            "transferBookingData"
+          );
+
+      if (!saved) {
+        return null;
+      }
+
+      const data =
+        JSON.parse(
+          saved
+        );
+
+      if (
+        data?.from &&
+        data?.to
+      ) {
+
+        return data;
+      }
+
+    } catch (
+      error
+    ) {
+
+      console.warn(
+        "[ORDER] storage error:",
+        error
+      );
+    }
+
+    return null;
+  }
+
+  function clearCalculatorData() {
+
+    if (
+      typeof window
+        .clearTransferBookingData ===
+      "function"
+    ) {
+
+      window
+        .clearTransferBookingData();
+
+      return;
+    }
+
+    window.__lastRouteData =
+      null;
+
+    try {
+
+      sessionStorage
+        .removeItem(
+          "transferBookingData"
+        );
+
+    } catch (
+      error
+    ) {}
+  }
+
+  // =========================
+  // BUTTON
+  // =========================
+
   function resetButton() {
 
-    loading = false;
+    loading =
+      false;
 
     if (!btn) {
       return;
     }
 
-    btn.disabled = false;
+    btn.disabled =
+      false;
+
     btn.textContent =
       "📩 Отправить заявку";
   }
 
   function setLoading() {
 
-    loading = true;
+    loading =
+      true;
 
     if (!btn) {
       return;
     }
 
-    btn.disabled = true;
+    btn.disabled =
+      true;
+
     btn.textContent =
       "⏳ Отправка...";
   }
@@ -93,31 +215,43 @@ window.initForm = function () {
       return;
     }
 
-    btn.disabled = true;
+    btn.disabled =
+      true;
+
     btn.textContent =
       "✅ Заявка отправлена";
   }
 
   // =========================
-  // BUILD ORDER
+  // PAYLOAD
   // =========================
 
   function buildOrderPayload() {
 
     const name =
-      getValue("name");
+      getValue(
+        "name"
+      );
 
     const phone =
-      getValue("phone");
+      getValue(
+        "phone"
+      );
 
     const route =
-      getValue("route");
+      getValue(
+        "route"
+      );
 
     const date =
-      getValue("date");
+      getValue(
+        "date"
+      );
 
     const comment =
-      getValue("comment");
+      getValue(
+        "comment"
+      );
 
     const payload = {
       name,
@@ -128,88 +262,108 @@ window.initForm = function () {
     };
 
     // =========================
-    // CALCULATOR DATA
-    // =========================
-    //
-    // Добавляем цену/расстояние/тариф
-    // только если текущий маршрут формы
-    // совпадает с последним расчётом.
-    //
-    // Если пользователь вручную изменил
-    // маршрут после расчёта — старую цену
-    // не отправляем.
+    // ADD CALCULATOR DATA
     // =========================
 
     const calc =
-      window.__lastRouteData;
+      getCalculatorData();
 
     if (
-      calc &&
-      calc.from &&
-      calc.to
+      !calc ||
+      !calc.from ||
+      !calc.to
     ) {
 
-      const calculatedRoute =
-        `${calc.from} → ${calc.to}`;
+      return payload;
+    }
 
-      const currentRoute =
-        normalizeRoute(route);
+    const expectedRoute =
+      normalizeRoute(
+        `${calc.from} → ${calc.to}`
+      );
 
-      const expectedRoute =
-        normalizeRoute(
-          calculatedRoute
-        );
+    const currentRoute =
+      normalizeRoute(
+        route
+      );
 
-      if (
-        currentRoute ===
-        expectedRoute
-      ) {
+    // Если клиент вручную
+    // изменил маршрут,
+    // не отправляем старую цену.
+    if (
+      currentRoute !==
+      expectedRoute
+    ) {
 
-        payload.from =
-          String(calc.from);
+      console.warn(
+        "[ORDER] route changed manually, calculator data ignored"
+      );
 
-        payload.to =
-          String(calc.to);
+      return payload;
+    }
 
-        payload.tariff =
-          String(
-            calc.tariff ||
-            "comfort"
-          );
+    payload.from =
+      String(
+        calc.from
+      );
 
-        const distance =
-          Number(calc.distance);
+    payload.to =
+      String(
+        calc.to
+      );
 
-        const duration =
-          Number(calc.duration);
+    payload.tariff =
+      String(
+        calc.tariff ||
+        "comfort"
+      );
 
-        const price =
-          Number(calc.price);
+    const distance =
+      Number(
+        calc.distance
+      );
 
-        if (
-          Number.isFinite(distance) &&
-          distance > 0
-        ) {
-          payload.distance =
-            distance;
-        }
+    const duration =
+      Number(
+        calc.duration
+      );
 
-        if (
-          Number.isFinite(duration) &&
-          duration >= 0
-        ) {
-          payload.duration =
-            duration;
-        }
+    const price =
+      Number(
+        calc.price
+      );
 
-        if (
-          Number.isFinite(price) &&
-          price >= 0
-        ) {
-          payload.price =
-            price;
-        }
-      }
+    if (
+      Number.isFinite(
+        distance
+      ) &&
+      distance > 0
+    ) {
+
+      payload.distance =
+        distance;
+    }
+
+    if (
+      Number.isFinite(
+        duration
+      ) &&
+      duration >= 0
+    ) {
+
+      payload.duration =
+        duration;
+    }
+
+    if (
+      Number.isFinite(
+        price
+      ) &&
+      price >= 0
+    ) {
+
+      payload.price =
+        price;
     }
 
     return payload;
@@ -219,35 +373,61 @@ window.initForm = function () {
   // VALIDATION
   // =========================
 
-  function validate(payload) {
+  function validate(
+    payload
+  ) {
 
-    if (!payload.name) {
-      return "Введите имя";
+    if (
+      !payload.name
+    ) {
+      return (
+        "Введите имя"
+      );
     }
 
-    if (!payload.phone) {
-      return "Введите телефон";
+    if (
+      !payload.phone
+    ) {
+      return (
+        "Введите телефон"
+      );
     }
 
     const phoneDigits =
-      payload.phone.replace(
-        /\D/g,
-        ""
-      );
+      payload.phone
+        .replace(
+          /\D/g,
+          ""
+        );
 
     if (
-      phoneDigits.length < 10 ||
-      phoneDigits.length > 15
+      phoneDigits.length <
+        10 ||
+      phoneDigits.length >
+        15
     ) {
-      return "Проверьте номер телефона";
+
+      return (
+        "Проверьте номер телефона"
+      );
     }
 
-    if (!payload.route) {
-      return "Введите маршрут";
+    if (
+      !payload.route
+    ) {
+
+      return (
+        "Введите маршрут"
+      );
     }
 
-    if (!payload.date) {
-      return "Выберите дату поездки";
+    if (
+      !payload.date
+    ) {
+
+      return (
+        "Выберите дату поездки"
+      );
     }
 
     return null;
@@ -259,11 +439,14 @@ window.initForm = function () {
 
   form.addEventListener(
     "submit",
-    async (event) => {
+    async event => {
 
-      event.preventDefault();
+      event
+        .preventDefault();
 
-      if (loading) {
+      if (
+        loading
+      ) {
         return;
       }
 
@@ -271,9 +454,13 @@ window.initForm = function () {
         buildOrderPayload();
 
       const validationError =
-        validate(payload);
+        validate(
+          payload
+        );
 
-      if (validationError) {
+      if (
+        validationError
+      ) {
 
         alert(
           validationError
@@ -295,7 +482,8 @@ window.initForm = function () {
           await fetch(
             ORDERS_API,
             {
-              method: "POST",
+              method:
+                "POST",
 
               headers: {
                 "Content-Type":
@@ -327,7 +515,7 @@ window.initForm = function () {
         );
 
         // =========================
-        // SERVER ERROR
+        // ERROR
         // =========================
 
         if (
@@ -349,27 +537,28 @@ window.initForm = function () {
         // SUCCESS
         // =========================
 
-        setSuccess();
-
         console.log(
           "[ORDER] CREATED:",
           data.order
         );
 
+        setSuccess();
+
+        // Очистка формы
         form.reset();
 
-        // Предыдущий расчёт больше
-        // не должен автоматически
-        // попасть в новую заявку.
-        window.__lastRouteData =
-          null;
+        // Очистка старого
+        // расчёта.
+        clearCalculatorData();
 
         setTimeout(
           resetButton,
           2500
         );
 
-      } catch (error) {
+      } catch (
+        error
+      ) {
 
         console.error(
           "[ORDER] ERROR:",

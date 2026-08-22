@@ -1,81 +1,163 @@
-const API = "https://uber-v3.lobanov0710.workers.dev";
+const API =
+  "https://uber-v3.lobanov0710.workers.dev";
 
 window.initCalculator = function () {
 
   // ==========================
-  // PROTECTION FROM DOUBLE INIT
+  // DOUBLE INIT PROTECTION
   // ==========================
-  if (window.__calcInitialized) return;
-  window.__calcInitialized = true;
 
+  if (window.__calcInitialized) {
+    return;
+  }
+
+  window.__calcInitialized = true;
   window.__calcDebug = true;
 
-  // Последний успешный расчёт
-  if (!("__lastRouteData" in window)) {
+  if (
+    !("__lastRouteData" in window)
+  ) {
     window.__lastRouteData = null;
   }
 
   function log(...args) {
+
     if (window.__calcDebug) {
-      console.log("[CALC]", ...args);
+      console.log(
+        "[CALC]",
+        ...args
+      );
     }
   }
 
   // ==========================
   // DOM
   // ==========================
-  const form = document.getElementById("calcForm");
-  const result = document.getElementById("result");
+
+  const form =
+    document.getElementById(
+      "calcForm"
+    );
+
+  const result =
+    document.getElementById(
+      "result"
+    );
 
   if (!form || !result) {
-    console.error("❌ calcForm/result not found");
+
+    console.error(
+      "❌ calcForm/result not found"
+    );
+
     return;
   }
 
-  const fromInput = document.getElementById("from");
-  const toInput = document.getElementById("to");
+  const fromInput =
+    document.getElementById(
+      "from"
+    );
+
+  const toInput =
+    document.getElementById(
+      "to"
+    );
 
   const button =
-    form.querySelector('button[type="submit"]') ||
-    form.querySelector("button");
+    form.querySelector(
+      'button[type="submit"]'
+    ) ||
+    form.querySelector(
+      "button"
+    );
 
-  if (!fromInput || !toInput || !button) {
-    console.error("❌ calculator fields/button not found");
+  if (
+    !fromInput ||
+    !toInput ||
+    !button
+  ) {
+
+    console.error(
+      "❌ calculator fields/button not found"
+    );
+
     return;
   }
 
-  let selectedTariff = "comfort";
+  // ==========================
+  // STATE
+  // ==========================
+
+  let selectedTariff =
+    document.querySelector(
+      ".tariff-card.active"
+    )?.dataset?.tariff ||
+    "comfort";
+
+  selectedTariff =
+    String(
+      selectedTariff
+    ).toLowerCase();
+
   let isLoading = false;
 
   // ==========================
   // HELPERS
   // ==========================
-  function tariffLabel(tariff) {
+
+  function tariffLabel(
+    tariff
+  ) {
 
     const labels = {
-      comfort: "Комфорт",
-      "comfort+": "Комфорт+",
-      comfort_plus: "Комфорт+",
-      comfortplus: "Комфорт+",
-      business: "Бизнес",
-      minivan: "Минивэн"
+      comfort:
+        "Комфорт",
+
+      business:
+        "Бизнес",
+
+      minivan:
+        "Минивэн"
     };
 
-    return labels[String(tariff || "").toLowerCase()] || "Комфорт";
+    return (
+      labels[
+        String(
+          tariff || ""
+        ).toLowerCase()
+      ] ||
+      "Комфорт"
+    );
   }
 
-  function formatDuration(duration) {
+  function formatDuration(
+    duration
+  ) {
 
-    const totalMinutes = Math.max(
-      0,
-      Math.round(Number(duration) || 0)
-    );
+    const totalMinutes =
+      Math.max(
+        0,
+        Math.round(
+          Number(duration) || 0
+        )
+      );
 
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
+    const hours =
+      Math.floor(
+        totalMinutes / 60
+      );
 
-    if (hours > 0 && minutes > 0) {
-      return `${hours} ч ${minutes} мин`;
+    const minutes =
+      totalMinutes % 60;
+
+    if (
+      hours > 0 &&
+      minutes > 0
+    ) {
+      return (
+        `${hours} ч ` +
+        `${minutes} мин`
+      );
     }
 
     if (hours > 0) {
@@ -85,335 +167,598 @@ window.initCalculator = function () {
     return `${minutes} мин`;
   }
 
-  function formatPrice(price) {
+  function formatPrice(
+    price
+  ) {
 
-    const value = Math.round(Number(price) || 0);
-
-    return new Intl.NumberFormat("ru-RU").format(value);
-  }
-
-  function setFieldValue(field, value) {
-
-    if (!field) return;
-
-    field.value = value;
-
-    // На случай если другие скрипты слушают эти события
-    field.dispatchEvent(
-      new Event("input", {
-        bubbles: true
-      })
-    );
-
-    field.dispatchEvent(
-      new Event("change", {
-        bubbles: true
-      })
-    );
-  }
-
-  // ==========================
-  // BOOKING FORM FILL
-  // ==========================
-  function fillBookingForm() {
-
-  const data =
-    window.__lastRouteData;
-
-  if (!data) {
-    console.warn(
-      "⚠ no calculated route data"
-    );
-
-    return false;
-  }
-
-  const bookingForm =
-    document.getElementById(
-      "tgForm"
-    );
-
-  if (!bookingForm) {
-    console.error(
-      "❌ tgForm not found"
-    );
-
-    return false;
-  }
-
-  const routeField =
-    bookingForm.elements?.namedItem(
-      "route"
-    ) ||
-    bookingForm.querySelector(
-      '[name="route"]'
-    );
-
-  if (!routeField) {
-    console.error(
-      "❌ route field not found"
-    );
-
-    return false;
-  }
-
-  // ==========================
-  // ROUTE
-  // ==========================
-
-  const routeText =
-    `${data.from} → ${data.to}`;
-
-  setFieldValue(
-    routeField,
-    routeText
-  );
-
-  // ==========================
-  // IMPORTANT
-  // ==========================
-  //
-  // Технические данные:
-  // tariff / distance /
-  // duration / price
-  //
-  // НЕ записываем в comment.
-  //
-  // Они уже находятся в:
-  // window.__lastRouteData
-  //
-  // и form.js передаёт их
-  // отдельными полями в /orders.
-  //
-  // Поле comment теперь только
-  // для комментария клиента.
-  // ==========================
-
-  log(
-    "✅ BOOKING FORM FILLED",
-    {
-      route: routeText,
-
-      tariff:
-        data.tariff,
-
-      distance:
-        data.distance,
-
-      duration:
-        data.duration,
-
-      price:
-        data.price
-    }
-  );
-
-  // ==========================
-  // SCROLL
-  // ==========================
-
-  bookingForm.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
-
-  // ==========================
-  // FOCUS
-  // ==========================
-
-  setTimeout(() => {
-
-    const nameField =
-      bookingForm.elements?.namedItem(
-        "name"
+    const value =
+      Math.round(
+        Number(price) || 0
       );
 
-    const phoneField =
-      bookingForm.elements?.namedItem(
-        "phone"
-      );
+    return new Intl
+      .NumberFormat(
+        "ru-RU"
+      )
+      .format(value);
+  }
 
-    if (
-      nameField &&
-      !nameField.value.trim()
-    ) {
+  function setFieldValue(
+    field,
+    value
+  ) {
 
-      nameField.focus();
+    if (!field) {
       return;
     }
 
-    if (
-      phoneField &&
-      !phoneField.value.trim()
-    ) {
-      phoneField.focus();
+    field.value =
+      String(value ?? "");
+
+    field.dispatchEvent(
+      new Event(
+        "input",
+        {
+          bubbles: true
+        }
+      )
+    );
+
+    field.dispatchEvent(
+      new Event(
+        "change",
+        {
+          bubbles: true
+        }
+      )
+    );
+  }
+
+  // ==========================
+  // STORAGE
+  // ==========================
+
+  function saveBookingData(
+    data
+  ) {
+
+    if (!data) {
+      return;
     }
 
-  }, 600);
+    // Полная версия доступна
+    // в рамках текущей страницы.
+    window.__lastRouteData =
+      data;
 
-  return true;
-}
+    // В sessionStorage НЕ кладём
+    // тысячи координат маршрута.
+    // Для заявки они не нужны.
+    try {
+
+      sessionStorage.setItem(
+        "transferBookingData",
+        JSON.stringify({
+          from:
+            data.from,
+
+          to:
+            data.to,
+
+          distance:
+            data.distance,
+
+          duration:
+            data.duration,
+
+          price:
+            data.price,
+
+          tariff:
+            data.tariff
+        })
+      );
+
+    } catch (error) {
+
+      console.warn(
+        "[CALC] storage error:",
+        error
+      );
+    }
+  }
+
+  function getBookingData() {
+
+    if (
+      window.__lastRouteData &&
+      window.__lastRouteData.from &&
+      window.__lastRouteData.to
+    ) {
+
+      return (
+        window.__lastRouteData
+      );
+    }
+
+    // ==========================
+    // MOBILE FALLBACK
+    // ==========================
+
+    try {
+
+      const saved =
+        sessionStorage.getItem(
+          "transferBookingData"
+        );
+
+      if (!saved) {
+        return null;
+      }
+
+      const data =
+        JSON.parse(saved);
+
+      if (
+        data?.from &&
+        data?.to
+      ) {
+        return data;
+      }
+
+    } catch (error) {
+
+      console.warn(
+        "[CALC] storage read error:",
+        error
+      );
+    }
+
+    return null;
+  }
+
+  function clearBookingData() {
+
+    window.__lastRouteData =
+      null;
+
+    try {
+
+      sessionStorage.removeItem(
+        "transferBookingData"
+      );
+
+    } catch (error) {}
+  }
+
+  // Делаем доступным form.js
+  window.clearTransferBookingData =
+    clearBookingData;
 
   // ==========================
-  // MAP CHECK
+  // BOOKING FORM
   // ==========================
-  function isLeafletMap(map) {
+
+  function fillBookingForm() {
+
+    const data =
+      getBookingData();
+
+    if (
+      !data ||
+      !data.from ||
+      !data.to
+    ) {
+
+      console.warn(
+        "⚠ no calculated route data"
+      );
+
+      return false;
+    }
+
+    const bookingForm =
+      document.getElementById(
+        "tgForm"
+      );
+
+    if (!bookingForm) {
+
+      console.error(
+        "❌ tgForm not found"
+      );
+
+      return false;
+    }
+
+    const routeField =
+      bookingForm.querySelector(
+        '[name="route"]'
+      );
+
+    if (!routeField) {
+
+      console.error(
+        "❌ route field not found"
+      );
+
+      return false;
+    }
+
+    // ==========================
+    // ROUTE
+    // ==========================
+
+    const routeText =
+      `${data.from} → ${data.to}`;
+
+    setFieldValue(
+      routeField,
+      routeText
+    );
+
+    log(
+      "✅ BOOKING FORM FILLED",
+      {
+        route:
+          routeText,
+
+        tariff:
+          data.tariff,
+
+        distance:
+          data.distance,
+
+        duration:
+          data.duration,
+
+        price:
+          data.price
+      }
+    );
+
+    // ==========================
+    // SCROLL
+    // ==========================
+
+    bookingForm.scrollIntoView({
+      behavior:
+        "smooth",
+
+      block:
+        "start"
+    });
+
+    // ==========================
+    // FOCUS
+    // ==========================
+
+    setTimeout(
+      () => {
+
+        const nameField =
+          bookingForm.querySelector(
+            '[name="name"]'
+          );
+
+        const phoneField =
+          bookingForm.querySelector(
+            '[name="phone"]'
+          );
+
+        if (
+          nameField &&
+          !nameField.value.trim()
+        ) {
+
+          try {
+            nameField.focus({
+              preventScroll:
+                true
+            });
+          } catch (error) {
+            nameField.focus();
+          }
+
+          return;
+        }
+
+        if (
+          phoneField &&
+          !phoneField.value.trim()
+        ) {
+
+          try {
+            phoneField.focus({
+              preventScroll:
+                true
+            });
+          } catch (error) {
+            phoneField.focus();
+          }
+        }
+
+      },
+      500
+    );
+
+    return true;
+  }
+
+  // Доступно для диагностики
+  window.fillTransferBookingForm =
+    fillBookingForm;
+
+  // ==========================
+  // MAP HELPERS
+  // ==========================
+
+  function isLeafletMap(
+    map
+  ) {
+
     return (
       map &&
-      typeof map.fitBounds === "function"
+      typeof map.fitBounds ===
+        "function"
     );
   }
 
   function getMap() {
-    return window.map || null;
+    return (
+      window.map ||
+      null
+    );
   }
 
-  function waitMapReady(callback) {
+  function waitMapReady(
+    callback
+  ) {
 
     let tries = 0;
 
-    const timer = setInterval(() => {
+    const timer =
+      setInterval(
+        () => {
 
-      const map = getMap();
+          const map =
+            getMap();
 
-      if (isLeafletMap(map)) {
+          if (
+            isLeafletMap(map)
+          ) {
 
-        clearInterval(timer);
+            clearInterval(
+              timer
+            );
 
-        try {
-          map.invalidateSize(true);
-        } catch (e) {}
+            try {
 
-        log("🗺 MAP READY");
+              map.invalidateSize(
+                true
+              );
 
-        callback(map);
+            } catch (
+              error
+            ) {}
 
-        return;
-      }
+            log(
+              "🗺 MAP READY"
+            );
 
-      tries++;
+            callback(map);
 
-      if (tries > 60) {
+            return;
+          }
 
-        clearInterval(timer);
+          tries++;
 
-        console.warn(
-          "❌ MAP TIMEOUT OR NOT LEAFLET"
-        );
-      }
+          if (
+            tries > 60
+          ) {
 
-    }, 200);
+            clearInterval(
+              timer
+            );
+
+            console.warn(
+              "❌ MAP TIMEOUT OR NOT LEAFLET"
+            );
+          }
+
+        },
+        200
+      );
   }
 
   function safeMapUpdate() {
 
-    const map = getMap();
+    const map =
+      getMap();
 
-    if (!isLeafletMap(map)) return;
+    if (
+      !isLeafletMap(map)
+    ) {
+      return;
+    }
 
-    setTimeout(() => {
+    setTimeout(
+      () => {
 
-      try {
-        map.invalidateSize(true);
-      } catch (e) {}
+        try {
 
-    }, 200);
+          map.invalidateSize(
+            true
+          );
+
+        } catch (
+          error
+        ) {}
+
+      },
+      200
+    );
   }
 
   // ==========================
   // CAR ANIMATION
   // ==========================
-  function animateCar(latlngs) {
 
-    const map = getMap();
+  function animateCar(
+    latlngs
+  ) {
+
+    const map =
+      getMap();
 
     if (
       !isLeafletMap(map) ||
-      !Array.isArray(latlngs) ||
+      !Array.isArray(
+        latlngs
+      ) ||
       latlngs.length < 2
     ) {
       return;
     }
 
-    if (window.__carMarker) {
+    if (
+      window.__carMarker
+    ) {
 
       try {
-        map.removeLayer(window.__carMarker);
-      } catch (e) {}
 
-      window.__carMarker = null;
+        map.removeLayer(
+          window.__carMarker
+        );
+
+      } catch (
+        error
+      ) {}
+
+      window.__carMarker =
+        null;
     }
 
-    if (window.__carAnimationFrame) {
+    if (
+      window.__carAnimationFrame
+    ) {
 
       cancelAnimationFrame(
-        window.__carAnimationFrame
+        window
+          .__carAnimationFrame
       );
 
-      window.__carAnimationFrame = null;
+      window
+        .__carAnimationFrame =
+        null;
     }
 
-    if (typeof L === "undefined") {
-      console.warn("⚠ Leaflet not available");
+    if (
+      typeof L ===
+      "undefined"
+    ) {
+
+      console.warn(
+        "⚠ Leaflet not available"
+      );
+
       return;
     }
 
-    const carIcon = L.icon({
-      iconUrl: "/images/auto.png",
-      iconSize: [40, 40],
-      iconAnchor: [20, 20]
-    });
+    const carIcon =
+      L.icon({
+        iconUrl:
+          "/images/auto.png",
 
-    const marker = L.marker(
-      latlngs[0],
-      {
-        icon: carIcon
-      }
-    ).addTo(map);
+        iconSize:
+          [40, 40],
 
-    window.__carMarker = marker;
+        iconAnchor:
+          [20, 20]
+      });
+
+    const marker =
+      L.marker(
+        latlngs[0],
+        {
+          icon:
+            carIcon
+        }
+      )
+      .addTo(map);
+
+    window.__carMarker =
+      marker;
 
     let i = 0;
 
     function step() {
 
-      if (i >= latlngs.length) {
-        window.__carAnimationFrame = null;
+      if (
+        i >=
+        latlngs.length
+      ) {
+
+        window
+          .__carAnimationFrame =
+          null;
+
         return;
       }
 
       const point =
-        latlngs[Math.floor(i)];
+        latlngs[
+          Math.floor(i)
+        ];
 
       if (point) {
-        marker.setLatLng(point);
+
+        marker.setLatLng(
+          point
+        );
       }
 
       i += 0.6;
 
-      window.__carAnimationFrame =
-        requestAnimationFrame(step);
+      window
+        .__carAnimationFrame =
+        requestAnimationFrame(
+          step
+        );
     }
 
     step();
   }
 
   // ==========================
-  // ROUTE DRAW
+  // DRAW ROUTE
   // ==========================
-  function drawRoute(route) {
 
-    const map = getMap();
+  function drawRoute(
+    route
+  ) {
 
-    if (!isLeafletMap(map)) {
-      console.warn("⚠ map not ready");
+    const map =
+      getMap();
+
+    if (
+      !isLeafletMap(map)
+    ) {
+
+      console.warn(
+        "⚠ map not ready"
+      );
+
       return;
     }
 
     if (
       !route ||
-      !Array.isArray(route.coordinates)
+      !Array.isArray(
+        route.coordinates
+      )
     ) {
+
       console.warn(
         "⚠ route missing coordinates",
         route
@@ -422,7 +767,11 @@ window.initCalculator = function () {
       return;
     }
 
-    if (route.coordinates.length < 2) {
+    if (
+      route
+        .coordinates
+        .length < 2
+    ) {
 
       console.warn(
         "⚠ EMPTY OR TOO SHORT ROUTE"
@@ -431,31 +780,55 @@ window.initCalculator = function () {
       return;
     }
 
-    const latlngs = route.coordinates
-      .map(point => {
+    const latlngs =
+      route.coordinates
+        .map(
+          point => {
 
-        if (
-          !Array.isArray(point) ||
-          point.length < 2
-        ) {
-          return null;
-        }
+            if (
+              !Array.isArray(
+                point
+              ) ||
+              point.length < 2
+            ) {
+              return null;
+            }
 
-        const lng = Number(point[0]);
-        const lat = Number(point[1]);
+            const lng =
+              Number(
+                point[0]
+              );
 
-        if (
-          !Number.isFinite(lat) ||
-          !Number.isFinite(lng)
-        ) {
-          return null;
-        }
+            const lat =
+              Number(
+                point[1]
+              );
 
-        return [lat, lng];
-      })
-      .filter(Boolean);
+            if (
+              !Number
+                .isFinite(
+                  lat
+                ) ||
+              !Number
+                .isFinite(
+                  lng
+                )
+            ) {
 
-    if (latlngs.length < 2) {
+              return null;
+            }
+
+            return [
+              lat,
+              lng
+            ];
+          }
+        )
+        .filter(Boolean);
+
+    if (
+      latlngs.length < 2
+    ) {
 
       console.warn(
         "⚠ INVALID COORDS OR TOO SHORT ROUTE"
@@ -464,141 +837,179 @@ window.initCalculator = function () {
       return;
     }
 
-    if (window.__routeLine) {
+    if (
+      window.__routeLine
+    ) {
 
       try {
-        map.removeLayer(window.__routeLine);
-      } catch (e) {}
 
-      window.__routeLine = null;
+        map.removeLayer(
+          window.__routeLine
+        );
+
+      } catch (
+        error
+      ) {}
+
+      window.__routeLine =
+        null;
     }
 
-    window.__routeLine = L.polyline(
-      latlngs,
-      {
-        color: "#2b7cff",
-        weight: 5
-      }
-    ).addTo(map);
+    window.__routeLine =
+      L.polyline(
+        latlngs,
+        {
+          color:
+            "#2b7cff",
+
+          weight:
+            5
+        }
+      )
+      .addTo(map);
 
     try {
 
       const bounds =
-        window.__routeLine.getBounds();
+        window
+          .__routeLine
+          .getBounds();
 
       if (
         bounds &&
-        typeof bounds.isValid === "function" &&
+        typeof bounds.isValid ===
+          "function" &&
         bounds.isValid()
       ) {
 
         map.fitBounds(
           bounds,
           {
-            padding: [50, 50]
+            padding:
+              [50, 50]
           }
         );
       }
 
-    } catch (e) {
+    } catch (
+      error
+    ) {
 
       console.warn(
         "fitBounds error:",
-        e
+        error
       );
     }
 
-    animateCar(latlngs);
+    animateCar(
+      latlngs
+    );
   }
 
   // ==========================
   // TARIFF
   // ==========================
+
   document
-    .querySelectorAll(".tariff-card")
-    .forEach(card => {
+    .querySelectorAll(
+      ".tariff-card"
+    )
+    .forEach(
+      card => {
 
-      card.addEventListener(
-        "click",
-        () => {
+        card.addEventListener(
+          "click",
+          () => {
 
-          document
-            .querySelectorAll(".tariff-card")
-            .forEach(item => {
-              item.classList.remove("active");
-            });
+            document
+              .querySelectorAll(
+                ".tariff-card"
+              )
+              .forEach(
+                item => {
 
-          card.classList.add("active");
+                  item
+                    .classList
+                    .remove(
+                      "active"
+                    );
+                }
+              );
 
-          selectedTariff =
-            (
-              card.dataset.tariff ||
-              "comfort"
-            ).toLowerCase();
+            card
+              .classList
+              .add(
+                "active"
+              );
 
-          log(
-            "🚕 TARIFF:",
-            selectedTariff
-          );
-        }
-      );
-    });
+            selectedTariff =
+              String(
+                card.dataset
+                  .tariff ||
+                "comfort"
+              )
+              .toLowerCase();
 
-  // ==========================
-  // BOOK BUTTON
-  // ==========================
-  //
-  // Кнопка создаётся динамически
-  // внутри #result, поэтому слушаем
-  // события самого result.
-  //
-  result.addEventListener(
-    "click",
-    (event) => {
-
-      const bookingButton =
-        event.target.closest(
-          ".calc-book-btn"
+            log(
+              "🚕 TARIFF:",
+              selectedTariff
+            );
+          }
         );
-
-      if (!bookingButton) return;
-
-      event.preventDefault();
-
-      fillBookingForm();
-    }
-  );
+      }
+    );
 
   // ==========================
   // CALCULATOR SUBMIT
   // ==========================
+
   form.addEventListener(
     "submit",
-    async (event) => {
+    async event => {
 
       event.preventDefault();
 
-      if (isLoading) return;
+      if (
+        isLoading
+      ) {
+        return;
+      }
 
       const from =
-        fromInput.value.trim();
+        fromInput
+          .value
+          .trim();
 
       const to =
-        toInput.value.trim();
+        toInput
+          .value
+          .trim();
 
-      if (!from || !to) {
+      if (
+        !from ||
+        !to
+      ) {
 
         result.innerText =
           "Введите адреса";
 
-        result.classList.add("show");
+        result
+          .classList
+          .add(
+            "show"
+          );
 
         return;
       }
 
+      // ==========================
+      // LOADING
+      // ==========================
+
       isLoading = true;
 
-      button.disabled = true;
+      button.disabled =
+        true;
 
       button.textContent =
         "⏳ считаем...";
@@ -606,36 +1017,50 @@ window.initCalculator = function () {
       result.innerText =
         "⏳ расчёт...";
 
-      result.classList.add("show");
+      result
+        .classList
+        .add(
+          "show"
+        );
 
-      // Новый расчёт —
-      // старые данные больше не актуальны
-      window.__lastRouteData = null;
+      // Новый расчёт =
+      // старые данные удаляем.
+      clearBookingData();
 
       try {
 
-        const response = await fetch(
-          `${API}/calculate`,
-          {
-            method: "POST",
+        // ==========================
+        // API
+        // ==========================
 
-            headers: {
-              "Content-Type":
-                "application/json"
-            },
+        const response =
+          await fetch(
+            `${API}/calculate`,
+            {
+              method:
+                "POST",
 
-            body: JSON.stringify({
-              from,
-              to,
-              tariff: selectedTariff
-            })
-          }
-        );
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  from,
+                  to,
+                  tariff:
+                    selectedTariff
+                })
+            }
+          );
 
         const data =
           await response
             .json()
-            .catch(() => null);
+            .catch(
+              () => null
+            );
 
         console.log(
           "ROUTE DATA:",
@@ -655,17 +1080,29 @@ window.initCalculator = function () {
           return;
         }
 
+        // ==========================
+        // VALIDATE RESPONSE
+        // ==========================
+
         const distance =
-          Number(data.distance);
+          Number(
+            data.distance
+          );
 
         const duration =
-          Number(data.duration);
+          Number(
+            data.duration
+          );
 
         const price =
-          Number(data.price);
+          Number(
+            data.price
+          );
 
         if (
-          !Number.isFinite(distance) ||
+          !Number.isFinite(
+            distance
+          ) ||
           distance <= 0
         ) {
 
@@ -676,7 +1113,9 @@ window.initCalculator = function () {
         }
 
         if (
-          !Number.isFinite(duration) ||
+          !Number.isFinite(
+            duration
+          ) ||
           duration < 0
         ) {
 
@@ -687,7 +1126,9 @@ window.initCalculator = function () {
         }
 
         if (
-          !Number.isFinite(price) ||
+          !Number.isFinite(
+            price
+          ) ||
           price < 0
         ) {
 
@@ -700,55 +1141,115 @@ window.initCalculator = function () {
         // ==========================
         // SAVE RESULT
         // ==========================
-        window.__lastRouteData = {
+
+        const routeData = {
           from,
           to,
           distance,
           duration,
           price,
-          tariff: selectedTariff,
-          route: data.route || null
+
+          tariff:
+            selectedTariff,
+
+          route:
+            data.route ||
+            null
         };
+
+        saveBookingData(
+          routeData
+        );
 
         log(
           "✅ CALCULATED:",
-          window.__lastRouteData
+          routeData
         );
 
         // ==========================
         // RESULT UI
         // ==========================
+
         result.innerHTML = `
           🚗 ${distance.toFixed(1)} км<br>
           ⏱ ${formatDuration(duration)}<br>
+          🚘 ${tariffLabel(selectedTariff)}<br>
           💰 <b>${formatPrice(price)} ₽</b><br><br>
 
-          <a
-            href="#tgForm"
+          <button
+            type="button"
             class="btn calc-book-btn"
           >
             🚖 Забронировать
-          </a>
+          </button>
         `;
 
-        result.classList.add("show");
+        result
+          .classList
+          .add(
+            "show"
+          );
+
+        // ==========================
+        // DIRECT BOOK BUTTON
+        // ==========================
+
+        const bookingButton =
+          result.querySelector(
+            ".calc-book-btn"
+          );
+
+        if (
+          bookingButton
+        ) {
+
+          bookingButton
+            .addEventListener(
+              "click",
+              event => {
+
+                event.preventDefault();
+
+                const success =
+                  fillBookingForm();
+
+                if (
+                  !success
+                ) {
+
+                  alert(
+                    "Сначала рассчитайте маршрут"
+                  );
+                }
+              }
+            );
+        }
 
         // ==========================
         // MAP
         // ==========================
+
         safeMapUpdate();
 
         if (
           data.route &&
           Array.isArray(
-            data.route.coordinates
+            data.route
+              .coordinates
           ) &&
-          data.route.coordinates.length > 1
+          data.route
+            .coordinates
+            .length > 1
         ) {
 
-          waitMapReady(() => {
-            drawRoute(data.route);
-          });
+          waitMapReady(
+            () => {
+
+              drawRoute(
+                data.route
+              );
+            }
+          );
 
         } else {
 
@@ -757,7 +1258,9 @@ window.initCalculator = function () {
           );
         }
 
-      } catch (error) {
+      } catch (
+        error
+      ) {
 
         console.error(
           "CALCULATOR ERROR:",
@@ -769,23 +1272,41 @@ window.initCalculator = function () {
 
       } finally {
 
-        button.disabled = false;
+        button.disabled =
+          false;
 
         button.textContent =
           "Рассчитать";
 
-        isLoading = false;
+        isLoading =
+          false;
       }
     }
   );
 };
 
 // ==========================
-// INIT
+// FALLBACK INIT
 // ==========================
+//
+// main.js также вызывает
+// initCalculator().
+// Защита от двойной
+// инициализации находится выше.
+// ==========================
+
 document.addEventListener(
   "DOMContentLoaded",
   () => {
-    window.initCalculator();
+
+    if (
+      typeof window
+        .initCalculator ===
+      "function"
+    ) {
+
+      window
+        .initCalculator();
+    }
   }
 );
