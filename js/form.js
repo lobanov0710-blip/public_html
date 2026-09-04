@@ -1,5 +1,5 @@
 const ORDERS_API =
-  "https://uber-v3.lobanov0710.workers.dev/orders";
+  "/api/order.php";
 
 window.initForm = function () {
 

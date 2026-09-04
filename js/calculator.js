@@ -1,5 +1,5 @@
-const API =
-  "https://uber-v3.lobanov0710.workers.dev";
+const CALCULATE_API =
+  "/api/calculate.php";
 
 window.initCalculator = function () {
 
@@ -723,8 +723,8 @@ window.initCalculator = function () {
       try {
 
         const response =
-          await fetch(
-            `${API}/calculate`,
+  await fetch(
+    CALCULATE_API,
             {
               method:
                 "POST",

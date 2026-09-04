@@ -1,0 +1,242 @@
+[1mdiff --git a/js/form.js b/js/form.js[m
+[1mindex 87c0624..7a87c98 100644[m
+[1m--- a/js/form.js[m
+[1m+++ b/js/form.js[m
+[36m@@ -1,64 +1,388 @@[m
+[32m+[m[32mconst ORDERS_API =[m
+[32m+[m[32m  "https://uber-v3.lobanov0710.workers.dev/orders";[m
+[32m+[m
+ window.initForm = function () {[m
+ [m
+[31m-    const form = document.getElementById("tgForm");[m
+[31m-    if (!form) return;[m
+[32m+[m[32m  // =========================[m
+[32m+[m[32m  // FORM[m
+[32m+[m[32m  // =========================[m
+ [m
+[31m-    const btn = form.querySelector("button[type='submit']");[m
+[31m-    let loading = false;[m
+[32m+[m[32m  const form =[m
+[32m+[m[32m    document.getElementById("tgForm");[m
+ [m
+[31m-    function reset() {[m
+[31m-        loading = false;[m
+[31m-        if (btn) {[m
+[31m-            btn.disabled = false;[m
+[31m-            btn.textContent = "📩 Отправить заявку";[m
+[31m-        }[m
+[32m+[m[32m  if (!form) {[m
+[32m+[m[32m    return;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  // Защита от двойной инициализации[m
+[32m+[m[32m  if (form.dataset.initialized === "true") {[m
+[32m+[m[32m    return;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  form.dataset.initialized = "true";[m
+[32m+[m
+[32m+[m[32m  const btn =[m
+[32m+[m[32m    form.querySelector([m
+[32m+[m[32m      'button[type="submit"]'[m
+[32m+[m[32m    );[m
+[32m+[m
+[32m+[m[32m  let loading = false;[m
+[32m+[m
+[32m+[m[32m  // =========================[m
+[32m+[m[32m  // HELPERS[m
+[32m+[m[32m  // =========================[m
+[32m+[m
+[32m+[m[32m  function getField(name) {[m
+[32m+[m[32m    return ([m
+[32m+[m[32m      form.elements?.namedItem(name) ||[m
+[32m+[m[32m      form.querySelector([m
+[32m+[m[32m        `[name="${name}"]`[m
+[32m+[m[32m      )[m
+[32m+[m[32m    );[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  function getValue(name) {[m
+[32m+[m[32m    const field =[m
+[32m+[m[32m      getField(name);[m
+[32m+[m
+[32m+[m[32m    if (!field) {[m
+[32m+[m[32m      return "";[m
+     }[m
+ [m
+[31m-    form.addEventListener("submit", async (e) => {[m
+[31m-        e.preventDefault();[m
+[32m+[m[32m    return String([m
+[32m+[m[32m      field.value || ""[m
+[32m+[m[32m    ).trim();[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  function normalizeRoute(value) {[m
+[32m+[m[32m    return String(value || "")[m
+[32m+[m[32m      .replace(/\s+/g, " ")[m
+[32m+[m[32m      .trim()[m
+[32m+[m[32m      .toLowerCase();[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  function resetButton() {[m
+[32m+[m
+[32m+[m[32m    loading = false;[m
+[32m+[m
+[32m+[m[32m    if (!btn) {[m
+[32m+[m[32m      return;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    btn.disabled = false;[m
+[32m+[m[32m    btn.textContent =[m
+[32m+[m[32m      "📩 Отправить заявку";[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  function setLoading() {[m
+[32m+[m
+[32m+[m[32m    loading = true;[m
+[32m+[m
+[32m+[m[32m    if (!btn) {[m
+[32m+[m[32m      return;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    btn.disabled = true;[m
+[32m+[m[32m    btn.textContent =[m
+[32m+[m[32m      "⏳ Отправка...";[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  function setSuccess() {[m
+[32m+[m
+[32m+[m[32m    if (!btn) {[m
+[32m+[m[32m      return;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    btn.disabled = true;[m
+[32m+[m[32m    btn.textContent =[m
+[32m+[m[32m      "✅ Заявка отправлена";[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  // =========================[m
+[32m+[m[32m  // BUILD ORDER[m
+[32m+[m[32m  // =========================[m
+[32m+[m
+[32m+[m[32m  function buildOrderPayload() {[m
+[32m+[m
+[32m+[m[32m    const name =[m
+[32m+[m[32m      getValue("name");[m
+[32m+[m
+[32m+[m[32m    const phone =[m
+[32m+[m[32m      getValue("phone");[m
+[32m+[m
+[32m+[m[32m    const route =[m
+[32m+[m[32m      getValue("route");[m
+[32m+[m
+[32m+[m[32m    const date =[m
+[32m+[m[32m      getValue("date");[m
+[32m+[m
+[32m+[m[32m    const comment =[m
+[32m+[m[32m      getValue("comment");[m
+[32m+[m
+[32m+[m[32m    const payload = {[m
+[32m+[m[32m      name,[m
+[32m+[m[32m      phone,[m
+[32m+[m[32m      route,[m
+[32m+[m[32m      date,[m
+[32m+[m[32m      comment[m
+[32m+[m[32m    };[m
+[32m+[m
+[32m+[m[32m    // =========================[m
+[32m+[m[32m    // CALCULATOR DATA[m
+[32m+[m[32m    // =========================[m
+[32m+[m[32m    //[m
+[32m+[m[32m    // Добавляем цену/расстояние/тариф[m
+[32m+[m[32m    // только если текущий маршрут формы[m
+[32m+[m[32m    // совпадает с последним расчётом.[m
+[32m+[m[32m    //[m
+[32m+[m[32m    // Если пользователь вручную изменил[m
+[32m+[m[32m    // маршрут после расчёта — старую цену[m
+[32m+[m[32m    // не отправляем.[m
+[32m+[m[32m    // =========================[m
+[32m+[m
+[32m+[m[32m    const calc =[m
+[32m+[m[32m      window.__lastRouteData;[m
+[32m+[m
+[32m+[m[32m    if ([m
+[32m+[m[32m      calc &&[m
+[32m+[m[32m      calc.from &&[m
+[32m+[m[32m      calc.to[m
+[32m+[m[32m    ) {[m
+[32m+[m
+[32m+[m[32m      const calculatedRoute =[m
+[32m+[m[32m        `${calc.from} → ${calc.to}`;[m
+[32m+[m
+[32m+[m[32m      const currentRoute =[m
+[32m+[m[32m        normalizeRoute(route);[m
+[32m+[m
+[32m+[m[32m      const expectedRoute =[m
+[32m+[m[32m        normalizeRoute([m
+[32m+[m[32m          calculatedRoute[m
+[32m+[m[32m        );[m
+[32m+[m
+[32m+[m[32m      if ([m
+[32m+[m[32m        currentRoute ===[m
+[32m+[m[32m        expectedRoute[m
+[32m+[m[32m      ) {[m
+[32m+[m
+[32m+[m[32m        payload.from =[m
+[32m+[m[32m          String(calc.from);[m
+[32m+[m
+[32m+[m[32m        payload.to =[m
+[32m+[m[32m          String(calc.to);[m
+[32m+[m
+[32m+[m[32m        payload.tariff =[m
+[32m+[m[32m          String([m
+[32m+[m[32m            calc.tariff ||[m
+[32m+[m[32m            "comfort"[m
+[32m+[m[32m          );[m
+[32m+[m
+[32m+[m[32m        const distance =[m
+[32m+[m[32m          Number(calc.distance);[m
+[32m+[m
+[32m+[m[32m        const duration =[m
+[32m+[m[32m          Number(calc.duration);[m
+ [m
+[31m-        if (loading) return;[m
+[32m+[m[32m        const price =[m
+[32m+[m[32m          Number(calc.price);[m
+ [m
+[31m-        const name = form.name.value.trim();[m
+[31m-        const phone = form.phone.value.trim();[m
+[31m-        const route = form.route.value.trim();[m
+[31m-        const date = form.date.value;[m
+[31m-        const comment = form.comment.value.trim();[m
+[32m+[m[32m        if ([m
+[32m+[m[32m          Number.isFinite(distance) &&[m
+[32m+[m[32m          distance > 0[m
+[32m+[m[32m        ) {[m
+[32m+[m[32m          payload.distance =[m
+[32m+[m[32m            distance;[m
+[32m+[m[32m        }[m
+ [m
+[31m-        const phoneValid = /^(\+7|8)[0-9\-\(\)\s]{10,}$/.test(phone);[m
+[32m+[m[32m        if ([m
+[32m+[m[32m          Number.isFinite(duration) &&[m
+[32m+[m[32m          duration >= 0[m
+[32m+[m[32m        ) {[m
+[32m+[m[32m          payload.duration =[m
+[32m+[m[32m            duration;[m
+[32m+[m[32m        }[m
+ [m
+[31m-        if (!name || !phone || !route || !date || !phoneValid) {[m
+[31m-            alert("Проверьте данные");[m
+[31m-            return;[m
+[32m+[m[32m        if ([m
+[32m+[m[32m          Number.isFinite(price) &&[m
+[32m+[m[32m          price >= 0[m
+[32m+[m[32m        ) {[m
+[32m+[m[32m          payload.price =[m
+[32m+[m[32m            price;[m
+         }[m
+[32m+[m[32m      }[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    return pa

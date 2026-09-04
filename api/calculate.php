@@ -7,9 +7,9 @@ header('Cache-Control: no-store');
 header('X-Content-Type-Options: nosniff');
 
 const WORKER_URL =
-    'https://uber-v3.lobanov0710.workers.dev/orders';
+    'https://uber-v3.lobanov0710.workers.dev/calculate';
 
-const MAX_BODY_BYTES = 65536;
+const MAX_BODY_BYTES = 32768;
 
 
 // =========================
@@ -206,6 +206,11 @@ curl_setopt_array(
 
 $response =
     curl_exec(
+        $ch
+    );
+
+$curlError =
+    curl_error(
         $ch
     );
 

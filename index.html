@@ -142,10 +142,10 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script src="/js/map.js?v=20260822-6" defer></script>
-<script src="/js/calculator.js?v=20260822-6" defer></script>
+<script src="/js/calculator.js?v=20260904-1" defer></script>
 <script src="/js/main.js?v=20260822-6" defer></script>
 <script src="/js/slider.js?v=20260822-6" defer></script>
-<script src="/js/form.js?v=20260822-6" defer></script>
+<script src="/js/form.js?v=20260904-1" defer></script>
 <script src="/js/scroll.js?v=20260822-6" defer></script>
 <script src="/js/observer.js?v=20260822-6" defer></script>
 <script src="/js/routes.js?v=20260822-6" defer></script>
@@ -168,6 +168,28 @@
 </head>
 
 <body>
+
+  <div class="promo-banner" id="promoBanner">
+    <div class="promo-banner__content">
+        <div class="promo-banner__text">
+            <strong>🎁 Скидка 10% на первый заказ</strong>
+            <span>Промокод: <b>FIRST10</b></span>
+        </div>
+
+        <a href="#tgForm" class="promo-banner__btn">
+            Получить скидку
+        </a>
+
+        <button
+            type="button"
+            class="promo-banner__close"
+            id="promoBannerClose"
+            aria-label="Закрыть баннер"
+        >
+            ×
+        </button>
+    </div>
+</div>
 
 <header>
     <h2>Междугородний трансфер Н.Новгород → Россия и Новороссия</h2>
@@ -282,39 +304,271 @@
     <div class="routes-grid" id="routesGrid"></div>
 </section>
 
-<!-- АВТОПАРК -->
-<section>
-<h2>Автопарк</h2>
+<!-- =========================
+     АВТОПАРК
+========================= -->
+<section id="fleet">
+    <h2>Наш автопарк</h2>
 
-<div class="car-slider">
-    <button class="car-btn prev" type="button">‹</button>
+    <p class="fleet-intro">
+        Реальные автомобили, на которых выполняются ваши поездки.
+        Комфорт, чистый салон и подготовка автомобиля перед каждым маршрутом.
+    </p>
 
-    <div class="car-viewport">
-        <div class="car-track">
+    <div class="car-slider">
 
-            <div class="car-card">
-                <img src="images/solaris.webp" alt="Hyundai Solaris - экономичный седан для поездок">
-                <h3>Hyundai Solaris</h3>
-                <p>Комфортный и экономичный седан для поездок по городу и междугородних маршрутов.</p>
-            </div>
+        <button
+            class="car-btn prev"
+            type="button"
+            aria-label="Предыдущий автомобиль"
+        >
+            ‹
+        </button>
 
-            <div class="car-card">
-                <img src="images/rio.webp" alt="Rio">
-                <h3>Kia Rio</h3>
-                <p>Надёжный автомобиль с мягкой подвеской для дальних поездок.</p>
-            </div>
+        <div class="car-viewport">
 
-            <div class="car-card">
-                <img src="images/emgrand.webp" alt="Emgrand">
-                <h3>Geely Emgrand</h3>
-                <p>Просторный и комфортный автомобиль для VIP-поездок.</p>
+            <div class="car-track">
+
+                <!-- =========================
+                     HYUNDAI SOLARIS
+                ========================== -->
+                <article class="car-card">
+
+                    <div class="car-photo">
+
+                        <img
+                            src="images/fleet/hyundai-solaris/hyundai-solaris-main.webp"
+                            alt="Hyundai Solaris для междугороднего трансфера"
+                            loading="lazy"
+                            width="1600"
+                            height="900"
+                        >
+
+                        <span class="car-class">
+                            Комфорт
+                        </span>
+
+                        <button
+                            class="car-gallery-btn"
+                            type="button"
+                            data-car="solaris"
+                        >
+                            📷 7 реальных фото
+                        </button>
+
+                    </div>
+
+                    <div class="car-info">
+
+                        <div class="car-heading">
+                            <div>
+                                <span class="car-real">
+                                    Реальный автомобиль
+                                </span>
+
+                                <h3>Hyundai Solaris</h3>
+                            </div>
+                        </div>
+
+                        <p class="car-description">
+                            Комфортный седан для междугородних поездок,
+                            трансфера в Москву и аэропорты.
+                        </p>
+
+                        <div class="car-features">
+
+                            <div class="car-feature">
+                                <span>👥</span>
+                                <div>
+                                    <strong>До 4</strong>
+                                    <small>пассажиров</small>
+                                </div>
+                            </div>
+
+                            <div class="car-feature">
+                                <span>❄️</span>
+                                <div>
+                                    <strong>Климат</strong>
+                                    <small>комфорт в дороге</small>
+                                </div>
+                            </div>
+
+                            <div class="car-feature">
+                                <span>⚙️</span>
+                                <div>
+                                    <strong>АКПП</strong>
+                                    <small>плавная поездка</small>
+                                </div>
+                            </div>
+
+                            <div class="car-feature">
+                                <span>🛣️</span>
+                                <div>
+                                    <strong>Межгород</strong>
+                                    <small>дальние маршруты</small>
+                                </div>
+                            </div>
+
+                            <div class="car-feature">
+                                <span>✈️</span>
+                                <div>
+                                    <strong>Аэропорт</strong>
+                                    <small>трансфер 24/7</small>
+                                </div>
+                            </div>
+
+                            <div class="car-feature">
+                                <span>✓</span>
+                                <div>
+                                    <strong>Чистый салон</strong>
+                                    <small>перед поездкой</small>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="car-actions">
+
+                            <button
+                                type="button"
+                                class="car-secondary-btn car-gallery-btn"
+                                data-car="solaris"
+                            >
+                                Посмотреть фото
+                            </button>
+
+                            <a
+                                href="#tgForm"
+                                class="car-book-btn"
+                            >
+                                Забронировать
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- =========================
+                     KIA RIO
+                     временно оставляем
+                ========================== -->
+                <article class="car-card">
+
+                    <div class="car-photo">
+
+                        <img
+                            src="images/rio.webp"
+                            alt="Kia Rio для междугородних поездок"
+                            loading="lazy"
+                        >
+
+                        <span class="car-class">
+                            Комфорт
+                        </span>
+
+                    </div>
+
+                    <div class="car-info">
+
+                        <span class="car-real">
+                            Автомобиль автопарка
+                        </span>
+
+                        <h3>Kia Rio</h3>
+
+                        <p class="car-description">
+                            Надёжный и комфортный автомобиль
+                            для дальних поездок.
+                        </p>
+
+                        <div class="car-actions">
+
+                            <a
+                                href="#tgForm"
+                                class="car-book-btn"
+                            >
+                                Забронировать
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- =========================
+                     GEELY EMGRAND
+                     временно оставляем
+                ========================== -->
+                <article class="car-card">
+
+                    <div class="car-photo">
+
+                        <img
+                            src="images/emgrand.webp"
+                            alt="Geely Emgrand для комфортных междугородних поездок"
+                            loading="lazy"
+                        >
+
+                        <span class="car-class">
+                            Комфорт+
+                        </span>
+
+                    </div>
+
+                    <div class="car-info">
+
+                        <span class="car-real">
+                            Автомобиль автопарка
+                        </span>
+
+                        <h3>Geely Emgrand</h3>
+
+                        <p class="car-description">
+                            Просторный автомобиль для междугородних,
+                            деловых поездок и трансфера в аэропорт.
+                        </p>
+
+                        <div class="car-actions">
+
+                            <a
+                                href="#tgForm"
+                                class="car-book-btn"
+                            >
+                                Забронировать
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
             </div>
 
         </div>
+
+        <button
+            class="car-btn next"
+            type="button"
+            aria-label="Следующий автомобиль"
+        >
+            ›
+        </button>
+
     </div>
 
-    <button class="car-btn next" type="button">›</button>
-</div>
+    <!-- индикаторы добавим следующим этапом -->
+    <div class="car-dots" aria-hidden="true">
+        <span class="active"></span>
+        <span></span>
+        <span></span>
+    </div>
+
 </section>
 
 <!-- ОТЗЫВЫ -->

@@ -115,6 +115,146 @@ body::before {
 }
 
 /* =========================
+   PROMO BANNER
+========================= */
+.promo-banner {
+    position: fixed;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+
+    z-index: 9998;
+
+    background: linear-gradient(
+        135deg,
+        rgba(20, 25, 33, 0.98),
+        rgba(10, 14, 20, 0.98)
+    );
+
+    border: 1px solid rgba(255, 204, 0, 0.35);
+    border-radius: 16px;
+
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.4);
+
+    padding: 14px 18px;
+}
+
+.promo-banner__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.promo-banner__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    flex: 1;
+}
+
+.promo-banner__text strong {
+    color: #ffcc00;
+    font-size: 17px;
+}
+
+.promo-banner__text span {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.promo-banner__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 11px 18px;
+
+    border-radius: 10px;
+
+    background: linear-gradient(135deg, #ffcc00, #ff9900);
+
+    color: #000;
+    font-weight: 700;
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    transition: 0.25s ease;
+}
+
+.promo-banner__btn:hover {
+    transform: translateY(-2px);
+}
+
+.promo-banner__close {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+
+    font-size: 24px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.promo-banner.hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .promo-banner {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+
+        padding: 12px;
+    }
+
+    .promo-banner__content {
+        gap: 10px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .promo-banner__text {
+        flex: 1 1 calc(100% - 50px);
+    }
+
+    .promo-banner__text strong {
+        font-size: 15px;
+    }
+
+    .promo-banner__text span {
+        font-size: 13px;
+    }
+
+    .promo-banner__btn {
+        width: 100%;
+        padding: 11px 14px;
+    }
+
+    .promo-banner__close {
+        width: 32px;
+        height: 32px;
+        font-size: 21px;
+    }
+}
+
+/* =========================
    FORM (FIXED & CLEAN)
 ========================= */
 
@@ -1274,4 +1414,40 @@ section.show {
         box-shadow: none;
     }
 
+}
+
+/* =========================
+   PROMO + FLOATING BUTTONS FIX
+========================= */
+
+/* Пока рекламный баннер открыт */
+body:has(.promo-banner:not(.hidden)) .call-btn {
+    bottom: 105px;
+}
+
+body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
+    bottom: 105px;
+}
+
+/* Плавное перемещение */
+.call-btn,
+#scrollTopBtn {
+    transition:
+        bottom 0.3s ease,
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 768px) {
+
+    body:has(.promo-banner:not(.hidden)) .call-btn {
+        bottom: 155px;
+    }
+
+    body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
+        bottom: 155px;
+    }
 }
