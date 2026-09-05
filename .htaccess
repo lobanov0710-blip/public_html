@@ -1,28 +1,79 @@
 RewriteEngine On
 
-# 1. www → non-www (ТОЛЬКО это, без HTTPS логики)
+
+# =========================================
+# CANONICAL HOST
+# www -> non-www
+# =========================================
+
 RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
 RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
 
-# 2. 404
+
+# =========================================
+# CUSTOM 404
+# =========================================
+
 ErrorDocument 404 /404.html
 
-# 3. защита папок
+
+# =========================================
+# DIRECTORY PROTECTION
+# =========================================
+
 Options -Indexes
 
 
-# =========================
-# 🔥 FIX XML / SITEMAP (Яндекс ошибка)
-# =========================
+# =========================================
+# SECURITY HEADERS
+# =========================================
 
-# sitemap.xml должен отдаваться как XML
+<IfModule mod_headers.c>
+
+    Header always set X-Content-Type-Options "nosniff"
+
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+    Header always unset X-Powered-By
+
+</IfModule>
+
+
+# =========================================
+# PROTECT SENSITIVE FILES
+# =========================================
+
+<FilesMatch "(?i)^(\.env|\.git|\.gitignore|composer\.(json|lock)|package(-lock)?\.json|wrangler\.toml)$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "(?i)\.(bak|backup|dist|ini|log|sql|sqlite|sqlite3|sh|ps1)$">
+    Require all denied
+</FilesMatch>
+
+<Files "_proxy_auth.php">
+    Require all denied
+</Files>
+
+
+# =========================================
+# XML / SITEMAP
+# =========================================
+
 <Files "sitemap.xml">
     ForceType application/xml
     Header set Content-Type "application/xml; charset=utf-8"
 </Files>
 
-# все XML файлы сайта
 AddType application/xml .xml
 
-# UTF-8 фикс для корректного парсинга
+
+# =========================================
+# DEFAULT CHARSET
+# =========================================
+
 AddDefaultCharset UTF-8

@@ -2,9 +2,13 @@
 
 declare(strict_types=1);
 
+require_once __DIR__
+    . '/_proxy_auth.php';
+
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 header('X-Content-Type-Options: nosniff');
+
 
 const WORKER_URL =
     'https://uber-v3.lobanov0710.workers.dev/orders';
@@ -12,16 +16,18 @@ const WORKER_URL =
 const MAX_BODY_BYTES = 65536;
 
 
-// =========================
+// =========================================
 // RESPONSE
-// =========================
+// =========================================
 
 function sendJson(
     array $data,
     int $status
 ): never {
 
-    http_response_code($status);
+    http_response_code(
+        $status
+    );
 
     echo json_encode(
         $data,
@@ -33,47 +39,54 @@ function sendJson(
 }
 
 
-// =========================
+// =========================================
 // METHOD
-// =========================
+// =========================================
 
 if (
-    ($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST'
+    ($_SERVER['REQUEST_METHOD'] ?? '') !==
+    'POST'
 ) {
 
-    header('Allow: POST');
+    header(
+        'Allow: POST'
+    );
 
     sendJson(
         [
             'ok' => false,
-            'error' => 'method not allowed'
+            'error' =>
+                'method not allowed'
         ],
         405
     );
 }
 
 
-// =========================
+// =========================================
 // CURL
-// =========================
+// =========================================
 
 if (
-    !function_exists('curl_init')
+    !function_exists(
+        'curl_init'
+    )
 ) {
 
     sendJson(
         [
             'ok' => false,
-            'error' => 'server transport unavailable'
+            'error' =>
+                'server transport unavailable'
         ],
         500
     );
 }
 
 
-// =========================
+// =========================================
 // INPUT SIZE
-// =========================
+// =========================================
 
 $contentLength =
     (int) (
@@ -89,16 +102,17 @@ if (
     sendJson(
         [
             'ok' => false,
-            'error' => 'request too large'
+            'error' =>
+                'request too large'
         ],
         413
     );
 }
 
 
-// =========================
+// =========================================
 // BODY
-// =========================
+// =========================================
 
 $body =
     file_get_contents(
@@ -113,7 +127,8 @@ if (
     sendJson(
         [
             'ok' => false,
-            'error' => 'empty request'
+            'error' =>
+                'empty request'
         ],
         400
     );
@@ -127,16 +142,17 @@ if (
     sendJson(
         [
             'ok' => false,
-            'error' => 'request too large'
+            'error' =>
+                'request too large'
         ],
         413
     );
 }
 
 
-// =========================
+// =========================================
 // JSON VALIDATION
-// =========================
+// =========================================
 
 $decoded =
     json_decode(
@@ -145,22 +161,52 @@ $decoded =
     );
 
 if (
-    !is_array($decoded)
+    !is_array(
+        $decoded
+    )
 ) {
 
     sendJson(
         [
             'ok' => false,
-            'error' => 'invalid json'
+            'error' =>
+                'invalid json'
         ],
         400
     );
 }
 
 
-// =========================
+// =========================================
+// PROXY AUTH
+// =========================================
+
+try {
+
+    $proxyAuthHeaders =
+        buildProxyAuthHeaders(
+            '/orders',
+            $body
+        );
+
+} catch (
+    Throwable $error
+) {
+
+    sendJson(
+        [
+            'ok' => false,
+            'error' =>
+                'proxy authentication unavailable'
+        ],
+        500
+    );
+}
+
+
+// =========================================
 // UPSTREAM
-// =========================
+// =========================================
 
 $ch =
     curl_init(
@@ -197,8 +243,14 @@ curl_setopt_array(
         CURLOPT_HTTPHEADER =>
             [
                 'Accept: application/json',
+
                 'Content-Type: application/json',
-                'User-Agent: TransferService52-Timeweb-Proxy/1.0'
+
+                'User-Agent: TransferService52-Timeweb-Proxy/1.0',
+
+                $proxyAuthHeaders[0],
+
+                $proxyAuthHeaders[1]
             ]
     ]
 );
@@ -225,9 +277,9 @@ curl_close(
 );
 
 
-// =========================
+// =========================================
 // TRANSPORT ERROR
-// =========================
+// =========================================
 
 if (
     $response === false
@@ -236,17 +288,20 @@ if (
     sendJson(
         [
             'ok' => false,
-            'error' => 'upstream unavailable',
-            'transportCode' => $curlErrno
+            'error' =>
+                'upstream unavailable',
+
+            'transportCode' =>
+                $curlErrno
         ],
         502
     );
 }
 
 
-// =========================
+// =========================================
 // STATUS VALIDATION
-// =========================
+// =========================================
 
 if (
     $status < 100 ||
@@ -256,16 +311,17 @@ if (
     sendJson(
         [
             'ok' => false,
-            'error' => 'invalid upstream response'
+            'error' =>
+                'invalid upstream response'
         ],
         502
     );
 }
 
 
-// =========================
+// =========================================
 // UPSTREAM JSON CHECK
-// =========================
+// =========================================
 
 $upstreamJson =
     json_decode(
@@ -274,22 +330,25 @@ $upstreamJson =
     );
 
 if (
-    !is_array($upstreamJson)
+    !is_array(
+        $upstreamJson
+    )
 ) {
 
     sendJson(
         [
             'ok' => false,
-            'error' => 'invalid upstream response'
+            'error' =>
+                'invalid upstream response'
         ],
         502
     );
 }
 
 
-// =========================
+// =========================================
 // PASS RESPONSE THROUGH
-// =========================
+// =========================================
 
 http_response_code(
     $status

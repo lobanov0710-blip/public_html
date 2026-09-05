@@ -462,11 +462,6 @@ window.initForm = function () {
 
       try {
 
-        console.log(
-          "[ORDER] SEND:",
-          payload
-        );
-
         const response =
           await fetch(
             ORDERS_API,
@@ -492,16 +487,6 @@ window.initForm = function () {
             .catch(
               () => null
             );
-
-        console.log(
-          "[ORDER] RESPONSE:",
-          {
-            status:
-              response.status,
-
-            data
-          }
-        );
 
         // =========================
         // ERROR
@@ -536,11 +521,6 @@ window.initForm = function () {
         // =========================
         // SUCCESS
         // =========================
-
-        console.log(
-          "[ORDER] CREATED:",
-          data.order
-        );
 
         setSuccess();
 

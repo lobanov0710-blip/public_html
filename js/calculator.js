@@ -15,7 +15,7 @@ window.initCalculator = function () {
     true;
 
   window.__calcDebug =
-    true;
+    false;
 
   if (
     !("__lastRouteData" in window)
