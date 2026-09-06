@@ -1883,6 +1883,455 @@ section.hero h1 {
     margin-top: 0;
 }
 
+/* =========================
+   SECTION HEADING
+========================= */
+
+.section-heading {
+    max-width: 780px;
+
+    margin-bottom: 32px;
+}
+
+.section-kicker {
+    display: inline-flex;
+
+    margin-bottom: 10px;
+
+    color: #f1d77a;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+
+    text-transform: uppercase;
+}
+
+.section-heading h2,
+.moscow-transfer__copy h2 {
+    margin: 0 0 14px !important;
+
+    color: #fff;
+
+    font-size:
+        clamp(28px, 4vw, 42px);
+
+    line-height: 1.15;
+
+    letter-spacing: -0.02em;
+}
+
+.section-heading > p {
+    color:
+        rgba(255, 255, 255, 0.68);
+
+    font-size: 16px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================
+   TRUST BAR
+========================= */
+
+.trust-section {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    border: 0;
+
+    background: transparent;
+}
+
+.trust-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 1px;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 18px;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+}
+
+.trust-item {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 14px;
+
+    min-width: 0;
+
+    padding: 22px;
+
+    background:
+        rgba(9, 13, 19, 0.96);
+}
+
+.trust-icon {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 46px;
+
+    width: 46px;
+    height: 46px;
+
+    border:
+        1px solid
+        rgba(241, 215, 122, 0.25);
+
+    border-radius: 13px;
+
+    color: #f1d77a;
+
+    background:
+        rgba(241, 215, 122, 0.08);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.trust-item strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #fff;
+
+    font-size: 14px;
+}
+
+.trust-item p {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.58);
+
+    font-size: 12px;
+
+    line-height: 1.55;
+}
+
+
+/* =========================
+   POPULAR ROUTES
+========================= */
+
+.popular-routes .routes-grid {
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+}
+
+.routes-bottom {
+    display: flex;
+
+    justify-content: center;
+
+    margin-top: 28px;
+}
+
+
+/* =========================
+   SECTION BUTTONS
+========================= */
+
+.section-primary-btn,
+.section-secondary-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 50px;
+
+    padding: 13px 20px;
+
+    border-radius: 12px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.section-primary-btn {
+    border:
+        1px solid transparent;
+
+    color: #05080c;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffcc00,
+            #ff9900
+        );
+}
+
+.section-primary-btn:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 10px 24px
+        rgba(255, 174, 0, 0.18);
+}
+
+.section-secondary-btn {
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.16);
+
+    color: #fff;
+
+    background:
+        rgba(255, 255, 255, 0.05);
+}
+
+.section-secondary-btn:hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(241, 215, 122, 0.4);
+}
+
+
+/* =========================
+   MOSCOW + AIRPORTS
+========================= */
+
+.moscow-transfer {
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(14, 20, 29, 0.96),
+            rgba(7, 11, 17, 0.96)
+        );
+}
+
+.moscow-transfer::before {
+    content: "";
+
+    position: absolute;
+
+    top: -180px;
+    right: -180px;
+
+    width: 420px;
+    height: 420px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(241, 215, 122, 0.11),
+            transparent 68%
+        );
+}
+
+.moscow-transfer__content {
+    position: relative;
+
+    z-index: 2;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.4fr)
+        minmax(300px, 0.7fr);
+
+    gap: 44px;
+
+    align-items: start;
+}
+
+.moscow-transfer__lead {
+    max-width: 720px;
+
+    color:
+        rgba(255, 255, 255, 0.72);
+
+    font-size: 16px;
+
+    line-height: 1.75;
+}
+
+.airport-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-top: 26px;
+}
+
+.airport-item {
+    padding: 17px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 14px;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+}
+
+.airport-item strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #f1d77a;
+
+    font-size: 14px;
+}
+
+.airport-item span {
+    color:
+        rgba(255, 255, 255, 0.62);
+
+    font-size: 12px;
+
+    line-height: 1.55;
+}
+
+.moscow-transfer__actions {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin-top: 28px;
+}
+
+
+/* =========================
+   MOSCOW INFO CARD
+========================= */
+
+.moscow-transfer__info {
+    padding: 24px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.09);
+
+    border-radius: 18px;
+
+    background:
+        rgba(255, 255, 255, 0.04);
+
+    box-shadow:
+        0 20px 45px
+        rgba(0, 0, 0, 0.22);
+}
+
+.info-card__label {
+    display: block;
+
+    margin-bottom: 18px;
+
+    color: #f1d77a;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.transfer-steps {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+
+    list-style: none;
+
+    counter-reset: none;
+}
+
+.transfer-steps li {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 13px;
+}
+
+.transfer-steps li > span {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 34px;
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: 50%;
+
+    color: #05080c;
+
+    background: #f1d77a;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.transfer-steps strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #fff;
+
+    font-size: 13px;
+}
+
+.transfer-steps p {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.55);
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
 
 /* =========================
    FOOTER
@@ -2132,6 +2581,23 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
     section.hero {
         min-height: 720px;
     }
+    .trust-grid {
+    grid-template-columns:
+        repeat(2, 1fr);
+}
+
+.popular-routes .routes-grid {
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+}
+
+.moscow-transfer__content {
+    grid-template-columns: 1fr;
+}
+
+.moscow-transfer__info {
+    max-width: 650px;
+}
 }
 
 
@@ -2368,6 +2834,39 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
     body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
         bottom: 155px;
     }
+
+    .trust-grid {
+    grid-template-columns: 1fr;
+}
+
+.trust-item {
+    padding: 18px;
+}
+
+.popular-routes .routes-grid {
+    grid-template-columns: 1fr;
+}
+
+.airport-list {
+    grid-template-columns: 1fr;
+}
+
+.moscow-transfer__content {
+    gap: 28px;
+}
+
+.moscow-transfer__actions {
+    flex-direction: column;
+}
+
+.section-primary-btn,
+.section-secondary-btn {
+    width: 100%;
+}
+
+.moscow-transfer__info {
+    padding: 19px;
+}
 }
 
 
