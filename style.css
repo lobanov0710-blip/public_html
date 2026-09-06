@@ -2327,6 +2327,203 @@ section.hero h1 {
     line-height: 1.5;
 }
 
+/* =========================
+   FAQ
+========================= */
+
+#faq,
+#about {
+    scroll-margin-top: 95px;
+}
+
+.faq-list {
+    display: grid;
+    gap: 10px;
+    max-width: 920px;
+    margin: 32px auto 0;
+}
+
+.faq-item {
+    overflow: hidden;
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background:
+        rgba(10, 15, 22, 0.92);
+}
+
+.faq-item summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 64px;
+    padding:
+        18px 58px
+        18px 20px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.45;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary::after {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border:
+        1px solid
+        rgba(241, 215, 122, 0.25);
+    border-radius: 50%;
+    color: #f1d77a;
+    background:
+        rgba(241, 215, 122, 0.06);
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1;
+    transform:
+        translateY(-50%);
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease;
+}
+
+.faq-item[open] summary::after {
+    transform:
+        translateY(-50%)
+        rotate(45deg);
+}
+
+.faq-item summary:hover {
+    color: #f1d77a;
+}
+
+.faq-item summary:focus-visible {
+    outline:
+        2px solid
+        rgba(241, 215, 122, 0.75);
+    outline-offset: -2px;
+}
+
+.faq-answer {
+    padding:
+        0 20px
+        20px;
+}
+
+.faq-answer p {
+    margin: 0;
+    max-width: 800px;
+    color:
+        rgba(255, 255, 255, 0.62);
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+
+/* =========================
+   ABOUT
+========================= */
+
+.about-section {
+    overflow: hidden;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(15, 20, 28, 0.96),
+            rgba(8, 12, 18, 0.96)
+        );
+}
+
+.about-layout {
+    display: grid;
+    grid-template-columns:
+        minmax(280px, 0.9fr)
+        minmax(0, 1.1fr);
+    gap: 52px;
+    align-items: start;
+}
+
+.about-layout .section-heading {
+    margin-bottom: 0;
+}
+
+.about-content {
+    max-width: 680px;
+}
+
+.about-content p {
+    margin: 0 0 18px;
+    color:
+        rgba(255, 255, 255, 0.67);
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.about-content p:last-of-type {
+    margin-bottom: 0;
+}
+
+.about-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+
+/* =========================
+   FAQ / ABOUT MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .about-layout {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    .faq-item summary {
+        min-height: 60px;
+        padding:
+            16px 54px
+            16px 17px;
+        font-size: 14px;
+    }
+
+    .faq-item summary::after {
+        right: 16px;
+    }
+
+    .faq-answer {
+        padding:
+            0 17px
+            18px;
+    }
+
+    .about-actions {
+        flex-direction: column;
+    }
+
+    .about-actions .section-primary-btn,
+    .about-actions .section-secondary-btn {
+        width: 100%;
+    }
+}
+
 
 /* =========================
    FOOTER
