@@ -125,12 +125,18 @@ window.initSlider = function () {
                 cardIndex
             ) => {
 
+                const isActive =
+                    cardIndex === index;
+
                 card.setAttribute(
                     "aria-hidden",
-                    cardIndex === index
+                    isActive
                         ? "false"
                         : "true"
                 );
+
+                card.inert =
+                    !isActive;
             }
         );
 

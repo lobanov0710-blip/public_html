@@ -948,10 +948,6 @@ section.hero h1 {
         );
 }
 
-.process-number {
-    display: none;
-}
-
 .process-card h3 {
     margin: 0 0 10px;
     color: #fff;
@@ -1079,10 +1075,6 @@ section.hero h1 {
     transform: translateX(4px);
     border-color: rgba(241, 215, 122, 0.18);
     background: rgba(255, 255, 255, 0.05);
-}
-
-.why-mark {
-    display: none;
 }
 
 .why-item h3 {
@@ -2326,6 +2318,7 @@ section.hero h1 {
     font-size: 12px;
     line-height: 1.5;
 }
+
 
 /* =========================
    FAQ
