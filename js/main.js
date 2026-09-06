@@ -1,73 +1,146 @@
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
 
     // =========================
-    // SAFE MODULE INIT
+    // SAFE INIT HELPER
     // =========================
 
-    try {
-        if (typeof window.initMap === "function") {
-            const mapInstance = window.initMap();
+    function safeInit(name, initFunction) {
 
-            // 🔥 КРИТИЧНО: фикс глобальной карты
-            if (mapInstance) {
-                window.map = mapInstance;
+        if (typeof initFunction !== "function") {
+            return null;
+        }
+
+        try {
+            return initFunction();
+        } catch (error) {
+            console.error(`[INIT] ${name} failed:`, error);
+            return null;
+        }
+    }
+
+
+    // =========================
+    // MAP
+    // =========================
+
+    const mapInstance = safeInit(
+        "map",
+        window.initMap
+    );
+
+    if (mapInstance) {
+        window.map = mapInstance;
+    }
+
+
+    // =========================
+    // CALCULATOR
+    // =========================
+
+    safeInit(
+        "calculator",
+        window.initCalculator
+    );
+
+
+    // =========================
+    // UI MODULES
+    // =========================
+
+    safeInit(
+        "slider",
+        window.initSlider
+    );
+
+    safeInit(
+        "form",
+        window.initForm
+    );
+
+    safeInit(
+        "scroll",
+        window.initScroll
+    );
+
+    safeInit(
+        "observer",
+        window.initObserver
+    );
+
+    safeInit(
+        "routes",
+        window.initRoutes
+    );
+
+
+    // =========================
+    // PROMO BANNER
+    // =========================
+
+    const promoBanner =
+        document.getElementById(
+            "promoBanner"
+        );
+
+    const promoCloseButton =
+        document.getElementById(
+            "promoBannerClose"
+        );
+
+    if (
+        promoBanner &&
+        promoCloseButton
+    ) {
+
+        try {
+
+            const wasClosed =
+                localStorage.getItem(
+                    "promoBannerClosed"
+                ) === "1";
+
+            if (wasClosed) {
+
+                promoBanner
+                    .classList
+                    .add("hidden");
+
+            } else {
+
+                promoCloseButton
+                    .addEventListener(
+                        "click",
+                        () => {
+
+                            promoBanner
+                                .classList
+                                .add("hidden");
+
+                            try {
+
+                                localStorage.setItem(
+                                    "promoBannerClosed",
+                                    "1"
+                                );
+
+                            } catch (error) {
+
+                                console.warn(
+                                    "[PROMO] localStorage unavailable:",
+                                    error
+                                );
+                            }
+                        }
+                    );
             }
+
+        } catch (error) {
+
+            console.warn(
+                "[PROMO] initialization failed:",
+                error
+            );
         }
-    } catch (e) {
-        console.error("map fail", e);
     }
-
-    // =========================
-    // WAIT MAP STABILIZATION
-    // =========================
-    await new Promise(resolve => setTimeout(resolve, 400));
-
-    // =========================
-    // CALCULATOR AFTER MAP
-    // =========================
-
-    try {
-        if (typeof window.initCalculator === "function") {
-            window.initCalculator();
-        }
-    } catch (e) {
-        console.error("calc fail", e);
-    }
-
-    // =========================
-    // LEGACY MODULES
-    // =========================
-
-    try { window.initSlider?.(); } catch (e) { console.error("slider fail", e); }
-    try { window.initForm?.(); } catch (e) { console.error("form fail", e); }
-    try { window.initScroll?.(); } catch (e) { console.error("scroll fail", e); }
-    try { window.initObserver?.(); } catch (e) { console.error("observer fail", e); }
-    try { window.initRoutes?.(); } catch (e) { console.error("routes fail", e); }
-
-
-    document.addEventListener("DOMContentLoaded", () => {
-    const banner = document.getElementById("promoBanner");
-    const closeBtn = document.getElementById("promoBannerClose");
-
-    if (!banner || !closeBtn) return;
-
-    if (localStorage.getItem("promoBannerClosed") === "1") {
-        banner.classList.add("hidden");
-        return;
-    }
-
-    closeBtn.addEventListener("click", () => {
-        banner.classList.add("hidden");
-        localStorage.setItem("promoBannerClosed", "1");
-    });
-});
-
-    // =========================
-    // COPY BLOCK
-    // =========================
-
-    document.addEventListener("copy", (e) => {
-        e.preventDefault();
-    });
 
 });
