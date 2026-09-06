@@ -1305,91 +1305,580 @@ section.hero h1 {
 
 
 /* =========================
-   SERVICES
+   PROCESS
 ========================= */
 
-.services {
-    display: flex;
-
-    gap: 20px;
-
-    margin-top: 20px;
-
-    flex-wrap: wrap;
+#process,
+#services,
+#advantages {
+    scroll-margin-top: 95px;
 }
 
-.card {
-    flex: 1;
-
-    min-width: 260px;
-
-    padding: 24px;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.06);
-
-    border-radius: 14px;
-
-    background:
-        rgba(17, 22, 29, 0.9);
-
-    transition:
-        transform 0.3s ease,
-        background 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-.card:hover {
-    transform:
-        translateY(-8px);
-}
-
-
-/* =========================
-   WHY BLOCK
-========================= */
-
-.why-wrapper {
+.process-grid {
     display: grid;
 
     grid-template-columns:
-        repeat(2, 1fr);
+        repeat(4, minmax(0, 1fr));
 
-    gap: 20px;
+    gap: 14px;
 
-    margin-top: 30px;
+    margin-top: 32px;
 }
 
-.why-item {
-    padding: 22px;
+.process-card {
+    position: relative;
+
+    min-width: 0;
+
+    padding: 24px;
+
+    overflow: hidden;
 
     border:
         1px solid
         rgba(255, 255, 255, 0.08);
 
-    border-radius: 14px;
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17, 22, 30, 0.96),
+            rgba(10, 14, 20, 0.96)
+        );
+}
+
+.process-number {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    margin-bottom: 22px;
+
+    border:
+        1px solid
+        rgba(241, 215, 122, 0.26);
+
+    border-radius: 12px;
+
+    color: #f1d77a;
+
+    background:
+        rgba(241, 215, 122, 0.07);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.process-card h3 {
+    margin: 0 0 10px;
+
+    color: #fff;
+
+    font-size: 17px;
+
+    line-height: 1.35;
+}
+
+.process-card p {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.58);
+
+    font-size: 13px;
+
+    line-height: 1.65;
+}
+
+.process-actions {
+    display: flex;
+
+    flex-wrap: wrap;
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-top: 28px;
+}
+
+
+/* =========================
+   SERVICES
+========================= */
+
+.services-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-top: 32px;
+}
+
+.service-card {
+    position: relative;
+
+    min-width: 0;
+
+    padding: 26px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 16px;
+
+    background:
+        rgba(12, 17, 24, 0.94);
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+}
+
+.service-card:hover {
+    transform:
+        translateY(-4px);
+
+    border-color:
+        rgba(241, 215, 122, 0.22);
+
+    background:
+        rgba(16, 22, 30, 0.98);
+}
+
+.service-icon {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 44px;
+    height: 44px;
+
+    margin-bottom: 19px;
+
+    padding: 0 10px;
+
+    border-radius: 12px;
+
+    color: #05080c;
+
+    background: #f1d77a;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.service-card h3 {
+    margin: 0 0 10px;
+
+    color: #fff;
+
+    font-size: 19px;
+
+    line-height: 1.3;
+}
+
+.service-card p {
+    max-width: 500px;
+
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.6);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================
+   PROCESS
+========================= */
+
+#process,
+#services,
+#advantages {
+    scroll-margin-top: 95px;
+}
+
+.process-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 14px;
+
+    margin-top: 32px;
+}
+
+.process-card {
+    position: relative;
+
+    min-width: 0;
+
+    padding: 24px;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17, 22, 30, 0.96),
+            rgba(10, 14, 20, 0.96)
+        );
+}
+
+.process-number {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    margin-bottom: 22px;
+
+    border:
+        1px solid
+        rgba(241, 215, 122, 0.26);
+
+    border-radius: 12px;
+
+    color: #f1d77a;
+
+    background:
+        rgba(241, 215, 122, 0.07);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.process-card h3 {
+    margin: 0 0 10px;
+
+    color: #fff;
+
+    font-size: 17px;
+
+    line-height: 1.35;
+}
+
+.process-card p {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.58);
+
+    font-size: 13px;
+
+    line-height: 1.65;
+}
+
+.process-actions {
+    display: flex;
+
+    flex-wrap: wrap;
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-top: 28px;
+}
+
+
+/* =========================
+   SERVICES
+========================= */
+
+.services-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-top: 32px;
+}
+
+.service-card {
+    position: relative;
+
+    min-width: 0;
+
+    padding: 26px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 16px;
+
+    background:
+        rgba(12, 17, 24, 0.94);
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+}
+
+.service-card:hover {
+    transform:
+        translateY(-4px);
+
+    border-color:
+        rgba(241, 215, 122, 0.22);
+
+    background:
+        rgba(16, 22, 30, 0.98);
+}
+
+.service-icon {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 44px;
+    height: 44px;
+
+    margin-bottom: 19px;
+
+    padding: 0 10px;
+
+    border-radius: 12px;
+
+    color: #05080c;
+
+    background: #f1d77a;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.service-card h3 {
+    margin: 0 0 10px;
+
+    color: #fff;
+
+    font-size: 19px;
+
+    line-height: 1.3;
+}
+
+.service-card p {
+    max-width: 500px;
+
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.6);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================
+   WHY / ADVANTAGES
+========================= */
+
+.advantages-layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(280px, 0.8fr)
+        minmax(0, 1.2fr);
+
+    gap: 50px;
+
+    align-items: start;
+}
+
+.advantages-section .section-heading {
+    position: sticky;
+
+    top: 110px;
+
+    margin-bottom: 0;
+}
+
+.why-wrapper {
+    display: grid;
+
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+
+    margin-top: 0;
+}
+
+.why-item {
+    display: grid;
+
+    grid-template-columns:
+        48px
+        minmax(0, 1fr);
+
+    gap: 16px;
+
+    align-items: start;
+
+    padding: 21px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 15px;
 
     background:
         rgba(255, 255, 255, 0.03);
 
     transition:
-        transform 0.3s ease,
-        background 0.3s ease;
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
 }
 
 .why-item:hover {
     transform:
-        translateY(-5px);
+        translateX(4px);
+
+    border-color:
+        rgba(241, 215, 122, 0.18);
 
     background:
-        rgba(255, 255, 255, 0.06);
+        rgba(255, 255, 255, 0.05);
+}
+
+.why-mark {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+
+    border:
+        1px solid
+        rgba(241, 215, 122, 0.25);
+
+    border-radius: 12px;
+
+    color: #f1d77a;
+
+    background:
+        rgba(241, 215, 122, 0.07);
+
+    font-size: 11px;
+    font-weight: 800;
 }
 
 .why-item h3 {
-    margin-bottom: 10px;
+    margin: 1px 0 6px;
 
-    color: #f1d77a;
+    color: #fff;
+
+    font-size: 16px;
+}
+
+.why-item p {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.57);
+
+    font-size: 13px;
+
+    line-height: 1.65;
+}
+
+
+/* =========================
+   PROCESS / SERVICES TABLET
+========================= */
+
+@media (max-width: 1024px) {
+
+    .process-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .advantages-layout {
+        grid-template-columns: 1fr;
+
+        gap: 28px;
+    }
+
+    .advantages-section .section-heading {
+        position: static;
+    }
+}
+
+
+/* =========================
+   PROCESS / SERVICES MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .process-grid,
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .process-card,
+    .service-card {
+        padding: 20px;
+    }
+
+    .process-actions {
+        flex-direction: column;
+    }
+
+    .process-actions .section-primary-btn,
+    .process-actions .section-secondary-btn {
+        width: 100%;
+    }
+
+    .why-item {
+        grid-template-columns:
+            42px
+            minmax(0, 1fr);
+
+        gap: 12px;
+
+        padding: 18px;
+    }
+
+    .why-mark {
+        width: 40px;
+        height: 40px;
+    }
 }
 
 
