@@ -1649,71 +1649,133 @@ section.hero h1 {
 
 @media (max-width: 600px) {
 
-    .car-slider {
+    .home-page .car-slider {
         display: block;
+        margin-top: 24px;
     }
 
-    .car-viewport {
-        border-radius: 18px;
+    .home-page .car-viewport {
+        border-radius: 16px;
+        touch-action: pan-y;
     }
 
-    .car-card {
-        border-radius: 18px;
+    .home-page .car-card {
+        border-radius: 16px;
     }
 
-    .car-photo,
-    .car-photo img,
-    .car-card img {
+    .home-page .car-photo,
+    .home-page .car-photo img,
+    .home-page .car-card img {
         min-height: 280px;
         height: 280px;
     }
 
-    .car-info {
-        padding: 20px;
+    .home-page .car-info {
+        padding: 18px;
     }
 
-    .car-info h3 {
-        font-size: 28px;
+    .home-page .car-info h3 {
+        font-size: clamp(24px, 7vw, 28px);
     }
 
-    .car-features {
+    .home-page .car-description {
+        margin-top: 12px;
+        line-height: 1.6;
+    }
+
+    .home-page .car-features {
         grid-template-columns: 1fr;
-        margin-top: 20px;
+        gap: 8px;
+        margin-top: 18px;
     }
 
-    .car-actions {
+    .home-page .car-feature {
+        padding: 10px;
+    }
+
+    .home-page .car-actions {
         flex-direction: column;
-        padding-top: 22px;
+        gap: 8px;
+        padding-top: 20px;
     }
 
-    .car-book-btn,
-    .car-secondary-btn {
+    .home-page .car-book-btn,
+    .home-page .car-secondary-btn {
         width: 100%;
+        min-height: 50px;
     }
 
-    .car-btn {
+    .home-page .car-btn {
         position: absolute;
-        top: 118px;
-        width: 42px;
-        height: 42px;
+        top: 117px;
+        width: 46px;
+        height: 46px;
         background:
-            rgba(5, 8, 12, 0.78);
+            rgba(5, 8, 12, 0.82);
     }
 
-    .car-btn.prev {
+    .home-page .car-btn.prev {
         left: 8px;
     }
 
-    .car-btn.next {
+    .home-page .car-btn.next {
         right: 8px;
     }
 
-    .car-photo-badge {
-        right: 16px;
+    .home-page .car-class {
+        top: 14px;
+        left: 14px;
+    }
+
+    .home-page .car-photo-badge {
+        right: 14px;
+        bottom: 14px;
         left: auto;
     }
 
-        .home-page .tariff-selector {
+
+    /* SLIDER DOT TOUCH TARGETS */
+
+    .home-page .car-dots {
+        gap: 0;
+        margin-top: 10px;
+    }
+
+    .home-page .car-dot,
+    .home-page .car-dot.active {
+        position: relative;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        background: transparent;
+    }
+
+    .home-page .car-dot::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background:
+            rgba(255, 255, 255, 0.26);
+        transform:
+            translate(-50%, -50%);
+        transition:
+            width 0.25s ease,
+            background 0.25s ease;
+    }
+
+    .home-page .car-dot.active::before {
+        width: 24px;
+        background: #f1d77a;
+    }
+
+
+    /* CALCULATOR TARIFFS */
+
+    .home-page .tariff-selector {
         grid-template-columns: 1fr;
     }
 
