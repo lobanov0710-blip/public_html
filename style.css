@@ -1677,6 +1677,23 @@ section.hero h1 {
         right: 16px;
         left: auto;
     }
+
+        .home-page .tariff-selector {
+        grid-template-columns: 1fr;
+    }
+
+    .home-page .tariff-card {
+        min-height: 64px;
+        padding: 12px 14px;
+    }
+
+    .home-page .tariff-title {
+        font-size: 15px;
+    }
+
+    .home-page .tariff-desc {
+        font-size: 12px;
+    }
 }
 
 
@@ -2794,6 +2811,60 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
         font-size: clamp(24px, 7vw, 32px);
     }
 
+        /* CALCULATOR */
+
+    .home-page #calcForm {
+        gap: 14px;
+        margin-top: 0;
+    }
+
+    .home-page #calcForm input,
+    .home-page #calcForm select {
+        min-height: 52px;
+        padding: 14px 15px;
+        font-size: 16px;
+    }
+
+    .home-page #calcForm button {
+        min-height: 52px;
+        padding: 14px 16px;
+        font-size: 16px;
+    }
+
+    .home-page .tariff-selector {
+        display: grid;
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 4px;
+    }
+
+    .home-page .tariff-card {
+        min-width: 0;
+        min-height: 78px;
+        padding: 12px 10px;
+    }
+
+    .home-page .tariff-title {
+        font-size: 14px;
+        line-height: 1.35;
+    }
+
+    .home-page .tariff-desc {
+        font-size: 11px;
+        line-height: 1.4;
+    }
+
+    .home-page #result {
+        margin-top: 14px;
+        font-size: 15px;
+    }
+
+    .home-page #result .btn {
+        width: 100%;
+        min-height: 46px;
+    }
+
     /* PROMO */
 
     .promo-banner {
@@ -3057,7 +3128,7 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
     .site-brand__subtitle {
         display: none;
     }
-    
+
     .header-inner {
     padding-left: 10px;
     padding-right: 10px;
@@ -3072,14 +3143,6 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
     section.hero {
         padding-left: 14px;
         padding-right: 14px;
-    }
-
-    .tariff-selector {
-        flex-direction: column;
-    }
-
-    .tariff-card {
-        width: 100%;
     }
 }
 
