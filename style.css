@@ -3131,9 +3131,11 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
 
     /* MAP */
 
-    #map {
-        height: 340px;
-        min-height: 300px;
+    .home-page #map {
+    height: clamp(280px, 52vh, 340px);
+    min-height: 280px;
+    margin-top: 12px;
+    border-radius: 12px;
     }
 
 
@@ -3217,6 +3219,10 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
     section.hero {
         padding-left: 14px;
         padding-right: 14px;
+    }
+    .home-page #map {
+    height: 280px;
+    min-height: 280px;
     }
 }
 
