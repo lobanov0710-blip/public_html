@@ -2762,6 +2762,37 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
         background-attachment: scroll;
     }
 
+        /* HOMEPAGE SECTIONS */
+
+    .home-page > section:not(.hero) {
+        width: calc(100% - 24px);
+        margin: 36px auto;
+        padding: 24px 16px;
+        border-radius: 14px;
+    }
+
+    .home-page > .trust-section {
+        padding: 0;
+    }
+
+    .home-page .section-heading {
+        margin-bottom: 24px;
+    }
+
+    .home-page .section-heading h2,
+    .home-page .moscow-transfer__copy h2 {
+        font-size: clamp(26px, 8vw, 34px);
+    }
+
+    .home-page .section-heading > p {
+        font-size: 15px;
+        line-height: 1.65;
+    }
+
+    .home-page > section > h2 {
+        margin-bottom: 20px !important;
+        font-size: clamp(24px, 7vw, 32px);
+    }
 
     /* PROMO */
 
