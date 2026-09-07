@@ -2872,12 +2872,12 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
     /* HERO */
 
     section.hero {
-        min-height: 680px;
-        padding:
-            120px 18px
-            70px;
-        background-position:
-            62% center;
+    min-height: auto;
+    padding:
+        112px 18px
+        56px;
+    background-position:
+        62% center;
     }
 
     section.hero::before {
@@ -2891,8 +2891,10 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
     }
 
     section.hero h1 {
-        font-size:
-            clamp(34px, 10vw, 48px);
+    max-width: 620px;
+    font-size:
+        clamp(32px, 9vw, 46px);
+    line-height: 1.08;
     }
 
     .hero-content {
@@ -2909,7 +2911,14 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
     }
 
     .hero-benefits span {
-        font-size: 12px;
+    min-height: 34px;
+    padding: 7px 10px;
+    font-size: 12px;
+    }
+
+    .hero-note {
+    margin-top: 14px;
+    line-height: 1.5;
     }
 
     .hero-actions {
