@@ -1167,27 +1167,88 @@ section.hero h1 {
 
 @media (max-width: 700px) {
 
-    .process-grid,
-    .services-grid {
+    .home-page .process-grid,
+    .home-page .services-grid {
         grid-template-columns: 1fr;
+        gap: 10px;
+        margin-top: 20px;
     }
 
-    .process-card,
-    .service-card {
-        padding: 20px;
-    }
-
-    .process-actions {
-        flex-direction: column;
-    }
-
-    .process-actions .section-primary-btn,
-    .process-actions .section-secondary-btn {
-        width: 100%;
-    }
-
-    .why-item {
+    .home-page .process-card,
+    .home-page .service-card {
         padding: 18px;
+        border-radius: 14px;
+    }
+
+    .home-page .process-card h3,
+    .home-page .service-card h3 {
+        margin-bottom: 8px;
+        font-size: 17px;
+        line-height: 1.35;
+    }
+
+    .home-page .process-card p,
+    .home-page .service-card p {
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+
+    /* PROCESS ACTIONS */
+
+    .home-page .process-actions {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .home-page .process-actions .section-primary-btn,
+    .home-page .process-actions .section-secondary-btn {
+        width: 100%;
+        min-height: 50px;
+    }
+
+
+    /* SERVICES */
+
+    .home-page .service-icon {
+        min-width: 42px;
+        height: 42px;
+        margin-bottom: 14px;
+        border-radius: 11px;
+    }
+
+
+    /* ADVANTAGES */
+
+    .home-page .advantages-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .home-page .advantages-section .section-heading {
+        position: static;
+        margin-bottom: 0;
+    }
+
+    .home-page .why-wrapper {
+        gap: 9px;
+    }
+
+    .home-page .why-item {
+        padding: 17px;
+        border-radius: 13px;
+    }
+
+    .home-page .why-item h3 {
+        margin-bottom: 5px;
+        font-size: 16px;
+        line-height: 1.35;
+    }
+
+    .home-page .why-item p {
+        font-size: 13px;
+        line-height: 1.6;
     }
 }
 
