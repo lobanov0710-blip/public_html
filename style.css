@@ -2837,31 +2837,38 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
     /* HEADER */
 
     .header-inner {
-        min-height: 64px;
-        padding: 8px 14px;
-        gap: 12px;
+    min-height: 64px;
+    padding: 8px 12px;
+    gap: 10px;
+    }
+
+    .site-brand {
+    min-width: 0;
     }
 
     .site-brand__name {
-        font-size: 16px;
+    font-size: 16px;
+    white-space: nowrap;
     }
 
     .site-brand__subtitle {
-        font-size: 9px;
+    font-size: 9px;
+    white-space: nowrap;
     }
 
     .header-phone {
-        display: none;
+    display: none;
     }
 
     .header-actions {
-        gap: 8px;
+    flex-shrink: 0;
+    gap: 8px;
     }
 
     .header-cta {
-        min-height: 38px;
-        padding: 8px 12px;
-        font-size: 12px;
+    min-height: 44px;
+    padding: 9px 14px;
+    font-size: 12px;
     }
 
     header h1 {
@@ -3049,6 +3056,17 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
 
     .site-brand__subtitle {
         display: none;
+    }
+    
+    .header-inner {
+    padding-left: 10px;
+    padding-right: 10px;
+    gap: 8px;
+    }
+
+    .header-cta {
+    padding-left: 12px;
+    padding-right: 12px;
     }
 
     section.hero {
