@@ -23,6 +23,9 @@ window.initFleetGallery = function () {
                 src:
                     "/images/fleet/hyundai-solaris/hyundai-solaris-main.webp",
 
+                thumb:
+                    "/images/fleet/hyundai-solaris/thumbs/hyundai-solaris-main.webp",
+
                 alt:
                     "Hyundai Solaris для междугороднего трансфера"
             },
@@ -30,6 +33,9 @@ window.initFleetGallery = function () {
             {
                 src:
                     "/images/fleet/hyundai-solaris/hyundai-solaris-front.webp",
+
+                thumb:
+                    "/images/fleet/hyundai-solaris/thumbs/hyundai-solaris-front.webp",
 
                 alt:
                     "Hyundai Solaris — вид спереди"
@@ -39,6 +45,9 @@ window.initFleetGallery = function () {
                 src:
                     "/images/fleet/hyundai-solaris/hyundai-solaris-side.webp",
 
+                thumb:
+                    "/images/fleet/hyundai-solaris/thumbs/hyundai-solaris-side.webp",
+
                 alt:
                     "Hyundai Solaris — вид сбоку"
             },
@@ -46,6 +55,9 @@ window.initFleetGallery = function () {
             {
                 src:
                     "/images/fleet/hyundai-solaris/hyundai-solaris-rear.webp",
+
+                thumb:
+                    "/images/fleet/hyundai-solaris/thumbs/hyundai-solaris-rear.webp",
 
                 alt:
                     "Hyundai Solaris — вид сзади"
@@ -55,6 +67,9 @@ window.initFleetGallery = function () {
                 src:
                     "/images/fleet/hyundai-solaris/hyundai-solaris-interior-front.webp",
 
+                thumb:
+                    "/images/fleet/hyundai-solaris/thumbs/hyundai-solaris-interior-front.webp",
+
                 alt:
                     "Hyundai Solaris — передняя часть салона"
             },
@@ -63,6 +78,9 @@ window.initFleetGallery = function () {
                 src:
                     "/images/fleet/hyundai-solaris/hyundai-solaris-interior-rear.webp",
 
+                thumb:
+                    "/images/fleet/hyundai-solaris/thumbs/hyundai-solaris-interior-rear.webp",
+
                 alt:
                     "Hyundai Solaris — задняя часть салона"
             },
@@ -70,6 +88,9 @@ window.initFleetGallery = function () {
             {
                 src:
                     "/images/fleet/hyundai-solaris/hyundai-solaris-console.webp",
+
+                thumb:
+                    "/images/fleet/hyundai-solaris/thumbs/hyundai-solaris-console.webp",
 
                 alt:
                     "Hyundai Solaris — центральная консоль"
@@ -418,6 +439,7 @@ window.initFleetGallery = function () {
 
 
                 thumbImage.src =
+                    item.thumb ||
                     item.src;
 
                 thumbImage.alt =
@@ -425,6 +447,9 @@ window.initFleetGallery = function () {
 
                 thumbImage.loading =
                     "lazy";
+
+                thumbImage.decoding =
+                    "async";
 
 
                 button.appendChild(
