@@ -3212,44 +3212,44 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
         min-height: 52px;
         font-size: 16px;
     }
-
     /* PROMO */
 
-    .promo-banner {
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
-        padding: 12px;
+    .home-page .promo-banner {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    padding: 12px;
     }
 
-    .promo-banner__content {
-        align-items: flex-start;
-        gap: 10px;
-        flex-wrap: wrap;
+    .home-page .promo-banner__content {
+    align-items: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
     }
 
-    .promo-banner__text {
-        flex:
-            1 1 calc(100% - 50px);
+    .home-page .promo-banner__text {
+    flex:
+        1 1 calc(100% - 50px);
     }
 
-    .promo-banner__text strong {
-        font-size: 15px;
+    .home-page .promo-banner__text strong {
+    font-size: 15px;
     }
 
-    .promo-banner__text span {
-        font-size: 13px;
+    .home-page .promo-banner__text span {
+    font-size: 13px;
     }
 
-    .promo-banner__btn {
-        width: 100%;
-        padding: 11px 14px;
+    .home-page .promo-banner__btn {
+    width: 100%;
+    min-height: 44px;
+    padding: 11px 14px;
     }
 
-    .promo-banner__close {
-        width: 32px;
-        height: 32px;
-        font-size: 21px;
+    .home-page .promo-banner__close {
+    width: 36px;
+    height: 36px;
+    font-size: 21px;
     }
 
 
@@ -3454,9 +3454,9 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
         height: 50px;
     }
 
-    body:has(.promo-banner:not(.hidden)) .call-btn,
-    body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
-        bottom: 155px;
+    .home-page:has(.promo-banner:not(.hidden)) .call-btn,
+    .home-page:has(.promo-banner:not(.hidden)) #scrollTopBtn {
+    display: none;
     }
 
     .trust-grid {
