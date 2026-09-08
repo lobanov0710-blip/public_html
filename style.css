@@ -300,6 +300,7 @@ body::before {
     resize: none;
 }
 
+
 /* =========================
    PRIVACY CHECKBOX
 ========================= */
@@ -338,6 +339,7 @@ body::before {
 #tgForm {
     scroll-margin-top: 100px;
 }
+
 
 /* =========================
    HOMEPAGE FORM META
@@ -650,6 +652,7 @@ section h2 {
     margin-top: 50px !important;
     margin-bottom: 5px !important;
 }
+
 
 /* =========================
    HOMEPAGE SECTION TITLES
@@ -1446,7 +1449,7 @@ section.hero h1 {
         blur(10px);
     font-size: 11px;
     font-weight: 600;
-        font-family: inherit;
+    font-family: inherit;
     line-height: 1.2;
     cursor: pointer;
     transition:
@@ -2554,6 +2557,7 @@ section.hero h1 {
     line-height: 1.5;
 }
 
+
 /* =========================
    REVIEWS
 ========================= */
@@ -2886,6 +2890,7 @@ footer a:hover {
     margin-top: 6px;
 }
 
+
 /* HOMEPAGE FOOTER */
 
 .home-page footer {
@@ -3108,7 +3113,8 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
         background-attachment: scroll;
     }
 
-        /* HOMEPAGE SECTIONS */
+
+    /* HOMEPAGE SECTIONS */
 
     .home-page > section:not(.hero) {
         width: calc(100% - 24px);
@@ -3140,7 +3146,8 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
         font-size: clamp(24px, 7vw, 32px);
     }
 
-        /* CALCULATOR */
+
+    /* CALCULATOR */
 
     .home-page #calcForm {
         gap: 14px;
@@ -3194,7 +3201,8 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
         min-height: 46px;
     }
 
-        /* CONTACT FORM */
+
+    /* CONTACT FORM */
 
     .home-page .contact-form {
         max-width: 100%;
@@ -3232,82 +3240,84 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
         min-height: 52px;
         font-size: 16px;
     }
+
+
     /* PROMO */
 
     .home-page .promo-banner {
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-    padding: 12px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        padding: 12px;
     }
 
     .home-page .promo-banner__content {
-    align-items: flex-start;
-    gap: 10px;
-    flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 10px;
+        flex-wrap: wrap;
     }
 
     .home-page .promo-banner__text {
-    flex:
-        1 1 calc(100% - 50px);
+        flex:
+            1 1 calc(100% - 50px);
     }
 
     .home-page .promo-banner__text strong {
-    font-size: 15px;
+        font-size: 15px;
     }
 
     .home-page .promo-banner__text span {
-    font-size: 13px;
+        font-size: 13px;
     }
 
     .home-page .promo-banner__btn {
-    width: 100%;
-    min-height: 44px;
-    padding: 11px 14px;
+        width: 100%;
+        min-height: 44px;
+        padding: 11px 14px;
     }
 
     .home-page .promo-banner__close {
-    width: 36px;
-    height: 36px;
-    font-size: 21px;
+        width: 36px;
+        height: 36px;
+        font-size: 21px;
     }
 
 
     /* HEADER */
 
     .header-inner {
-    min-height: 64px;
-    padding: 8px 12px;
-    gap: 10px;
+        min-height: 64px;
+        padding: 8px 12px;
+        gap: 10px;
     }
 
     .site-brand {
-    min-width: 0;
+        min-width: 0;
     }
 
     .site-brand__name {
-    font-size: 16px;
-    white-space: nowrap;
+        font-size: 16px;
+        white-space: nowrap;
     }
 
     .site-brand__subtitle {
-    font-size: 9px;
-    white-space: nowrap;
+        font-size: 9px;
+        white-space: nowrap;
     }
 
     .header-phone {
-    display: none;
+        display: none;
     }
 
     .header-actions {
-    flex-shrink: 0;
-    gap: 8px;
+        flex-shrink: 0;
+        gap: 8px;
     }
 
     .header-cta {
-    min-height: 44px;
-    padding: 9px 14px;
-    font-size: 12px;
+        min-height: 44px;
+        padding: 9px 14px;
+        font-size: 12px;
     }
 
     header h1 {
@@ -3318,12 +3328,12 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
     /* HERO */
 
     section.hero {
-    min-height: auto;
-    padding:
-        112px 18px
-        56px;
-    background-position:
-        62% center;
+        min-height: auto;
+        padding:
+            112px 18px
+            56px;
+        background-position:
+            62% center;
     }
 
     section.hero::before {
@@ -3337,10 +3347,10 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
     }
 
     section.hero h1 {
-    max-width: 620px;
-    font-size:
-        clamp(32px, 9vw, 46px);
-    line-height: 1.08;
+        max-width: 620px;
+        font-size:
+            clamp(32px, 9vw, 46px);
+        line-height: 1.08;
     }
 
     .hero-content {
@@ -3357,14 +3367,14 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
     }
 
     .hero-benefits span {
-    min-height: 34px;
-    padding: 7px 10px;
-    font-size: 12px;
+        min-height: 34px;
+        padding: 7px 10px;
+        font-size: 12px;
     }
 
     .hero-note {
-    margin-top: 14px;
-    line-height: 1.5;
+        margin-top: 14px;
+        line-height: 1.5;
     }
 
     .hero-actions {
@@ -3402,7 +3412,7 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
     }
 
 
-        /* ROUTES */
+    /* ROUTES */
 
     .home-page .popular-routes .routes-grid {
         grid-template-columns: 1fr;
@@ -3451,10 +3461,10 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
     /* MAP */
 
     .home-page #map {
-    height: clamp(280px, 52vh, 340px);
-    min-height: 280px;
-    margin-top: 12px;
-    border-radius: 12px;
+        height: clamp(280px, 52vh, 340px);
+        min-height: 280px;
+        margin-top: 12px;
+        border-radius: 12px;
     }
 
 
@@ -3476,7 +3486,7 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
 
     .home-page:has(.promo-banner:not(.hidden)) .call-btn,
     .home-page:has(.promo-banner:not(.hidden)) #scrollTopBtn {
-    display: none;
+        display: none;
     }
 
     .trust-grid {
@@ -3491,7 +3501,7 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
         grid-template-columns: 1fr;
     }
 
-        .home-page .moscow-transfer__content {
+    .home-page .moscow-transfer__content {
         gap: 24px;
     }
 
@@ -3531,7 +3541,8 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
         gap: 16px;
     }
 
-        /* FORM META */
+
+    /* FORM META */
 
     .home-page #tgForm > p:first-of-type {
         margin:
@@ -3630,23 +3641,24 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
     }
 
     .header-inner {
-    padding-left: 10px;
-    padding-right: 10px;
-    gap: 8px;
+        padding-left: 10px;
+        padding-right: 10px;
+        gap: 8px;
     }
 
     .header-cta {
-    padding-left: 12px;
-    padding-right: 12px;
+        padding-left: 12px;
+        padding-right: 12px;
     }
 
     section.hero {
         padding-left: 14px;
         padding-right: 14px;
     }
+
     .home-page #map {
-    height: 280px;
-    min-height: 280px;
+        height: 280px;
+        min-height: 280px;
     }
 }
 
@@ -3703,8 +3715,10 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
         transform: none !important;
         filter: none !important;
     }
+}
 
-    /* =========================
+
+/* =========================
    FLEET GALLERY
 ========================= */
 
@@ -4094,6 +4108,6 @@ body.gallery-open {
             0 0 72px;
         width: 72px;
         height: 56px;
-        border-radius: 8px;}
+        border-radius: 8px;
     }
 }
