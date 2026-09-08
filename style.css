@@ -339,6 +339,31 @@ body::before {
     scroll-margin-top: 100px;
 }
 
+/* =========================
+   HOMEPAGE FORM META
+========================= */
+
+.home-page #tgForm > p {
+    color:
+        rgba(255, 255, 255, 0.62);
+    line-height: 1.55;
+}
+
+.home-page #tgForm > p:first-of-type {
+    color:
+        rgba(255, 255, 255, 0.74);
+}
+
+.home-page #tgForm > p a {
+    color: #f1d77a;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.home-page #tgForm input[type="date"] {
+    color-scheme: dark;
+}
+
 .input-group {
     display: flex;
     flex-direction: column;
@@ -2841,6 +2866,23 @@ footer a:hover {
     margin-top: 6px;
 }
 
+/* HOMEPAGE FOOTER */
+
+.home-page footer {
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+}
+
+.home-page .footer-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    margin-top: 10px;
+}
+
 
 /* =========================
    FLOATING CALL BUTTON
@@ -3467,6 +3509,92 @@ body:has(.promo-banner:not(.hidden)) #scrollTopBtn {
 
     .home-page .transfer-steps {
         gap: 16px;
+    }
+
+        /* FORM META */
+
+    .home-page #tgForm > p:first-of-type {
+        margin:
+            2px 0 12px !important;
+        font-size: 13px !important;
+    }
+
+    .home-page #tgForm > p:not(:first-of-type) {
+        margin-top: 10px !important;
+        font-size: 12px !important;
+        line-height: 1.5;
+    }
+
+
+    /* FOOTER */
+
+    .home-page footer {
+        padding:
+            24px 16px
+            96px;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .home-page footer > div + div {
+        margin-top: 8px;
+    }
+
+    .home-page footer a {
+        overflow-wrap: anywhere;
+    }
+
+    .home-page .footer-links {
+        flex-direction: column;
+        gap: 2px;
+        margin-top: 12px;
+    }
+
+    .home-page .footer-links span {
+        display: none;
+    }
+
+    .home-page .footer-links a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding:
+            5px 8px;
+    }
+
+
+    /* COOKIE */
+
+    .home-page .cookie-banner {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        padding: 14px;
+        border-radius: 14px;
+    }
+
+    .home-page .cookie-content {
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .home-page .cookie-content p {
+        flex-basis: 100%;
+        font-size: 13px;
+    }
+
+    .home-page .cookie-buttons {
+        display: grid;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+        width: 100%;
+        gap: 8px;
+    }
+
+    .home-page .cookie-buttons button {
+        min-height: 44px;
+        padding: 10px 12px;
     }
 }
 
