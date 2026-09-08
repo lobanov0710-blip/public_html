@@ -48,13 +48,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // =========================
 
     safeInit(
-        "slider",
-        window.initSlider
+    "slider",
+    window.initSlider
     );
 
     safeInit(
-        "form",
-        window.initForm
+    "fleet-gallery",
+    window.initFleetGallery
+    );
+
+    safeInit(
+    "form",
+    window.initForm
     );
 
     safeInit(
