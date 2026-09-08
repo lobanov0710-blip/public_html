@@ -2509,6 +2509,55 @@ section.hero h1 {
     line-height: 1.5;
 }
 
+/* =========================
+   REVIEWS
+========================= */
+
+.home-page > section > .card {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 22px;
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+    border-radius: 15px;
+    background:
+        rgba(10, 15, 22, 0.92);
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.home-page > section > .card + .card {
+    margin-top: 12px;
+}
+
+.home-page > section > .card:hover {
+    transform: translateY(-2px);
+    border-color:
+        rgba(241, 215, 122, 0.22);
+    background:
+        rgba(13, 19, 27, 0.96);
+}
+
+.home-page > section > .card p {
+    margin: 0;
+    color:
+        rgba(255, 255, 255, 0.72);
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+.home-page > section > .card strong {
+    display: block;
+    margin-top: 14px;
+    color: #f1d77a;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
 
 /* =========================
    FAQ
@@ -2669,41 +2718,99 @@ section.hero h1 {
 
 
 /* =========================
-   FAQ / ABOUT MOBILE
+   REVIEWS / FAQ / ABOUT MOBILE
 ========================= */
 
 @media (max-width: 768px) {
 
-    .about-layout {
-        grid-template-columns: 1fr;
-        gap: 22px;
+    /* REVIEWS */
+
+    .home-page > section > .card {
+        padding: 18px;
+        border-radius: 13px;
     }
 
-    .faq-item summary {
-        min-height: 60px;
+    .home-page > section > .card + .card {
+        margin-top: 10px;
+    }
+
+    .home-page > section > .card p {
+        font-size: 13px;
+        line-height: 1.65;
+    }
+
+    .home-page > section > .card strong {
+        margin-top: 12px;
+        font-size: 13px;
+    }
+
+
+    /* FAQ */
+
+    .home-page .faq-list {
+        gap: 8px;
+        margin: 0 auto;
+    }
+
+    .home-page .faq-item {
+        border-radius: 12px;
+    }
+
+    .home-page .faq-item summary {
+        min-height: 56px;
         padding:
-            16px 54px
-            16px 17px;
+            15px 50px
+            15px 15px;
         font-size: 14px;
+        line-height: 1.4;
     }
 
-    .faq-item summary::after {
-        right: 16px;
+    .home-page .faq-item summary::after {
+        right: 14px;
+        width: 28px;
+        height: 28px;
+        font-size: 20px;
     }
 
-    .faq-answer {
+    .home-page .faq-answer {
         padding:
-            0 17px
-            18px;
+            0 15px
+            16px;
     }
 
-    .about-actions {
+    .home-page .faq-answer p {
+        font-size: 13px;
+        line-height: 1.65;
+    }
+
+
+    /* ABOUT */
+
+    .home-page .about-layout {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .home-page .about-layout .section-heading {
+        margin-bottom: 0;
+    }
+
+    .home-page .about-content p {
+        margin-bottom: 14px;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .home-page .about-actions {
         flex-direction: column;
+        gap: 8px;
+        margin-top: 20px;
     }
 
-    .about-actions .section-primary-btn,
-    .about-actions .section-secondary-btn {
+    .home-page .about-actions .section-primary-btn,
+    .home-page .about-actions .section-secondary-btn {
         width: 100%;
+        min-height: 50px;
     }
 }
 
