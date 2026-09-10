@@ -1,70 +1,276 @@
-document.addEventListener("DOMContentLoaded", () => {
+(function () {
+
+    "use strict";
+
+
+    // =========================
+    // ROUTES DATA
+    // =========================
 
     const routes = [
-        { title: "Нижний Новгород → Москва", price: "от 22000 ₽", time: "6–7 часов", link: "nn-moscow.html" },
-        { title: "Нижний Новгород → Казань", price: "от 21500 ₽", time: "4–5 часов", link: "nn-kazan.html" },
-        { title: "Нижний Новгород → Санкт-Петербург", price: "от 62000 ₽", time: "10–12 часов", link: "nn-spb.html" },
-        { title: "Нижний Новгород → Ростов-на-Дону", price: "от 69000 ₽", time: "10–11 часов", link: "nn-rostov.html" },
-        { title: "Нижний Новгород → Луганск", price: "от 63000 ₽", time: "12–14 часов", link: "nn-lugansk.html" },
-        { title: "Нижний Новгород → Донецк", price: "от 73000 ₽", time: "13–15 часов", link: "nn-donetsk.html" },
-        { title: "Нижний Новгород → Ульяновск", price: "от 26000 ₽", time: "6–7 часов", link: "nn-ulyanovsk.html" },
-        { title: "Нижний Новгород → Саратов", price: "от 32000 ₽", time: "8–9 часов", link: "nn-saratov.html" },
-        { title: "Нижний Новгород → Сочи", price: "от 78000 ₽", time: "20–24 часа", link: "nn-sochi.html" },
-        { title: "Нижний Новгород → Екатеринбург", price: "от 65000 ₽", time: "16–18 часов", link: "nn-ekaterinburg.html" }
+
+        {
+            title: "Нижний Новгород → Москва",
+            description:
+                "Индивидуальный трансфер без пересадок до Москвы и аэропортов.",
+            link: "/nn-moscow.html"
+        },
+
+        {
+            title: "Нижний Новгород → Казань",
+            description:
+                "Междугородняя поездка от адреса до адреса без смены транспорта.",
+            link: "/nn-kazan.html"
+        },
+
+        {
+            title: "Нижний Новгород → Санкт-Петербург",
+            description:
+                "Индивидуальный трансфер до Санкт-Петербурга и аэропорта Пулково.",
+            link: "/nn-spb.html"
+        },
+
+        {
+            title: "Нижний Новгород → Ростов-на-Дону",
+            description:
+                "Прямая междугородняя поездка с остановками по согласованию.",
+            link: "/nn-rostov.html"
+        },
+
+        {
+            title: "Нижний Новгород → Луганск",
+            description:
+                "Дальний индивидуальный трансфер без обязательных пересадок.",
+            link: "/nn-lugansk.html"
+        },
+
+        {
+            title: "Нижний Новгород → Донецк",
+            description:
+                "Междугородний трансфер по заранее согласованному маршруту.",
+            link: "/nn-donetsk.html"
+        },
+
+        {
+            title: "Нижний Новгород → Ульяновск",
+            description:
+                "Комфортная поездка до нужного адреса без смены транспорта.",
+            link: "/nn-ulyanovsk.html"
+        },
+
+        {
+            title: "Нижний Новгород → Саратов",
+            description:
+                "Индивидуальная междугородняя поездка от адреса до адреса.",
+            link: "/nn-saratov.html"
+        },
+
+        {
+            title: "Нижний Новгород → Сочи",
+            description:
+                "Дальний трансфер с заранее согласованными условиями поездки.",
+            link: "/nn-sochi.html"
+        },
+
+        {
+            title: "Нижний Новгород → Екатеринбург",
+            description:
+                "Индивидуальный дальний маршрут без обязательных пересадок.",
+            link: "/nn-ekaterinburg.html"
+        }
+
     ];
 
-    const grid = document.getElementById("routesGrid");
 
-    if (!grid) {
-        console.error("❌ routesGrid не найден");
-        return;
+    // =========================
+    // NORMALIZE PATH
+    // =========================
+
+    function normalizePath(path) {
+
+        if (!path) {
+            return "/";
+        }
+
+        let normalized = path
+            .split("?")[0]
+            .split("#")[0];
+
+        if (
+            normalized.length > 1 &&
+            normalized.endsWith("/")
+        ) {
+            normalized =
+                normalized.slice(0, -1);
+        }
+
+        return normalized;
     }
 
-    // очищаем
-    grid.innerHTML = "";
 
     // =========================
-    // RANDOM 3 ROUTES
+    // SHUFFLE
+    // Fisher-Yates
     // =========================
-    const shuffled = [...routes].sort(() => Math.random() - 0.5);
 
-    const randomRoutes = shuffled.slice(0, 3);
+    function shuffle(items) {
 
-    const fragment = document.createDocumentFragment();
+        const result = [...items];
 
-    randomRoutes.forEach(route => {
+        for (
+            let i = result.length - 1;
+            i > 0;
+            i--
+        ) {
 
-        const card = document.createElement("a");
+            const j =
+                Math.floor(
+                    Math.random() * (i + 1)
+                );
+
+            [
+                result[i],
+                result[j]
+            ] = [
+                result[j],
+                result[i]
+            ];
+        }
+
+        return result;
+    }
+
+
+    // =========================
+    // CREATE ROUTE CARD
+    // =========================
+
+    function createRouteCard(route) {
+
+        const card =
+            document.createElement("a");
 
         card.className = "route-card";
-        card.href = route.link || "#";
+        card.href = route.link;
 
-        // SEO + accessibility
         card.setAttribute(
             "aria-label",
-            `${route.title}, ${route.price}, время в пути ${route.time}`
+            `${route.title}. Подробнее о маршруте`
         );
 
-        card.innerHTML = `
-            <div class="route-badge">
-                🔥 Популярный маршрут
-            </div>
 
-            <h3>${route.title}</h3>
+        const badge =
+            document.createElement("span");
 
-            <p>
-                ${route.price} • ${route.time}
-            </p>
+        badge.className =
+            "route-badge";
 
-            <span class="route-link">
-                Подробнее
-            </span>
-        `;
+        badge.textContent =
+            "Междугородний трансфер";
 
-        fragment.appendChild(card);
 
-    });
+        const title =
+            document.createElement("h3");
 
-    grid.appendChild(fragment);
+        title.textContent =
+            route.title;
 
-});
+
+        const description =
+            document.createElement("p");
+
+        description.textContent =
+            route.description;
+
+
+        const linkText =
+            document.createElement("span");
+
+        linkText.className =
+            "route-link";
+
+        linkText.textContent =
+            "Подробнее →";
+
+
+        card.append(
+            badge,
+            title,
+            description,
+            linkText
+        );
+
+        return card;
+    }
+
+
+    // =========================
+    // INIT ROUTES
+    // =========================
+
+    function initRoutes() {
+
+        const grid =
+            document.getElementById(
+                "routesGrid"
+            );
+
+        if (!grid) {
+            return;
+        }
+
+
+        const currentPath =
+            normalizePath(
+                window.location.pathname
+            );
+
+
+        // Исключаем текущую страницу
+        // из блока "Другие направления"
+
+        const availableRoutes =
+            routes.filter(
+                route =>
+                    normalizePath(route.link) !==
+                    currentPath
+            );
+
+
+        // Случайная ротация
+        // при каждой загрузке страницы
+
+        const randomRoutes =
+            shuffle(
+                availableRoutes
+            ).slice(0, 3);
+
+
+        const fragment =
+            document.createDocumentFragment();
+
+
+        randomRoutes.forEach(
+            route => {
+
+                fragment.appendChild(
+                    createRouteCard(route)
+                );
+            }
+        );
+
+
+        grid.replaceChildren(
+            fragment
+        );
+    }
+
+
+    // =========================
+    // EXPORT
+    // =========================
+
+    window.initRoutes =
+        initRoutes;
+
+})();

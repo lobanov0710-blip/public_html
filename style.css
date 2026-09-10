@@ -4110,3 +4110,1423 @@ body.gallery-open {
         border-radius: 8px;
     }
 }
+/* =========================================================
+   ROUTE PAGE — SAINT PETERSBURG
+   nn-spb.html
+========================================================= */
+
+.route-page--spb {
+    --spb-bg: #070b11;
+    --spb-panel: rgba(13, 19, 28, 0.92);
+    --spb-panel-soft: rgba(255, 255, 255, 0.045);
+    --spb-border: rgba(255, 255, 255, 0.08);
+    --spb-border-accent: rgba(241, 215, 122, 0.28);
+    --spb-text: #f4f6f8;
+    --spb-muted: rgba(236, 240, 244, 0.66);
+    --spb-accent: #f1d77a;
+    --spb-accent-strong: #ffcc00;
+
+    background:
+        radial-gradient(
+            circle at 78% 10%,
+            rgba(61, 93, 140, 0.16),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 12% 36%,
+            rgba(241, 215, 122, 0.07),
+            transparent 28%
+        ),
+        #070b11;
+}
+
+
+/* =========================================================
+   PAGE OVERLAY
+========================================================= */
+
+.route-page--spb::before {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(5, 8, 12, 0.18),
+            rgba(5, 8, 12, 0.76)
+        );
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.route-page--spb > header {
+    justify-content: flex-start;
+    gap: 22px;
+    min-height: 72px;
+    padding:
+        12px
+        max(
+            20px,
+            calc((100vw - 1240px) / 2 + 20px)
+        );
+
+    background:
+        rgba(7, 11, 17, 0.9);
+
+    border-bottom:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+}
+
+.route-page--spb > header h1 {
+    flex: 1;
+    color: var(--spb-text);
+    font-size:
+        clamp(
+            15px,
+            2vw,
+            22px
+        );
+    font-weight: 650;
+    letter-spacing: -0.02em;
+}
+
+.route-page--spb .back-home {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 8px 14px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.1);
+
+    border-radius: 10px;
+
+    color:
+        rgba(255, 255, 255, 0.78);
+
+    background:
+        rgba(255, 255, 255, 0.04);
+
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition:
+        border-color 0.2s ease,
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+/* =========================================================
+   ROUTE HERO
+========================================================= */
+
+.route-page--spb .route-hero {
+    position: relative;
+
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.3fr)
+        minmax(300px, 0.7fr);
+
+    gap: 48px;
+    align-items: center;
+
+    width:
+        calc(100% - 40px);
+
+    max-width: 1240px;
+
+    min-height: 610px;
+
+    margin:
+        28px auto 38px;
+
+    padding:
+        64px
+        clamp(28px, 5vw, 72px);
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 28px;
+
+    background:
+        radial-gradient(
+            circle at 85% 12%,
+            rgba(69, 104, 153, 0.28),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 20% 80%,
+            rgba(241, 215, 122, 0.08),
+            transparent 32%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(13, 20, 30, 0.98),
+            rgba(7, 11, 17, 0.98)
+        );
+
+    box-shadow:
+        0 30px 80px
+        rgba(0, 0, 0, 0.36);
+}
+
+.route-page--spb .route-hero::before {
+    content: "";
+
+    position: absolute;
+
+    width: 520px;
+    height: 520px;
+
+    top: -300px;
+    right: -180px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.06);
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.route-page--spb .route-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 350px;
+    height: 350px;
+
+    right: -120px;
+    bottom: -250px;
+
+    border:
+        1px solid
+        rgba(241, 215, 122, 0.08);
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.route-page--spb .route-hero__content {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+}
+
+.route-page--spb .route-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+
+    margin-bottom: 22px;
+    padding: 6px 12px;
+
+    border:
+        1px solid
+        var(--spb-border-accent);
+
+    border-radius: 999px;
+
+    color: var(--spb-accent);
+
+    background:
+        rgba(241, 215, 122, 0.06);
+
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.route-page--spb .route-hero h2 {
+    max-width: 760px;
+
+    margin:
+        0 0 22px !important;
+
+    color: var(--spb-text);
+
+    font-size:
+        clamp(
+            36px,
+            5.4vw,
+            66px
+        );
+
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.045em;
+}
+
+.route-page--spb .route-hero__lead {
+    max-width: 660px;
+
+    margin: 0;
+
+    color: var(--spb-muted);
+
+    font-size:
+        clamp(
+            16px,
+            1.6vw,
+            19px
+        );
+
+    line-height: 1.75;
+}
+
+.route-page--spb .route-hero__benefits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+
+    margin-top: 30px;
+}
+
+.route-page--spb .route-hero__benefits span {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 38px;
+
+    padding: 7px 13px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.09);
+
+    border-radius: 999px;
+
+    color:
+        rgba(255, 255, 255, 0.86);
+
+    background:
+        rgba(255, 255, 255, 0.045);
+
+    font-size: 13px;
+    font-weight: 550;
+}
+
+.route-page--spb .route-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    margin-top: 34px;
+}
+
+.route-page--spb .route-hero__actions .hero-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 52px;
+
+    padding: 13px 22px;
+
+    border-radius: 12px;
+
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.route-page--spb .route-hero__phone {
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.12);
+
+    color: #fff;
+
+    background:
+        rgba(255, 255, 255, 0.055);
+}
+
+
+/* =========================================================
+   ROUTE VISUAL CARD
+========================================================= */
+
+.route-page--spb .route-hero__route-card {
+    position: relative;
+    z-index: 2;
+
+    padding: 28px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.09);
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.07),
+            rgba(255, 255, 255, 0.025)
+        );
+
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+
+    box-shadow:
+        0 18px 50px
+        rgba(0, 0, 0, 0.25);
+}
+
+.route-page--spb .route-card__label {
+    display: block;
+
+    margin-bottom: 24px;
+
+    color:
+        rgba(255, 255, 255, 0.45);
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.route-page--spb .route-card__point {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.route-page--spb .route-card__marker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex:
+        0 0 42px;
+
+    width: 42px;
+    height: 42px;
+
+    border:
+        1px solid
+        rgba(241, 215, 122, 0.4);
+
+    border-radius: 50%;
+
+    color: #080b10;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f5de86,
+            #d8b74e
+        );
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.route-page--spb .route-card__point small {
+    display: block;
+
+    margin-bottom: 2px;
+
+    color:
+        rgba(255, 255, 255, 0.42);
+
+    font-size: 11px;
+}
+
+.route-page--spb .route-card__point strong {
+    display: block;
+
+    color: #fff;
+
+    font-size: 16px;
+    font-weight: 650;
+}
+
+.route-page--spb .route-card__line {
+    width: 1px;
+    height: 64px;
+
+    margin:
+        5px 0
+        5px 20px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(241, 215, 122, 0.7),
+            rgba(241, 215, 122, 0.12)
+        );
+}
+
+.route-page--spb .route-card__extras {
+    display: grid;
+    gap: 10px;
+
+    margin-top: 28px;
+    padding-top: 22px;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+}
+
+.route-page--spb .route-card__extras span {
+    color:
+        rgba(255, 255, 255, 0.68);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   ROUTE SECTIONS
+========================================================= */
+
+.route-page--spb > section {
+    max-width: 1200px;
+
+    margin:
+        30px auto;
+
+    padding:
+        clamp(28px, 4vw, 48px);
+
+    border:
+        1px solid
+        var(--spb-border);
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15, 21, 31, 0.94),
+            rgba(9, 14, 21, 0.94)
+        );
+
+    box-shadow:
+        0 18px 50px
+        rgba(0, 0, 0, 0.16);
+}
+
+.route-page--spb > section h2 {
+    margin:
+        0 0 18px !important;
+
+    color: var(--spb-text);
+
+    font-size:
+        clamp(
+            27px,
+            3.3vw,
+            40px
+        );
+
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+}
+
+.route-page--spb .section-heading {
+    max-width: 780px;
+
+    margin-bottom: 30px;
+}
+
+.route-page--spb .section-heading > p {
+    margin-top: 14px;
+
+    color: var(--spb-muted);
+
+    font-size: 15px;
+    line-height: 1.75;
+}
+
+.route-page--spb .section-kicker {
+    display: inline-block;
+
+    margin-bottom: 10px;
+
+    color: var(--spb-accent);
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.route-page--spb .route-intro__content {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+.route-page--spb .route-intro__content p {
+    margin: 0;
+    padding: 22px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.06);
+
+    border-radius: 15px;
+
+    color: var(--spb-muted);
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   FEATURE CARDS
+========================================================= */
+
+.route-page--spb .route-features__grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 14px;
+}
+
+.route-page--spb .route-feature-card {
+    min-height: 220px;
+
+    padding: 22px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+
+    border-radius: 17px;
+
+    background:
+        rgba(255, 255, 255, 0.028);
+}
+
+.route-page--spb .route-feature-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 44px;
+    height: 38px;
+
+    margin-bottom: 22px;
+    padding: 0 10px;
+
+    border:
+        1px solid
+        rgba(241, 215, 122, 0.25);
+
+    border-radius: 10px;
+
+    color: var(--spb-accent);
+
+    background:
+        rgba(241, 215, 122, 0.055);
+
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.route-page--spb .route-feature-card h3 {
+    margin-bottom: 10px;
+
+    color: #fff;
+
+    font-size: 17px;
+    line-height: 1.35;
+}
+
+.route-page--spb .route-feature-card p {
+    margin: 0;
+
+    color: var(--spb-muted);
+
+    font-size: 13px;
+    line-height: 1.75;
+}
+
+
+/* =========================================================
+   PULKOVO
+========================================================= */
+
+.route-page--spb .route-airport__layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.2fr)
+        minmax(300px, 0.8fr);
+
+    gap: 34px;
+    align-items: center;
+}
+
+.route-page--spb .route-airport__content p {
+    max-width: 700px;
+
+    margin:
+        0 0 16px;
+
+    color: var(--spb-muted);
+
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.route-page--spb .route-airport__content .section-primary-btn {
+    margin-top: 10px;
+}
+
+.route-page--spb .route-airport__card {
+    position: relative;
+
+    padding: 28px;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(241, 215, 122, 0.18);
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(241, 215, 122, 0.07),
+            rgba(255, 255, 255, 0.025)
+        );
+}
+
+.route-page--spb .route-airport__badge {
+    display: inline-flex;
+
+    margin-bottom: 20px;
+    padding: 6px 10px;
+
+    border-radius: 999px;
+
+    color: #080b10;
+
+    background: var(--spb-accent);
+
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.route-page--spb .route-airport__card h3 {
+    max-width: 330px;
+
+    margin-bottom: 20px;
+
+    color: #fff;
+
+    font-size:
+        clamp(
+            22px,
+            2.5vw,
+            30px
+        );
+
+    line-height: 1.2;
+}
+
+.route-page--spb .route-airport__card ul {
+    display: grid;
+    gap: 12px;
+
+    list-style: none;
+}
+
+.route-page--spb .route-airport__card li {
+    position: relative;
+
+    padding-left: 22px;
+
+    color:
+        rgba(255, 255, 255, 0.68);
+
+    font-size: 14px;
+}
+
+.route-page--spb .route-airport__card li::before {
+    content: "✓";
+
+    position: absolute;
+    left: 0;
+
+    color: var(--spb-accent);
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   PROCESS
+========================================================= */
+
+.route-page--spb .route-process__grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 14px;
+
+    list-style: none;
+}
+
+.route-page--spb .route-process__item {
+    padding: 22px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.065);
+
+    border-radius: 17px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+.route-page--spb .route-process__number {
+    display: block;
+
+    margin-bottom: 24px;
+
+    color:
+        rgba(241, 215, 122, 0.48);
+
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.route-page--spb .route-process__item h3 {
+    margin-bottom: 10px;
+
+    color: #fff;
+
+    font-size: 16px;
+    line-height: 1.35;
+}
+
+.route-page--spb .route-process__item p {
+    color: var(--spb-muted);
+
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.route-page--spb .route-price__layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.15fr)
+        minmax(300px, 0.85fr);
+
+    gap: 36px;
+    align-items: center;
+}
+
+.route-page--spb .route-price__layout > div:first-child p {
+    max-width: 680px;
+
+    margin:
+        0 0 14px;
+
+    color: var(--spb-muted);
+
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.route-page--spb .route-price__action {
+    padding: 26px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 18px;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+}
+
+.route-page--spb .route-price__action strong {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #fff;
+
+    font-size: 19px;
+}
+
+.route-page--spb .route-price__action p {
+    margin-bottom: 20px;
+
+    color: var(--spb-muted);
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+========================================================= */
+
+.route-page--spb .section-primary-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 48px;
+
+    padding: 11px 18px;
+
+    border-radius: 11px;
+
+    color: #090b0f;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f5dd83,
+            #e3bd4e
+        );
+
+    font-size: 13px;
+    font-weight: 750;
+    text-decoration: none;
+
+    box-shadow:
+        0 10px 30px
+        rgba(219, 181, 65, 0.12);
+}
+
+
+/* =========================================================
+   OTHER ROUTES
+========================================================= */
+
+.route-page--spb .route-other .routes-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 14px;
+}
+
+.route-page--spb .route-other .route-card {
+    min-height: 150px;
+
+    padding: 20px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+
+    border-radius: 15px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+
+/* =========================================================
+   FAQ
+========================================================= */
+
+.route-page--spb .route-faq .faq-list {
+    max-width: none;
+    margin-top: 0;
+}
+
+.route-page--spb .route-faq .faq-item {
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+
+/* =========================================================
+   ORDER FORM
+========================================================= */
+
+.route-page--spb .route-order {
+    background:
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(241, 215, 122, 0.06),
+            transparent 30%
+        ),
+        linear-gradient(
+            145deg,
+            rgba(14, 21, 31, 0.98),
+            rgba(8, 13, 20, 0.98)
+        );
+}
+
+.route-page--spb .route-order .contact-form {
+    max-width: 850px;
+
+    padding:
+        clamp(20px, 3vw, 30px);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+
+    border-radius: 18px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+.route-page--spb .route-order__response,
+.route-page--spb .route-order__privacy-note {
+    color:
+        rgba(255, 255, 255, 0.58);
+
+    font-size: 13px;
+}
+
+.route-page--spb .route-order__response {
+    margin-bottom: 12px;
+}
+
+.route-page--spb .route-order__privacy-note {
+    margin-top: 12px;
+
+    text-align: center;
+}
+
+.route-page--spb #tgForm input[type="date"] {
+    color-scheme: dark;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.route-page--spb footer {
+    margin-top: 56px;
+
+    padding:
+        30px 20px
+        90px;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+
+    background:
+        rgba(4, 7, 11, 0.96);
+
+    font-size: 13px;
+}
+
+.route-page--spb footer > div + div {
+    margin-top: 7px;
+}
+
+.route-page--spb .footer-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    gap: 6px 10px;
+
+    margin-top: 12px;
+}
+
+
+/* =========================================================
+   DESKTOP HOVER
+========================================================= */
+
+@media (hover: hover) {
+
+    .route-page--spb .back-home:hover {
+        color: #fff;
+
+        border-color:
+            rgba(241, 215, 122, 0.32);
+
+        background:
+            rgba(241, 215, 122, 0.055);
+    }
+
+    .route-page--spb .route-feature-card,
+    .route-page--spb .route-process__item,
+    .route-page--spb .route-airport__card {
+        transition:
+            transform 0.22s ease,
+            border-color 0.22s ease,
+            background 0.22s ease;
+    }
+
+    .route-page--spb .route-feature-card:hover,
+    .route-page--spb .route-process__item:hover,
+    .route-page--spb .route-airport__card:hover {
+        transform:
+            translateY(-3px);
+
+        border-color:
+            rgba(241, 215, 122, 0.18);
+    }
+
+    .route-page--spb .section-primary-btn:hover {
+        transform:
+            translateY(-2px);
+
+        box-shadow:
+            0 12px 30px
+            rgba(219, 181, 65, 0.2);
+    }
+
+    .route-page--spb .route-hero__phone:hover {
+        border-color:
+            rgba(241, 215, 122, 0.26);
+
+        background:
+            rgba(241, 215, 122, 0.06);
+    }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 960px) {
+
+    .route-page--spb .route-hero {
+        grid-template-columns: 1fr;
+
+        min-height: auto;
+
+        gap: 34px;
+
+        padding:
+            48px 36px;
+    }
+
+    .route-page--spb .route-hero__route-card {
+        max-width: 600px;
+    }
+
+    .route-page--spb .route-features__grid,
+    .route-page--spb .route-process__grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .route-page--spb .route-airport__layout,
+    .route-page--spb .route-price__layout {
+        grid-template-columns: 1fr;
+    }
+
+    .route-page--spb .route-other .routes-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .route-page--spb > header {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 7px;
+
+        padding:
+            10px 14px;
+    }
+
+    .route-page--spb > header h1 {
+        width: 100%;
+
+        font-size: 15px;
+        line-height: 1.35;
+    }
+
+    .route-page--spb .back-home {
+        min-height: 36px;
+
+        padding:
+            5px 10px;
+
+        font-size: 12px;
+    }
+
+
+    /* HERO */
+
+    .route-page--spb .route-hero {
+        width:
+            calc(100% - 20px);
+
+        margin:
+            14px auto 22px;
+
+        padding:
+            34px 20px;
+
+        gap: 28px;
+
+        border-radius: 20px;
+    }
+
+    .route-page--spb .route-hero h2 {
+        font-size:
+            clamp(
+                32px,
+                10vw,
+                46px
+            );
+
+        line-height: 1.07;
+    }
+
+    .route-page--spb .route-hero__lead {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .route-page--spb .route-hero__benefits {
+        gap: 7px;
+
+        margin-top: 24px;
+    }
+
+    .route-page--spb .route-hero__benefits span {
+        min-height: 34px;
+
+        padding:
+            6px 10px;
+
+        font-size: 12px;
+    }
+
+    .route-page--spb .route-hero__actions {
+        display: grid;
+        grid-template-columns: 1fr;
+
+        margin-top: 26px;
+    }
+
+    .route-page--spb .route-hero__actions .hero-btn {
+        width: 100%;
+    }
+
+    .route-page--spb .route-hero__route-card {
+        padding: 22px;
+
+        border-radius: 17px;
+    }
+
+
+    /* SECTIONS */
+
+    .route-page--spb > section {
+        width:
+            calc(100% - 20px);
+
+        margin:
+            18px auto;
+
+        padding:
+            26px 18px;
+
+        border-radius: 18px;
+    }
+
+    .route-page--spb > section h2 {
+        font-size: 27px;
+    }
+
+    .route-page--spb .section-heading {
+        margin-bottom: 22px;
+    }
+
+
+    /* INTRO */
+
+    .route-page--spb .route-intro__content {
+        grid-template-columns: 1fr;
+    }
+
+    .route-page--spb .route-intro__content p {
+        padding: 18px;
+
+        font-size: 14px;
+    }
+
+
+    /* CARDS */
+
+    .route-page--spb .route-features__grid,
+    .route-page--spb .route-process__grid,
+    .route-page--spb .route-other .routes-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .route-page--spb .route-feature-card {
+        min-height: auto;
+    }
+
+
+    /* AIRPORT */
+
+    .route-page--spb .route-airport__layout {
+        gap: 24px;
+    }
+
+    .route-page--spb .route-airport__card {
+        padding: 22px;
+    }
+
+
+    /* PRICE */
+
+    .route-page--spb .route-price__layout {
+        gap: 24px;
+    }
+
+    .route-page--spb .route-price__action {
+        padding: 20px;
+    }
+
+
+    /* FORM */
+
+    .route-page--spb .route-order .contact-form {
+        padding: 16px;
+    }
+
+    .route-page--spb .route-order .form-row {
+        flex-direction: column;
+    }
+
+
+    /* FOOTER */
+
+    .route-page--spb footer {
+        padding:
+            28px 14px
+            96px;
+    }
+
+    .route-page--spb .footer-links {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .route-page--spb .footer-links span {
+        display: none;
+    }
+
+    .route-page--spb .footer-links a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        min-height: 42px;
+
+        padding:
+            4px 8px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .route-page--spb .route-hero {
+        padding:
+            30px 16px;
+    }
+
+    .route-page--spb .route-hero h2 {
+        font-size: 31px;
+    }
+
+    .route-page--spb > section {
+        padding:
+            24px 15px;
+    }
+
+    .route-page--spb .route-hero__route-card {
+        padding: 18px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .route-page--spb *,
+    .route-page--spb *::before,
+    .route-page--spb *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
