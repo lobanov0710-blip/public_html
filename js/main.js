@@ -13,7 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             return initFunction();
         } catch (error) {
-            console.error(`[INIT] ${name} failed:`, error);
+            console.error(
+                `[INIT] ${name} failed:`,
+                error
+            );
+
             return null;
         }
     }
@@ -48,18 +52,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // =========================
 
     safeInit(
-    "slider",
-    window.initSlider
+        "slider",
+        window.initSlider
     );
 
     safeInit(
-    "fleet-gallery",
-    window.initFleetGallery
+        "fleet-gallery",
+        window.initFleetGallery
     );
 
     safeInit(
-    "form",
-    window.initForm
+        "form",
+        window.initForm
     );
 
     safeInit(
@@ -146,6 +150,126 @@ document.addEventListener("DOMContentLoaded", () => {
                 error
             );
         }
+    }
+
+
+    // =========================
+    // COOKIE CONSENT
+    // =========================
+
+    const cookieBanner =
+        document.getElementById(
+            "cookieBanner"
+        );
+
+    const acceptCookiesButton =
+        document.getElementById(
+            "acceptCookies"
+        );
+
+    const declineCookiesButton =
+        document.getElementById(
+            "declineCookies"
+        );
+
+    if (
+        cookieBanner &&
+        acceptCookiesButton &&
+        declineCookiesButton
+    ) {
+
+        let cookieChoice = null;
+
+        try {
+
+            cookieChoice =
+                localStorage.getItem(
+                    "cookieConsent"
+                );
+
+        } catch (error) {
+
+            console.warn(
+                "[COOKIES] localStorage unavailable:",
+                error
+            );
+        }
+
+
+        // Если пользователь ещё не сделал выбор —
+        // показываем cookie banner
+
+        if (
+            cookieChoice !== "accepted" &&
+            cookieChoice !== "declined"
+        ) {
+
+            cookieBanner
+                .classList
+                .add("show");
+        }
+
+
+        // =========================
+        // ACCEPT COOKIES
+        // =========================
+
+        acceptCookiesButton
+            .addEventListener(
+                "click",
+                () => {
+
+                    try {
+
+                        localStorage.setItem(
+                            "cookieConsent",
+                            "accepted"
+                        );
+
+                    } catch (error) {
+
+                        console.warn(
+                            "[COOKIES] Could not save consent:",
+                            error
+                        );
+                    }
+
+                    cookieBanner
+                        .classList
+                        .remove("show");
+                }
+            );
+
+
+        // =========================
+        // DECLINE COOKIES
+        // =========================
+
+        declineCookiesButton
+            .addEventListener(
+                "click",
+                () => {
+
+                    try {
+
+                        localStorage.setItem(
+                            "cookieConsent",
+                            "declined"
+                        );
+
+                    } catch (error) {
+
+                        console.warn(
+                            "[COOKIES] Could not save decline:",
+                            error
+                        );
+                    }
+
+                    cookieBanner
+                        .classList
+                        .remove("show");
+                }
+            );
     }
 
 });
