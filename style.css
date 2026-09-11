@@ -19202,3 +19202,52 @@ body.gallery-open {
         animation-iteration-count: 1 !important;
     }
 }
+/* =========================================================
+   ROUTE PAGES — SHARED SITE BACKGROUND
+========================================================= */
+
+body.route-page {
+    background-image:
+        url("images/backgraund.webp") !important;
+
+    background-position:
+        center top !important;
+
+    background-size:
+        cover !important;
+
+    background-repeat:
+        no-repeat !important;
+
+    background-attachment:
+        fixed !important;
+
+    background-color:
+        #070a0f !important;
+}
+
+
+/* =========================================================
+   ROUTE PAGES — MOBILE BACKGROUND
+========================================================= */
+
+@media (max-width: 768px) {
+
+    body.route-page {
+        background-image:
+            url("images/backgraund.webp") !important;
+
+        background-position:
+            center top !important;
+
+        background-size:
+            cover !important;
+
+        background-repeat:
+            no-repeat !important;
+
+        background-attachment:
+            scroll !important;
+    }
+
+}
