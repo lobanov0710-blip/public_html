@@ -1,116 +1,303 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
 
-<channel>
+<rss
+    version="2.0"
+    xmlns:atom="http://www.w3.org/2005/Atom"
+>
 
-    <title>Comfort Transfer</title>
-    <link>https://transfer-servis52.ru/</link>
-    <description>
-        Междугородние трансферы из Нижнего Новгорода по России 24/7
-    </description>
+    <channel>
 
-    <language>ru-ru</language>
-    <lastBuildDate>Fri, 15 May 2026 12:00:00 +0300</lastBuildDate>
+        <title>Transfer Servis — междугородние трансферы</title>
 
-    <!-- Ульяновск -->
-    <item>
-        <title>Трансфер Нижний Новгород — Ульяновск</title>
-        <link>https://transfer-servis52.ru/ulyanovsk.html</link>
+        <link>https://transfer-servis52.ru/</link>
+
+        <atom:link
+            href="https://transfer-servis52.ru/rss.xml"
+            rel="self"
+            type="application/rss+xml"
+        />
+
         <description>
-            Комфортный междугородний трансфер без пересадок.
+            Междугородние пассажирские трансферы из Нижнего Новгорода по России.
         </description>
-        <pubDate>Fri, 15 May 2026 12:00:00 +0300</pubDate>
-    </item>
 
-    <!-- Саратов -->
-    <item>
-        <title>Трансфер Нижний Новгород — Саратов</title>
-        <link>https://transfer-servis52.ru/saratov.html</link>
-        <description>
-            Индивидуальные поездки на комфортных автомобилях.
-        </description>
-        <pubDate>Fri, 15 May 2026 12:00:00 +0300</pubDate>
-    </item>
+        <language>ru-RU</language>
 
-    <!-- Ростов -->
-    <item>
-        <title>Трансфер Нижний Новгород — Ростов-на-Дону</title>
-        <link>https://transfer-servis52.ru/rostov-na-donu.html</link>
-        <description>
-            Дальние междугородние поездки 24/7.
-        </description>
-        <pubDate>Fri, 15 May 2026 12:00:00 +0300</pubDate>
-    </item>
+        <lastBuildDate>Fri, 11 Sep 2026 12:00:00 +0300</lastBuildDate>
 
-    <!-- Сочи -->
-    <item>
-        <title>Трансфер Нижний Новгород — Сочи</title>
-        <link>https://transfer-servis52.ru/sochi.html</link>
-        <description>
-            Комфортный трансфер к Черноморскому побережью.
-        </description>
-        <pubDate>Fri, 15 May 2026 12:00:00 +0300</pubDate>
-    </item>
+        <generator>Transfer Servis</generator>
 
-    <!-- Казань -->
-    <item>
-        <title>Трансфер Нижний Новгород — Казань</title>
-        <link>https://transfer-servis52.ru/kazan.html</link>
-        <description>
-            Быстрые и безопасные поездки между городами.
-        </description>
-        <pubDate>Fri, 15 May 2026 12:00:00 +0300</pubDate>
-    </item>
 
-    <!-- Луганск -->
-    <item>
-        <title>Трансфер Нижний Новгород — Луганск</title>
-        <link>https://transfer-servis52.ru/lugansk.html</link>
-        <description>
-            Междугородний трансфер без пересадок.
-        </description>
-        <pubDate>Fri, 15 May 2026 12:00:00 +0300</pubDate>
-    </item>
+        <!-- Ульяновск -->
 
-    <!-- Донецк -->
-    <item>
-        <title>Трансфер Нижний Новгород — Донецк</title>
-        <link>https://transfer-servis52.ru/donetsk.html</link>
-        <description>
-            Индивидуальные поездки в Донецк 24/7.
-        </description>
-        <pubDate>Fri, 15 May 2026 12:00:00 +0300</pubDate>
-    </item>
+        <item>
 
-    <!-- Москва -->
-    <item>
-        <title>Трансфер Нижний Новгород — Москва</title>
-        <link>https://transfer-servis52.ru/moscow.html</link>
-        <description>
-            Комфортные поездки в Москву на легковом автомобиле.
-        </description>
-        <pubDate>Fri, 15 May 2026 12:00:00 +0300</pubDate>
-    </item>
+            <title>
+                Трансфер Нижний Новгород — Ульяновск
+            </title>
 
-    <!-- Санкт-Петербург -->
-    <item>
-        <title>Трансфер Нижний Новгород — Санкт-Петербург</title>
-        <link>https://transfer-servis52.ru/spb.html</link>
-        <description>
-            Дальние поездки в Санкт-Петербург с опытным водителем.
-        </description>
-        <pubDate>Fri, 15 May 2026 12:00:00 +0300</pubDate>
-    </item>
+            <link>
+                https://transfer-servis52.ru/nn-ulyanovsk.html
+            </link>
 
-    <!-- Екатеринбург -->
-    <item>
-        <title>Трансфер Нижний Новгород — Екатеринбург</title>
-        <link>https://transfer-servis52.ru/ekaterinburg.html</link>
-        <description>
-            Безопасный междугородний трансфер по России.
-        </description>
-        <pubDate>Fri, 15 May 2026 12:00:00 +0300</pubDate>
-    </item>
+            <guid isPermaLink="true">
+                https://transfer-servis52.ru/nn-ulyanovsk.html
+            </guid>
 
-</channel>
+            <description>
+                Индивидуальный трансфер из Нижнего Новгорода в Ульяновск без обязательных пересадок.
+            </description>
+
+            <pubDate>
+                Fri, 11 Sep 2026 12:00:00 +0300
+            </pubDate>
+
+        </item>
+
+
+        <!-- Сочи -->
+
+        <item>
+
+            <title>
+                Трансфер Нижний Новгород — Сочи
+            </title>
+
+            <link>
+                https://transfer-servis52.ru/nn-sochi.html
+            </link>
+
+            <guid isPermaLink="true">
+                https://transfer-servis52.ru/nn-sochi.html
+            </guid>
+
+            <description>
+                Индивидуальный трансфер из Нижнего Новгорода в Сочи на одном автомобиле.
+            </description>
+
+            <pubDate>
+                Fri, 11 Sep 2026 12:00:00 +0300
+            </pubDate>
+
+        </item>
+
+
+        <!-- Саратов -->
+
+        <item>
+
+            <title>
+                Трансфер Нижний Новгород — Саратов
+            </title>
+
+            <link>
+                https://transfer-servis52.ru/nn-saratov.html
+            </link>
+
+            <guid isPermaLink="true">
+                https://transfer-servis52.ru/nn-saratov.html
+            </guid>
+
+            <description>
+                Индивидуальный трансфер из Нижнего Новгорода в Саратов от адреса до адреса.
+            </description>
+
+            <pubDate>
+                Fri, 11 Sep 2026 12:00:00 +0300
+            </pubDate>
+
+        </item>
+
+
+        <!-- Ростов-на-Дону -->
+
+        <item>
+
+            <title>
+                Трансфер Нижний Новгород — Ростов-на-Дону
+            </title>
+
+            <link>
+                https://transfer-servis52.ru/nn-rostov.html
+            </link>
+
+            <guid isPermaLink="true">
+                https://transfer-servis52.ru/nn-rostov.html
+            </guid>
+
+            <description>
+                Индивидуальный междугородний трансфер из Нижнего Новгорода в Ростов-на-Дону.
+            </description>
+
+            <pubDate>
+                Fri, 11 Sep 2026 12:00:00 +0300
+            </pubDate>
+
+        </item>
+
+
+        <!-- Луганск -->
+
+        <item>
+
+            <title>
+                Трансфер Нижний Новгород — Луганск
+            </title>
+
+            <link>
+                https://transfer-servis52.ru/nn-lugansk.html
+            </link>
+
+            <guid isPermaLink="true">
+                https://transfer-servis52.ru/nn-lugansk.html
+            </guid>
+
+            <description>
+                Индивидуальный междугородний трансфер из Нижнего Новгорода в Луганск.
+            </description>
+
+            <pubDate>
+                Fri, 11 Sep 2026 12:00:00 +0300
+            </pubDate>
+
+        </item>
+
+
+        <!-- Донецк -->
+
+        <item>
+
+            <title>
+                Трансфер Нижний Новгород — Донецк
+            </title>
+
+            <link>
+                https://transfer-servis52.ru/nn-donetsk.html
+            </link>
+
+            <guid isPermaLink="true">
+                https://transfer-servis52.ru/nn-donetsk.html
+            </guid>
+
+            <description>
+                Индивидуальный междугородний трансфер из Нижнего Новгорода в Донецк.
+            </description>
+
+            <pubDate>
+                Fri, 11 Sep 2026 12:00:00 +0300
+            </pubDate>
+
+        </item>
+
+
+        <!-- Екатеринбург -->
+
+        <item>
+
+            <title>
+                Трансфер Нижний Новгород — Екатеринбург
+            </title>
+
+            <link>
+                https://transfer-servis52.ru/nn-ekaterinburg.html
+            </link>
+
+            <guid isPermaLink="true">
+                https://transfer-servis52.ru/nn-ekaterinburg.html
+            </guid>
+
+            <description>
+                Дальний индивидуальный трансфер из Нижнего Новгорода в Екатеринбург.
+            </description>
+
+            <pubDate>
+                Fri, 11 Sep 2026 12:00:00 +0300
+            </pubDate>
+
+        </item>
+
+
+        <!-- Казань -->
+
+        <item>
+
+            <title>
+                Трансфер Нижний Новгород — Казань
+            </title>
+
+            <link>
+                https://transfer-servis52.ru/nn-kazan.html
+            </link>
+
+            <guid isPermaLink="true">
+                https://transfer-servis52.ru/nn-kazan.html
+            </guid>
+
+            <description>
+                Индивидуальный трансфер из Нижнего Новгорода в Казань без обязательных пересадок.
+            </description>
+
+            <pubDate>
+                Fri, 11 Sep 2026 12:00:00 +0300
+            </pubDate>
+
+        </item>
+
+
+        <!-- Москва -->
+
+        <item>
+
+            <title>
+                Трансфер Нижний Новгород — Москва
+            </title>
+
+            <link>
+                https://transfer-servis52.ru/nn-moscow.html
+            </link>
+
+            <guid isPermaLink="true">
+                https://transfer-servis52.ru/nn-moscow.html
+            </guid>
+
+            <description>
+                Индивидуальный трансфер из Нижнего Новгорода в Москву и аэропорты Москвы.
+            </description>
+
+            <pubDate>
+                Thu, 10 Sep 2026 12:00:00 +0300
+            </pubDate>
+
+        </item>
+
+
+        <!-- Санкт-Петербург -->
+
+        <item>
+
+            <title>
+                Трансфер Нижний Новгород — Санкт-Петербург
+            </title>
+
+            <link>
+                https://transfer-servis52.ru/nn-spb.html
+            </link>
+
+            <guid isPermaLink="true">
+                https://transfer-servis52.ru/nn-spb.html
+            </guid>
+
+            <description>
+                Индивидуальный трансфер из Нижнего Новгорода в Санкт-Петербург.
+            </description>
+
+            <pubDate>
+                Thu, 10 Sep 2026 12:00:00 +0300
+            </pubDate>
+
+        </item>
+
+
+    </channel>
+
 </rss>
