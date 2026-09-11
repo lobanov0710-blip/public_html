@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 
 <head>
@@ -329,18 +329,18 @@
     ></script>
 
     <script
-    src="/js/slider.js?v=20260906-2"
-    defer
+        src="/js/slider.js?v=20260906-2"
+        defer
     ></script>
 
     <script
-    src="/js/fleet-gallery.js?v=20260908-1"
-    defer
+        src="/js/fleet-gallery.js?v=20260908-1"
+        defer
     ></script>
 
     <script
-    src="/js/form.js?v=20260905-2"
-    defer
+        src="/js/form.js?v=20260905-2"
+        defer
     ></script>
 
     <script
@@ -443,53 +443,6 @@
 
 
     <!-- =========================
-         PROMO BANNER
-    ========================== -->
-
-    <div
-        class="promo-banner"
-        id="promoBanner"
-    >
-
-        <div class="promo-banner__content">
-
-            <div class="promo-banner__text">
-
-                <strong>
-                    🎁 Скидка 10% на первый заказ
-                </strong>
-
-                <span>
-                    Промокод:
-                    <b>FIRST10</b>
-                </span>
-
-            </div>
-
-
-            <a
-                href="#tgForm"
-                class="promo-banner__btn"
-            >
-                Получить скидку
-            </a>
-
-
-            <button
-                type="button"
-                class="promo-banner__close"
-                id="promoBannerClose"
-                aria-label="Закрыть баннер"
-            >
-                ×
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- =========================
          HEADER
     ========================== -->
 
@@ -571,7 +524,7 @@
         <div class="hero-content">
 
             <div class="hero-eyebrow fade-up">
-                Междугородний трансфер • 24/7
+                Индивидуальные междугородние поездки • 24/7
             </div>
 
 
@@ -583,30 +536,32 @@
 
 
             <p class="hero-lead fade-up delay-1">
-                Москва и аэропорты Москвы,
-                Санкт-Петербург, Казань,
-                Ростов-на-Дону, ДНР, ЛНР
-                и другие направления.
-                Без пересадок — от адреса до адреса.
+                Индивидуальные поездки на автомобиле
+                из Нижнего Новгорода в Москву
+                и аэропорты, Санкт-Петербург,
+                Казань, Ростов-на-Дону,
+                Донецк, Луганск и другие города.
+                От вашего адреса до места назначения
+                без обязательных пересадок.
             </p>
 
 
             <div class="hero-benefits fade-up delay-1">
 
                 <span>
-                    Цена заранее
+                    Стоимость до подтверждения
                 </span>
 
                 <span>
-                    Подача 24/7
+                    Заявки 24/7
                 </span>
 
                 <span>
-                    Реальные автомобили
+                    Без случайных попутчиков
                 </span>
 
                 <span>
-                    Без попутчиков
+                    Остановки по согласованию
                 </span>
 
             </div>
@@ -632,7 +587,8 @@
 
 
             <p class="hero-note fade-up delay-2">
-                Ответим в течение 5 минут — круглосуточно 24/7.
+                После заявки уточним маршрут,
+                стоимость, автомобиль и детали поездки.
             </p>
 
         </div>
@@ -736,19 +692,52 @@
 
 
     <!-- =========================
-         КАРТА
-    ========================== -->
+     КАРТА МАРШРУТА
+========================== -->
 
-    <section>
+<section
+    class="route-map-section"
+    aria-labelledby="routeMapTitle"
+>
 
-        <h2>
-            Маршрут на карте
-        </h2>
+    <div class="route-map-heading">
+
+        <div>
+
+            <span class="section-kicker">
+                Маршрут поездки
+            </span>
+
+            <h2 id="routeMapTitle">
+                Посмотрите маршрут на карте
+            </h2>
+
+            <p>
+                После расчёта стоимости
+                здесь отображается построенный маршрут
+                между указанными адресами.
+            </p>
+
+        </div>
+
+
+        <a
+            href="#calc"
+            class="route-map-back"
+        >
+            Изменить маршрут
+        </a>
+
+    </div>
+
+
+    <div class="route-map-wrapper">
 
         <div id="map"></div>
 
-    </section>
+    </div>
 
+</section>
 
     <!-- =========================
          TRUST BAR
@@ -1071,6 +1060,39 @@
         </div>
 
 
+        <!-- =========================
+             ДРУГИЕ НАПРАВЛЕНИЯ
+        ========================== -->
+
+        <div class="routes-more">
+
+            <span class="routes-more__label">
+                Другие направления:
+            </span>
+
+            <div class="routes-more__links">
+
+                <a href="/nn-ekaterinburg.html">
+                    Екатеринбург
+                </a>
+
+                <a href="/nn-saratov.html">
+                    Саратов
+                </a>
+
+                <a href="/nn-sochi.html">
+                    Сочи
+                </a>
+
+                <a href="/nn-ulyanovsk.html">
+                    Ульяновск
+                </a>
+
+            </div>
+
+        </div>
+
+
         <div class="routes-bottom">
 
             <a
@@ -1377,21 +1399,21 @@
                                 loading="lazy"
                                 width="1600"
                                 height="747"
->
+                            >
 
-                                <span class="car-class">
-                                    Комфорт
-                                </span>
+                            <span class="car-class">
+                                Комфорт
+                            </span>
 
-                                <button
-                                    type="button"
-                                    class="car-photo-badge"
-                                    data-fleet-gallery="hyundai-solaris"
-                                    aria-haspopup="dialog"
-                                    aria-label="Открыть 7 реальных фотографий Hyundai Solaris"
->
-                                    7 реальных фото
-                                </button>
+                            <button
+                                type="button"
+                                class="car-photo-badge"
+                                data-fleet-gallery="hyundai-solaris"
+                                aria-haspopup="dialog"
+                                aria-label="Открыть 7 реальных фотографий Hyundai Solaris"
+                            >
+                                7 реальных фото
+                            </button>
 
                         </div>
 
@@ -2160,194 +2182,132 @@
 
 
     <!-- =========================
-         ПОЧЕМУ ВЫБИРАЮТ НАС
-    ========================== -->
-
-    <section
-        id="advantages"
-        class="advantages-section"
-    >
-
-        <div class="advantages-layout">
-
-
-            <div class="section-heading">
-
-                <span class="section-kicker">
-                    Почему Transfer Servis
-                </span>
-
-                <h2>
-                    Спокойная организация
-                    междугородней поездки
-                </h2>
-
-                <p>
-                    Основные условия поездки
-                    понятны до выезда:
-                    маршрут, стоимость,
-                    время подачи
-                    и автомобиль.
-                </p>
-
-            </div>
-
-
-            <div class="why-wrapper">
-
-
-                <article class="why-item">
-
-                    <div>
-
-                        <h3>
-                            Стоимость заранее
-                        </h3>
-
-                        <p>
-                            Расчёт и условия
-                            согласовываются
-                            до подтверждения поездки.
-                        </p>
-
-                    </div>
-
-                </article>
-
-
-                <article class="why-item">
-
-                    <div>
-
-                        <h3>
-                            От адреса до адреса
-                        </h3>
-
-                        <p>
-                            Без обязательных пересадок
-                            и смены транспорта
-                            в дороге.
-                        </p>
-
-                    </div>
-
-                </article>
-
-
-                <article class="why-item">
-
-                    <div>
-
-                        <h3>
-                            Работаем 24/7
-                        </h3>
-
-                        <p>
-                            Принимаем заявки
-                            на дневные,
-                            ночные
-                            и ранние поездки.
-                        </p>
-
-                    </div>
-
-                </article>
-
-
-                <article class="why-item">
-
-                    <div>
-
-                        <h3>
-                            Реальный автопарк
-                        </h3>
-
-                        <p>
-                            На сайте показываем
-                            автомобили,
-                            используемые
-                            для выполнения поездок.
-                        </p>
-
-                    </div>
-
-                </article>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
          ОТЗЫВЫ
     ========================== -->
 
-    <section>
+    <section
+        id="reviews"
+        class="reviews-section"
+    >
 
-        <h2>
-            Отзывы клиентов
-        </h2>
+        <div class="section-heading">
 
+            <span class="section-kicker">
+                Отзывы клиентов
+            </span>
 
-        <div class="card">
+            <h2>
+                Что говорят после поездок
+            </h2>
 
             <p>
-                "Ехали с ребёнком, переживала за дорогу,
-                но всё прошло отлично.
-                Удобный автомобиль, кондиционер,
-                спокойная езда.
-                Водитель вежливый,
-                всегда учитывал наши пожелания.
-                Очень удобный формат поездки без пересадок."
+                Отзывы клиентов о междугородних поездках,
+                комфорте в дороге и формате трансфера
+                без пересадок.
             </p>
-
-            <strong>
-                — Марина, Нижегородская область
-            </strong>
 
         </div>
 
 
-        <div class="card">
-
-            <p>
-                "Ехали в Ростов-на-Дону.
-                Очень комфортная поездка,
-                водитель приехал вовремя,
-                помог с багажом.
-                В салоне чисто, удобно,
-                дорога прошла спокойно.
-                Делали остановки, когда попросили.
-                Остались довольны сервисом,
-                будем обращаться ещё."
-            </p>
-
-            <strong>
-                — Ольга, Нижний Новгород
-            </strong>
-
-        </div>
+        <div class="reviews-grid">
 
 
-        <div class="card">
+            <article class="card review-card">
 
-            <p>
-                "Заказывал трансфер до ДНР.
-                Всё прошло чётко и без проблем.
-                Машина подана вовремя,
-                водитель опытный,
-                уверенно ведёт машину.
-                Дорога длинная,
-                но благодаря комфорту
-                и остановкам доехали легко.
-                Спасибо Дмитрию за поездку."
-            </p>
+                <span class="review-label">
+                    Семейная поездка
+                </span>
 
-            <strong>
-                — Сергей, Арзамас
-            </strong>
+                <blockquote class="review-text">
+                    Ехали с ребёнком, переживала за дорогу,
+                    но всё прошло отлично.
+                    Удобный автомобиль, кондиционер,
+                    спокойная езда.
+                    Водитель вежливый,
+                    всегда учитывал наши пожелания.
+                    Очень удобный формат поездки без пересадок.
+                </blockquote>
+
+                <div class="review-author">
+
+                    <strong>
+                        Марина
+                    </strong>
+
+                    <span>
+                        Нижегородская область
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <article class="card review-card">
+
+                <span class="review-label">
+                    Дальний маршрут
+                </span>
+
+                <blockquote class="review-text">
+                    Ехали в Ростов-на-Дону.
+                    Очень комфортная поездка,
+                    водитель приехал вовремя,
+                    помог с багажом.
+                    В салоне чисто, удобно,
+                    дорога прошла спокойно.
+                    Делали остановки, когда попросили.
+                    Остались довольны сервисом,
+                    будем обращаться ещё.
+                </blockquote>
+
+                <div class="review-author">
+
+                    <strong>
+                        Ольга
+                    </strong>
+
+                    <span>
+                        Нижний Новгород
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <article class="card review-card">
+
+                <span class="review-label">
+                    Междугородний трансфер
+                </span>
+
+                <blockquote class="review-text">
+                    Заказывал трансфер до ДНР.
+                    Всё прошло чётко и без проблем.
+                    Машина подана вовремя,
+                    водитель опытный,
+                    уверенно ведёт машину.
+                    Дорога длинная,
+                    но благодаря комфорту
+                    и остановкам доехали легко.
+                    Спасибо Дмитрию за поездку.
+                </blockquote>
+
+                <div class="review-author">
+
+                    <strong>
+                        Сергей
+                    </strong>
+
+                    <span>
+                        Арзамас
+                    </span>
+
+                </div>
+
+            </article>
+
 
         </div>
 
@@ -2688,7 +2648,9 @@
 
 
             <p style="font-size:14px; margin-bottom:10px;">
-                ⏱ Ответим в течение 5 минут
+                После отправки заявки свяжемся с вами,
+                чтобы уточнить маршрут,
+                стоимость и детали поездки.
             </p>
 
 

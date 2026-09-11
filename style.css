@@ -125,101 +125,6 @@ body::before {
     background: #1f2937;
 }
 
-
-/* =========================
-   PROMO BANNER
-========================= */
-
-.promo-banner {
-    position: fixed;
-    left: 20px;
-    right: 20px;
-    bottom: 20px;
-    z-index: 9998;
-    padding: 14px 18px;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(20, 25, 33, 0.98),
-            rgba(10, 14, 20, 0.98)
-        );
-    border: 1px solid rgba(255, 204, 0, 0.35);
-    border-radius: 16px;
-    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.4);
-}
-
-.promo-banner__content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-}
-
-.promo-banner__text {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.promo-banner__text strong {
-    color: #ffcc00;
-    font-size: 17px;
-}
-
-.promo-banner__text span {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 14px;
-}
-
-.promo-banner__btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 11px 18px;
-    border-radius: 10px;
-    color: #000;
-    background:
-        linear-gradient(
-            135deg,
-            #ffcc00,
-            #ff9900
-        );
-    font-weight: 700;
-    text-decoration: none;
-    white-space: nowrap;
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
-}
-
-.promo-banner__btn:hover {
-    transform: translateY(-2px);
-}
-
-.promo-banner__close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border: 0;
-    border-radius: 50%;
-    color: #fff;
-    background: rgba(255, 255, 255, 0.08);
-    font-size: 24px;
-    line-height: 1;
-    cursor: pointer;
-}
-
-.promo-banner.hidden {
-    display: none;
-}
-
-
 /* =========================
    BASE BUTTON
 ========================= */
@@ -452,6 +357,219 @@ body::before {
     animation: pulse 1.5s infinite;
 }
 
+/* =========================
+   HOMEPAGE CALCULATOR PANEL
+========================= */
+
+.home-page #calc {
+    position: relative;
+    z-index: 5;
+
+    width: calc(100% - 40px);
+    max-width: 1180px;
+
+    margin:
+        -58px
+        auto
+        52px;
+
+    padding:
+        34px
+        36px
+        38px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(16, 22, 30, 0.97),
+            rgba(8, 12, 18, 0.96)
+        );
+
+    -webkit-backdrop-filter:
+        blur(20px);
+
+    backdrop-filter:
+        blur(20px);
+
+    box-shadow:
+        0 28px 70px
+        rgba(0, 0, 0, 0.42);
+}
+
+
+/* TITLE */
+
+.home-page #calc > h2 {
+    max-width: 720px;
+
+    margin:
+        0
+        0
+        8px !important;
+
+    font-size:
+        clamp(
+            28px,
+            3.3vw,
+            42px
+        );
+
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+}
+
+
+/* FORM */
+
+.home-page #calcForm {
+    margin-top: 26px;
+}
+
+
+/* INPUTS */
+
+.home-page #calcForm input {
+    min-height: 54px;
+
+    padding:
+        15px
+        16px;
+
+    border-color:
+        rgba(255, 255, 255, 0.11);
+
+    background:
+        rgba(255, 255, 255, 0.045);
+}
+
+
+/* TARIFFS */
+
+.home-page #calc .tariff-selector {
+    gap: 10px;
+
+    margin-top: 8px;
+}
+
+
+.home-page #calc .tariff-card {
+    min-height: 82px;
+
+    padding: 15px 16px;
+
+    border-color:
+        rgba(255, 255, 255, 0.08);
+
+    background:
+        rgba(255, 255, 255, 0.035);
+}
+
+
+.home-page #calc .tariff-card.active {
+    border-color:
+        rgba(241, 215, 122, 0.58);
+
+    background:
+        rgba(241, 215, 122, 0.10);
+
+    box-shadow:
+        inset
+        0
+        0
+        0
+        1px
+        rgba(241, 215, 122, 0.05);
+}
+
+
+/* CALCULATE BUTTON */
+
+.home-page #calcForm > button {
+    min-height: 54px;
+
+    margin-top: 4px;
+
+    font-weight: 700;
+}
+
+
+/* RESULT */
+
+.home-page #calc #result {
+    margin-top: 18px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+
+    background:
+        rgba(255, 255, 255, 0.035);
+}
+
+
+/* =========================
+   HOMEPAGE CALCULATOR MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .home-page #calc {
+        width:
+            calc(100% - 24px);
+
+        margin:
+            -34px
+            auto
+            34px;
+
+        padding:
+            24px
+            18px
+            26px;
+
+        border-radius: 19px;
+    }
+
+
+    .home-page #calc > h2 {
+        font-size:
+            clamp(
+                25px,
+                8vw,
+                32px
+            );
+    }
+
+
+    .home-page #calcForm {
+        margin-top: 20px;
+    }
+
+
+    .home-page #calc .tariff-selector {
+        display: grid;
+
+        grid-template-columns:
+            1fr;
+
+        gap: 8px;
+    }
+
+
+    .home-page #calc .tariff-card {
+        min-height: 0;
+
+        padding: 13px 14px;
+    }
+
+}
+
 
 /* =========================
    CALCULATOR RESULT
@@ -550,6 +668,270 @@ body::before {
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
+}
+/* =========================================================
+   HOMEPAGE — ROUTE MAP
+========================================================= */
+
+.home-page .route-map-section {
+    position: relative;
+
+    max-width: 1180px;
+
+    margin:
+        0
+        auto
+        58px;
+
+    padding:
+        0;
+
+    border: 0;
+
+    background: transparent;
+
+    box-shadow: none;
+}
+
+
+/* =========================
+   MAP HEADING
+========================= */
+
+.home-page .route-map-heading {
+    display: flex;
+
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 24px;
+
+    margin-bottom: 18px;
+
+    padding:
+        0
+        6px;
+}
+
+
+.home-page .route-map-heading > div {
+    max-width: 760px;
+}
+
+
+.home-page .route-map-heading h2 {
+    margin:
+        8px
+        0
+        10px !important;
+
+    color: #fff;
+
+    font-size:
+        clamp(
+            26px,
+            3vw,
+            38px
+        );
+
+    line-height: 1.15;
+
+    letter-spacing: -0.025em;
+}
+
+
+.home-page .route-map-heading p {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.58);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================
+   BACK LINK
+========================= */
+
+.home-page .route-map-back {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    min-height: 42px;
+
+    padding:
+        10px
+        15px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.12);
+
+    border-radius: 10px;
+
+    color:
+        rgba(255, 255, 255, 0.84);
+
+    background:
+        rgba(255, 255, 255, 0.04);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+@media (hover: hover) {
+
+    .home-page .route-map-back:hover {
+        color: #05080c;
+
+        border-color: #f1d77a;
+
+        background: #f1d77a;
+
+        transform:
+            translateY(-2px);
+    }
+
+}
+
+
+/* =========================
+   MAP PANEL
+========================= */
+
+.home-page .route-map-wrapper {
+    position: relative;
+
+    padding: 8px;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(14, 19, 27, 0.96),
+            rgba(7, 11, 16, 0.96)
+        );
+
+    box-shadow:
+        0 22px 55px
+        rgba(0, 0, 0, 0.25);
+}
+
+
+/* OVERRIDE GLOBAL MAP LOOK */
+
+.home-page .route-map-wrapper #map {
+    height: 420px;
+
+    margin-top: 0;
+
+    border: 0;
+
+    border-radius: 16px;
+
+    background: #0a0f15;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+
+    .home-page .route-map-heading {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 14px;
+    }
+
+
+    .home-page .route-map-back {
+        align-self: flex-start;
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .home-page .route-map-section {
+        width:
+            calc(100% - 24px);
+
+        margin:
+            0
+            auto
+            36px;
+    }
+
+
+    .home-page .route-map-heading {
+        margin-bottom: 14px;
+
+        padding: 0;
+    }
+
+
+    .home-page .route-map-heading h2 {
+        font-size:
+            clamp(
+                24px,
+                7.5vw,
+                30px
+            );
+    }
+
+
+    .home-page .route-map-heading p {
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+
+    .home-page .route-map-wrapper {
+        padding: 5px;
+
+        border-radius: 17px;
+    }
+
+
+    .home-page .route-map-wrapper #map {
+        height: 330px;
+
+        border-radius: 13px;
+    }
+
 }
 
 
@@ -19202,6 +19584,498 @@ body.gallery-open {
         animation-iteration-count: 1 !important;
     }
 }
+
+/* =========================================================
+   HOMEPAGE — ADDITIONAL ROUTES
+========================================================= */
+
+.home-page .routes-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    gap: 14px;
+
+    margin-top: 26px;
+
+    padding:
+        16px
+        18px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+
+    border-radius: 16px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+
+/* LABEL */
+
+.home-page .routes-more__label {
+    color:
+        rgba(255, 255, 255, 0.46);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    letter-spacing: 0.04em;
+}
+
+
+/* LINKS WRAPPER */
+
+.home-page .routes-more__links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+
+/* ROUTE LINK */
+
+.home-page .routes-more__links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 34px;
+
+    padding:
+        7px
+        12px;
+
+    border:
+        1px solid
+        rgba(241, 215, 122, 0.14);
+
+    border-radius: 999px;
+
+    color:
+        rgba(255, 255, 255, 0.82);
+
+    background:
+        rgba(241, 215, 122, 0.04);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* HOVER */
+
+@media (hover: hover) {
+
+    .home-page .routes-more__links a:hover {
+        color: #05080c;
+
+        border-color: #f1d77a;
+
+        background: #f1d77a;
+
+        transform:
+            translateY(-2px);
+    }
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .home-page .routes-more {
+        align-items: stretch;
+
+        flex-direction: column;
+
+        gap: 10px;
+
+        padding:
+            14px
+            12px;
+
+        text-align: center;
+    }
+
+
+    .home-page .routes-more__links {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 8px;
+    }
+
+
+    .home-page .routes-more__links a {
+        width: 100%;
+
+        min-height: 40px;
+
+        padding:
+            9px
+            10px;
+    }
+
+}
+
+/* =========================================================
+   HOMEPAGE — REVIEWS
+========================================================= */
+
+.home-page .reviews-section {
+    max-width: 1240px;
+
+    padding:
+        38px
+        20px;
+
+    border: 0;
+
+    background: transparent;
+
+    box-shadow: none;
+}
+
+
+.home-page .reviews-section .section-heading {
+    max-width: 760px;
+
+    margin-bottom: 32px;
+}
+
+
+.home-page .reviews-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+/* =========================
+   REVIEW CARD
+========================= */
+
+.home-page .review-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+    min-height: 100%;
+
+    margin: 0;
+
+    padding:
+        28px
+        26px
+        24px;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17, 23, 31, 0.96),
+            rgba(8, 12, 18, 0.96)
+        );
+
+    box-shadow:
+        0 18px 45px
+        rgba(0, 0, 0, 0.20);
+
+    text-align: left;
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* GOLD ACCENT */
+
+.home-page .review-card::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: 26px;
+    right: 26px;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(241, 215, 122, 0.75),
+            transparent
+        );
+}
+
+
+/* QUOTE MARK */
+
+.home-page .review-card::after {
+    content: "“";
+
+    position: absolute;
+    top: 8px;
+    right: 20px;
+
+    color:
+        rgba(241, 215, 122, 0.08);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 92px;
+    line-height: 1;
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   LABEL
+========================= */
+
+.home-page .review-label {
+    position: relative;
+    z-index: 1;
+
+    display: inline-flex;
+    align-self: flex-start;
+
+    min-height: 30px;
+
+    margin-bottom: 22px;
+
+    padding:
+        6px
+        10px;
+
+    border:
+        1px solid
+        rgba(241, 215, 122, 0.20);
+
+    border-radius: 999px;
+
+    color: #f1d77a;
+
+    background:
+        rgba(241, 215, 122, 0.06);
+
+    font-size: 10px;
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================
+   REVIEW TEXT
+========================= */
+
+.home-page .review-text {
+    position: relative;
+    z-index: 1;
+
+    flex: 1;
+
+    margin: 0;
+
+    padding: 0;
+
+    border: 0;
+
+    color:
+        rgba(255, 255, 255, 0.76);
+
+    font-size: 14px;
+    font-style: normal;
+
+    line-height: 1.78;
+}
+
+
+/* =========================
+   AUTHOR
+========================= */
+
+.home-page .review-author {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+
+    margin-top: 26px;
+    padding-top: 18px;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.07);
+}
+
+
+.home-page .review-author strong {
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 650;
+}
+
+
+.home-page .review-author span {
+    color:
+        rgba(255, 255, 255, 0.46);
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   DESKTOP HOVER
+========================= */
+
+@media (hover: hover) {
+
+    .home-page .review-card:hover {
+        transform:
+            translateY(-5px);
+
+        border-color:
+            rgba(241, 215, 122, 0.20);
+
+        box-shadow:
+            0 24px 55px
+            rgba(0, 0, 0, 0.28);
+    }
+
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+
+    .home-page .reviews-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .home-page .review-card {
+        min-height: 0;
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .home-page .reviews-section {
+        padding:
+            24px
+            12px;
+    }
+
+
+    .home-page .reviews-section .section-heading {
+        margin-bottom: 22px;
+    }
+
+
+    .home-page .reviews-grid {
+        gap: 12px;
+    }
+
+
+    .home-page .review-card {
+        padding:
+            22px
+            18px
+            20px;
+
+        border-radius: 16px;
+    }
+
+
+    .home-page .review-card::before {
+        left: 18px;
+        right: 18px;
+    }
+
+
+    .home-page .review-card::after {
+        top: 5px;
+        right: 12px;
+
+        font-size: 72px;
+    }
+
+
+    .home-page .review-label {
+        margin-bottom: 17px;
+    }
+
+
+    .home-page .review-text {
+        font-size: 13px;
+        line-height: 1.72;
+    }
+
+
+    .home-page .review-author {
+        margin-top: 20px;
+        padding-top: 15px;
+    }
+
+}
+
 /* =========================================================
    ROUTE PAGES — SHARED SITE BACKGROUND
 ========================================================= */
