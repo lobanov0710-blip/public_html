@@ -3428,7 +3428,7 @@ header:not(.site-header) h1 {
     --route-accent-rgb: 241, 215, 122;
     --route-glow-rgb: 70, 95, 130;
     --route-text: #f5f7f9;
-    --route-muted: rgba(236, 240, 244, 0.67);
+    --route-muted: rgba(236, 240, 244, 0.72);
 
     background-image:
         url("images/backgraund.webp");
@@ -3449,9 +3449,17 @@ header:not(.site-header) h1 {
         #070a0f;
 }
 
+
+.route-page::before {
+    background:
+        rgba(5, 8, 12, 0.52);
+}
+
+
 .route-page--spb {
     --route-glow-rgb: 61, 93, 140;
 }
+
 
 .route-page--moscow {
     --route-accent: #f0d275;
@@ -3459,11 +3467,13 @@ header:not(.site-header) h1 {
     --route-glow-rgb: 75, 103, 145;
 }
 
+
 .route-page--kazan {
     --route-accent: #d9d18a;
     --route-accent-rgb: 217, 209, 138;
     --route-glow-rgb: 55, 112, 115;
 }
+
 
 .route-page--ekaterinburg {
     --route-accent: #d8d09a;
@@ -3471,11 +3481,13 @@ header:not(.site-header) h1 {
     --route-glow-rgb: 66, 92, 126;
 }
 
+
 .route-page--donetsk {
     --route-accent: #f1d77a;
     --route-accent-rgb: 241, 215, 122;
     --route-glow-rgb: 122, 67, 67;
 }
+
 
 .route-page--lugansk {
     --route-accent: #e4d68d;
@@ -3483,11 +3495,13 @@ header:not(.site-header) h1 {
     --route-glow-rgb: 102, 82, 67;
 }
 
+
 .route-page--rostov {
     --route-accent: #e8d58b;
     --route-accent-rgb: 232, 213, 139;
     --route-glow-rgb: 78, 103, 119;
 }
+
 
 .route-page--saratov {
     --route-accent: #d9cf86;
@@ -3495,11 +3509,13 @@ header:not(.site-header) h1 {
     --route-glow-rgb: 73, 96, 118;
 }
 
+
 .route-page--sochi {
     --route-accent: #e5d592;
     --route-accent-rgb: 229, 213, 146;
     --route-glow-rgb: 52, 104, 93;
 }
+
 
 .route-page--ulyanovsk {
     --route-accent: #d8c982;
@@ -3652,9 +3668,9 @@ header:not(.site-header) h1 {
             transparent 30%
         ),
         linear-gradient(
-            135deg,
-            rgba(14, 20, 29, 0.98),
-            rgba(7, 11, 17, 0.98)
+                135deg,
+             rgba(14, 20, 29, 0.82),
+             rgba(7, 11, 17, 0.74)
         );
 
     box-shadow:
@@ -3794,15 +3810,15 @@ header:not(.site-header) h1 {
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.09);
+        rgba(255, 255, 255, 0.12);
 
     border-radius: 22px;
 
     background:
         linear-gradient(
             145deg,
-            rgba(255, 255, 255, 0.07),
-            rgba(255, 255, 255, 0.025)
+            rgba(255, 255, 255, 0.095),
+            rgba(255, 255, 255, 0.045)
         );
 
     -webkit-backdrop-filter:
@@ -3813,7 +3829,7 @@ header:not(.site-header) h1 {
 
     box-shadow:
         0 18px 50px
-        rgba(0, 0, 0, 0.25);
+        rgba(0, 0, 0, 0.22);
 }
 
 .route-page .route-card__label {
@@ -3949,11 +3965,17 @@ header:not(.site-header) h1 {
     border-radius: 22px;
 
     background:
-        linear-gradient(
-            145deg,
-            rgba(15, 21, 31, 0.94),
-            rgba(9, 14, 21, 0.94)
-        );
+    linear-gradient(
+        145deg,
+        rgba(15, 21, 31, 0.72),
+        rgba(9, 14, 21, 0.68)
+    );
+
+    -webkit-backdrop-filter:
+        blur(10px);
+
+    backdrop-filter:
+        blur(10px);
 
     box-shadow:
         0 18px 50px
@@ -4023,14 +4045,20 @@ header:not(.site-header) h1 {
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.06);
+        rgba(255, 255, 255, 0.08);
 
     border-radius: 15px;
 
     color: var(--route-muted);
 
     background:
-        rgba(255, 255, 255, 0.025);
+        rgba(255, 255, 255, 0.045);
+
+    -webkit-backdrop-filter:
+        blur(7px);
+
+    backdrop-filter:
+        blur(7px);
 
     font-size: 15px;
     line-height: 1.8;
@@ -4080,12 +4108,22 @@ header:not(.site-header) h1 {
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.07);
+        rgba(255, 255, 255, 0.09);
 
     border-radius: 17px;
 
     background:
-        rgba(255, 255, 255, 0.028);
+        rgba(255, 255, 255, 0.055);
+
+    -webkit-backdrop-filter:
+        blur(8px);
+
+    backdrop-filter:
+        blur(8px);
+
+    box-shadow:
+        0 10px 30px
+        rgba(0, 0, 0, 0.08);
 
     transition:
         transform var(--transition-fast),
@@ -4216,16 +4254,26 @@ header:not(.site-header) h1 {
 
     border:
         1px solid
-        rgba(var(--route-accent-rgb), 0.18);
+        rgba(var(--route-accent-rgb), 0.22);
 
     border-radius: 20px;
 
     background:
         linear-gradient(
             145deg,
-            rgba(var(--route-accent-rgb), 0.07),
-            rgba(255, 255, 255, 0.025)
+            rgba(var(--route-accent-rgb), 0.10),
+            rgba(255, 255, 255, 0.045)
         );
+
+    -webkit-backdrop-filter:
+        blur(8px);
+
+    backdrop-filter:
+        blur(8px);
+
+    box-shadow:
+        0 14px 36px
+        rgba(0, 0, 0, 0.10);
 }
 
 .route-page .route-airport__badge {
@@ -4378,12 +4426,22 @@ header:not(.site-header) h1 {
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.08);
+        rgba(255, 255, 255, 0.10);
 
     border-radius: 18px;
 
     background:
-        rgba(255, 255, 255, 0.035);
+        rgba(255, 255, 255, 0.055);
+
+    -webkit-backdrop-filter:
+        blur(8px);
+
+    backdrop-filter:
+        blur(8px);
+
+    box-shadow:
+        0 12px 32px
+        rgba(0, 0, 0, 0.08);
 }
 
 .route-page .route-price__action strong,
@@ -4461,12 +4519,18 @@ header:not(.site-header) h1 {
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.07);
+        rgba(255, 255, 255, 0.09);
 
     border-radius: 14px;
 
     background:
-        rgba(255, 255, 255, 0.025);
+        rgba(255, 255, 255, 0.045);
+
+    -webkit-backdrop-filter:
+        blur(7px);
+
+    backdrop-filter:
+        blur(7px);
 }
 
 .route-page .route-stops__points strong {
@@ -4517,12 +4581,18 @@ header:not(.site-header) h1 {
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.08);
+        rgba(255, 255, 255, 0.10);
 
     border-radius: 16px;
 
     background:
-        rgba(255, 255, 255, 0.03);
+        rgba(255, 255, 255, 0.05);
+
+    -webkit-backdrop-filter:
+        blur(8px);
+
+    backdrop-filter:
+        blur(8px);
 }
 
 .route-page .route-return__points span {
