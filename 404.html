@@ -1,166 +1,455 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Страница не найдена — Comfort Transfer</title>
+    <meta charset="UTF-8">
 
-<meta name="description" content="Страница не найдена. Вернитесь на сайт Comfort Transfer и закажите комфортный междугородний трансфер.">
-<meta name="robots" content="noindex">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Страница не найдена | Transfer Servis</title>
 
-<style>
+    <meta
+        name="description"
+        content="Запрошенная страница не найдена. Перейдите на главную страницу Transfer Servis или оставьте заявку на междугородний трансфер."
+    >
 
-/* RESET */
-* {
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+    <meta
+        name="robots"
+        content="noindex, follow"
+    >
 
-/* BODY */
-body {
-    font-family:'Inter',sans-serif;
-    color:#eaeef2;
-    height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
+    <meta
+        name="theme-color"
+        content="#070a0f"
+    >
 
-    background:url("images/background.webp") center/cover no-repeat fixed;
-    position:relative;
-    overflow:hidden;
-}
+    <link
+        rel="icon"
+        type="image/png"
+        href="/images/favicon.png"
+    >
 
-/* затемнение */
-body::before {
-    content:"";
-    position:fixed;
-    inset:0;
-    background:
-        radial-gradient(circle at top, rgba(0,0,0,0.3), rgba(0,0,0,0.9)),
-        linear-gradient(to bottom, rgba(11,15,20,0.4), rgba(11,15,20,0.95));
-    z-index:1;
-}
 
-/* 🚗 МАШИНА НА ФОНЕ */
-.car-bg {
-    position:absolute;
-    bottom:0;
-    left:50%;
-    transform:translateX(-50%);
-    width:700px;
-    max-width:90%;
-    opacity:0.25;
-    z-index:1;
-    pointer-events:none;
-    animation:floatCar 6s ease-in-out infinite;
-}
+    <style>
 
-/* контейнер */
-.container {
-    position:relative;
-    z-index:2;
-    background:rgba(0,0,0,0.55);
-    padding:50px 30px;
-    border-radius:16px;
+        /* =========================================================
+           RESET
+        ========================================================= */
 
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    max-width:500px;
-}
 
-/* 404 */
-h1 {
-    font-size:80px;
-    margin-bottom:10px;
-    color:#f1d77a;
-}
+        html {
+            color-scheme: dark;
+        }
 
-h2 {
-    font-size:22px;
-    margin-bottom:15px;
-}
 
-p {
-    opacity:0.8;
-    margin-bottom:25px;
-}
+        /* =========================================================
+           PAGE
+        ========================================================= */
 
-/* BUTTON */
-.btn {
-    display:inline-block;
-    padding:14px 30px;
-    background:linear-gradient(135deg,#d4af37,#f1d77a);
-    color:black;
-    border-radius:30px;
-    text-decoration:none;
-    font-weight:600;
-    transition:0.3s;
-    margin:5px;
-}
+        body {
+            min-height: 100vh;
 
-.btn:hover {
-    transform:scale(1.05);
-}
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-/* АНИМАЦИЯ */
-@keyframes floatCar {
-    0% { transform:translate(-50%, 0); }
-    50% { transform:translate(-50%, -15px); }
-    100% { transform:translate(-50%, 0); }
-}
+            padding: 24px;
 
-/* MOBILE */
-@media (max-width:480px) {
-    h1 {
-        font-size:60px;
-    }
+            color: #f5f7f9;
 
-    .container {
-        padding:30px 20px;
-    }
+            background:
+                linear-gradient(
+                    rgba(7, 10, 15, 0.82),
+                    rgba(7, 10, 15, 0.94)
+                ),
+                url("/images/backgraund.webp")
+                center / cover
+                no-repeat
+                fixed;
 
-    .car-bg {
-        width:90%;
-        opacity:0.2;
-    }
-}
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+        }
 
-</style>
+
+        /* =========================================================
+           ERROR CARD
+        ========================================================= */
+
+        .error-page {
+            width: 100%;
+            max-width: 760px;
+
+            padding:
+                clamp(
+                    32px,
+                    6vw,
+                    64px
+                );
+
+            border:
+                1px solid rgba(255, 255, 255, 0.09);
+
+            border-radius: 28px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(15, 20, 28, 0.88),
+                    rgba(7, 10, 15, 0.82)
+                );
+
+            box-shadow:
+                0 30px 90px
+                rgba(0, 0, 0, 0.45);
+
+            text-align: center;
+
+            -webkit-backdrop-filter: blur(18px);
+            backdrop-filter: blur(18px);
+        }
+
+
+        /* =========================================================
+           404 CODE
+        ========================================================= */
+
+        .error-code {
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            color: #d8c982;
+
+            font-size:
+                clamp(
+                    72px,
+                    17vw,
+                    150px
+                );
+
+            font-weight: 800;
+            line-height: 0.9;
+
+            letter-spacing: -0.07em;
+        }
+
+
+        /* =========================================================
+           TEXT
+        ========================================================= */
+
+        h1 {
+            margin-bottom: 16px;
+
+            color: #ffffff;
+
+            font-size:
+                clamp(
+                    28px,
+                    5vw,
+                    44px
+                );
+
+            font-weight: 700;
+            line-height: 1.1;
+
+            letter-spacing: -0.035em;
+        }
+
+
+        .description {
+            max-width: 580px;
+
+            margin: 0 auto;
+
+            color:
+                rgba(236, 240, 244, 0.70);
+
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+
+        /* =========================================================
+           ACTIONS
+        ========================================================= */
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            margin-top: 34px;
+        }
+
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 50px;
+
+            padding: 12px 22px;
+
+            border:
+                1px solid transparent;
+
+            border-radius: 12px;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .btn-primary {
+            color: #090b0f;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eadfa5,
+                    #c3ad58
+                );
+
+            box-shadow:
+                0 10px 30px
+                rgba(216, 201, 130, 0.10);
+        }
+
+
+        .btn-secondary {
+            color: #ffffff;
+
+            border-color:
+                rgba(255, 255, 255, 0.11);
+
+            background:
+                rgba(255, 255, 255, 0.045);
+        }
+
+
+        /* =========================================================
+           CONTACT
+        ========================================================= */
+
+        .help {
+            margin-top: 32px;
+            padding-top: 24px;
+
+            border-top:
+                1px solid rgba(255, 255, 255, 0.07);
+
+            color:
+                rgba(255, 255, 255, 0.50);
+
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+
+        .help a {
+            color: #d8c982;
+
+            font-weight: 600;
+
+            text-decoration: none;
+        }
+
+
+        /* =========================================================
+           HOVER
+        ========================================================= */
+
+        @media (hover: hover) {
+
+            .btn:hover {
+                transform: translateY(-2px);
+            }
+
+
+            .btn-primary:hover {
+                box-shadow:
+                    0 14px 34px
+                    rgba(216, 201, 130, 0.16);
+            }
+
+
+            .btn-secondary:hover {
+                border-color:
+                    rgba(216, 201, 130, 0.22);
+
+                background:
+                    rgba(255, 255, 255, 0.07);
+            }
+
+
+            .help a:hover {
+                text-decoration: underline;
+                text-underline-offset: 3px;
+            }
+
+        }
+
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 520px) {
+
+            body {
+                padding: 14px;
+
+                background:
+                    linear-gradient(
+                        rgba(7, 10, 15, 0.86),
+                        rgba(7, 10, 15, 0.96)
+                    ),
+                    url("/images/backgraund.webp")
+                    center / cover
+                    no-repeat;
+            }
+
+
+            .error-page {
+                padding: 36px 20px;
+
+                border-radius: 20px;
+            }
+
+
+            .description {
+                font-size: 15px;
+            }
+
+
+            .actions {
+                display: grid;
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .btn {
+                width: 100%;
+            }
+
+        }
+
+
+        /* =========================================================
+           REDUCED MOTION
+        ========================================================= */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+
+                transition-duration: 0.01ms !important;
+
+                animation-duration: 0.01ms !important;
+
+                animation-iteration-count: 1 !important;
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-<!-- 🚗 ФОНОВОЕ АВТО -->
-<img src="images/car.png" alt="Автомобиль" class="car-bg">
+    <main class="error-page">
 
-<div class="container">
+        <div
+            class="error-code"
+            aria-hidden="true"
+        >
+            404
+        </div>
 
-    <h1>404</h1>
 
-    <h2>Страница не найдена</h2>
+        <h1>
+            Страница не найдена
+        </h1>
 
-    <p>
-        Похоже, вы попали не туда.  
-        Возможно, страница была удалена или ссылка устарела.  
-        Через 5 секунд вы будете перенаправлены на главную.
-    </p>
 
-    <a href="/" class="btn">Вернуться на главную</a>
-    <a href="/#tgForm" class="btn">Связаться с нами</a>
+        <p class="description">
+            Возможно,
+            адрес был введён неверно,
+            ссылка устарела
+            или страница была перемещена.
+            Вы можете вернуться на главную
+            или перейти к оформлению заявки
+            на междугородний трансфер.
+        </p>
 
-</div>
 
-<script>
-setTimeout(function () {
-    window.location.href = "/";
-}, 5000);
-</script>
+        <div class="actions">
+
+            <a
+                href="/"
+                class="btn btn-primary"
+            >
+                На главную
+            </a>
+
+
+            <a
+                href="/#tgForm"
+                class="btn btn-secondary"
+            >
+                Оставить заявку
+            </a>
+
+        </div>
+
+
+        <p class="help">
+
+            Нужна помощь?
+
+            <a href="tel:+79202515103">
+                +7 920 251-51-03
+            </a>
+
+        </p>
+
+    </main>
 
 </body>
+
 </html>
