@@ -336,6 +336,25 @@ button {
 .home-page #tgForm > p:first-of-type {
     color: rgba(255, 255, 255, 0.74);
 }
+.form-note {
+    margin-bottom: 10px;
+
+    font-size: 14px;
+}
+
+.form-meta {
+    margin: 0;
+
+    text-align: center;
+
+    font-size: 12px;
+
+    opacity: 0.7;
+}
+
+.form-meta--spaced {
+    margin-top: 8px;
+}
 
 .home-page #tgForm input[type="date"],
 .route-page #tgForm input[type="date"] {
