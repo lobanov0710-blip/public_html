@@ -6,8 +6,8 @@ RewriteEngine On
 # www -> non-www
 # =========================================
 
-RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+RewriteCond %{HTTP_HOST} ^www\.transfer-servis52\.ru$ [NC]
+RewriteRule ^ https://transfer-servis52.ru%{REQUEST_URI} [L,R=301]
 
 
 # =========================================
