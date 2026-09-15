@@ -26,7 +26,7 @@ window.initForm = function () {
   form.dataset.initialized =
     "true";
 
-    const btn =
+  const btn =
     form.querySelector(
       'button[type="submit"]'
     );
