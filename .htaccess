@@ -77,3 +77,30 @@ AddType application/xml .xml
 # =========================================
 
 AddDefaultCharset UTF-8
+
+
+# =========================================
+# BROWSER CACHE
+# =========================================
+
+<IfModule mod_expires.c>
+
+    ExpiresActive On
+
+    ExpiresByType image/jpeg "access plus 30 days"
+    ExpiresByType image/png "access plus 30 days"
+    ExpiresByType image/webp "access plus 30 days"
+    ExpiresByType image/gif "access plus 30 days"
+    ExpiresByType image/svg+xml "access plus 30 days"
+    ExpiresByType image/x-icon "access plus 30 days"
+
+</IfModule>
+
+
+<IfModule mod_headers.c>
+
+    <FilesMatch "\.(jpg|jpeg|png|webp|gif|svg|ico)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+
+</IfModule>
