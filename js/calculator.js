@@ -96,28 +96,31 @@ window.initCalculator = function () {
     return;
   }
 
-  // ==========================
+    // ==========================
   // STATE
   // ==========================
 
   const checkedTariff =
-  form.querySelector(
-    'input[type="radio"][name="tariff"]:checked'
-  );
+    form.querySelector(
+      'input[type="radio"][name="tariff"]:checked'
+    );
 
-let selectedTariff =
-  checkedTariff?.value ||
-  form.querySelector(
-    ".tariff-card.active"
-  )?.dataset?.tariff ||
-  "comfort";
+  let selectedTariff =
+    checkedTariff?.value ||
+    form.querySelector(
+      ".tariff-card.active"
+    )?.dataset?.tariff ||
+    "comfort";
 
-selectedTariff =
-  String(
-    selectedTariff
-  )
-    .trim()
-    .toLowerCase();
+  selectedTariff =
+    String(
+      selectedTariff
+    )
+      .trim()
+      .toLowerCase();
+
+  let isLoading =
+    false;
 
   // ==========================
   // FORMATTERS
