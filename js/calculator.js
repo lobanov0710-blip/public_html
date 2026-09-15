@@ -96,7 +96,7 @@ window.initCalculator = function () {
     return;
   }
 
-    // ==========================
+  // ==========================
   // STATE
   // ==========================
 
@@ -612,109 +612,109 @@ window.initCalculator = function () {
   }
 
   // ==========================
-// TARIFF
-// ==========================
+  // TARIFF
+  // ==========================
 
-const tariffCards =
-  Array.from(
-    form.querySelectorAll(
-      ".tariff-card"
-    )
-  );
+  const tariffCards =
+    Array.from(
+      form.querySelectorAll(
+        ".tariff-card"
+      )
+    );
 
-function activateTariff(
-  card,
-  tariff
-) {
+  function activateTariff(
+    card,
+    tariff
+  ) {
 
-  if (!card) {
-    return;
+    if (!card) {
+      return;
+    }
+
+    tariffCards
+      .forEach(
+        item => {
+
+          item
+            .classList
+            .toggle(
+              "active",
+              item === card
+            );
+        }
+      );
+
+    selectedTariff =
+      String(
+        tariff ||
+        card.dataset?.tariff ||
+        "comfort"
+      )
+        .trim()
+        .toLowerCase();
+
+    const radio =
+      card.querySelector(
+        'input[type="radio"][name="tariff"]'
+      );
+
+    if (
+      radio &&
+      !radio.checked
+    ) {
+
+      radio.checked =
+        true;
+    }
+
+    log(
+      "TARIFF:",
+      selectedTariff
+    );
   }
+
 
   tariffCards
     .forEach(
-      item => {
+      card => {
 
-        item
-          .classList
-          .toggle(
-            "active",
-            item === card
+        const radio =
+          card.querySelector(
+            'input[type="radio"][name="tariff"]'
           );
-      }
-    );
 
-  selectedTariff =
-    String(
-      tariff ||
-      card.dataset?.tariff ||
-      "comfort"
-    )
-      .trim()
-      .toLowerCase();
+        if (radio) {
 
-  const radio =
-    card.querySelector(
-      'input[type="radio"][name="tariff"]'
-    );
+          radio.addEventListener(
+            "change",
+            () => {
 
-  if (
-    radio &&
-    !radio.checked
-  ) {
+              if (!radio.checked) {
+                return;
+              }
 
-    radio.checked =
-      true;
-  }
-
-  log(
-    "TARIFF:",
-    selectedTariff
-  );
-}
-
-
-tariffCards
-  .forEach(
-    card => {
-
-      const radio =
-        card.querySelector(
-          'input[type="radio"][name="tariff"]'
-        );
-
-      if (radio) {
-
-        radio.addEventListener(
-          "change",
-          () => {
-
-            if (!radio.checked) {
-              return;
+              activateTariff(
+                card,
+                radio.value
+              );
             }
+          );
+
+          return;
+        }
+
+        card.addEventListener(
+          "click",
+          () => {
 
             activateTariff(
               card,
-              radio.value
+              card.dataset?.tariff
             );
           }
         );
-
-        return;
       }
-
-      card.addEventListener(
-        "click",
-        () => {
-
-          activateTariff(
-            card,
-            card.dataset?.tariff
-          );
-        }
-      );
-    }
-  );
+    );
 
   // ==========================
   // CALCULATE
@@ -779,9 +779,9 @@ tariffCards
 
       try {
 
-        const response =
-  await fetch(
-    CALCULATE_API,
+                const response =
+          await fetch(
+            CALCULATE_API,
             {
               method:
                 "POST",
