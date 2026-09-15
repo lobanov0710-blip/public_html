@@ -779,7 +779,7 @@ window.initCalculator = function () {
 
       try {
 
-                const response =
+        const response =
           await fetch(
             CALCULATE_API,
             {
