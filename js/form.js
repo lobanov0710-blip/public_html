@@ -26,10 +26,46 @@ window.initForm = function () {
   form.dataset.initialized =
     "true";
 
-  const btn =
+    const btn =
     form.querySelector(
       'button[type="submit"]'
     );
+
+  const dateField =
+    form.querySelector(
+      'input[type="date"][name="date"]'
+    );
+
+  if (
+    dateField &&
+    !dateField.min
+  ) {
+
+    const today =
+      new Date();
+
+    const year =
+      today.getFullYear();
+
+    const month =
+      String(
+        today.getMonth() + 1
+      ).padStart(
+        2,
+        "0"
+      );
+
+    const day =
+      String(
+        today.getDate()
+      ).padStart(
+        2,
+        "0"
+      );
+
+    dateField.min =
+      `${year}-${month}-${day}`;
+  }
 
   let loading =
     false;
