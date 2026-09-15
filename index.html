@@ -624,57 +624,82 @@
             >
 
 
-            <div class="tariff-selector">
+            <div
+    class="tariff-selector"
+    role="radiogroup"
+    aria-label="Выберите тариф"
+>
+
+    <label
+        class="tariff-card active"
+        data-tariff="comfort"
+    >
+
+        <input
+            class="tariff-radio"
+            type="radio"
+            name="tariff"
+            value="comfort"
+            checked
+        >
+
+        <span class="tariff-title">
+            🚗 Комфорт
+        </span>
+
+        <span class="tariff-desc">
+            Оптимальный вариант
+        </span>
+
+    </label>
 
 
-                <div
-                    class="tariff-card active"
-                    data-tariff="comfort"
-                >
+    <label
+        class="tariff-card"
+        data-tariff="business"
+    >
 
-                    <div class="tariff-title">
-                        🚗 Комфорт
-                    </div>
+        <input
+            class="tariff-radio"
+            type="radio"
+            name="tariff"
+            value="business"
+        >
 
-                    <div class="tariff-desc">
-                        Оптимальный вариант
-                    </div>
+        <span class="tariff-title">
+            🚘 Бизнес
+        </span>
 
-                </div>
+        <span class="tariff-desc">
+            Повышенный комфорт
+        </span>
 
-
-                <div
-                    class="tariff-card"
-                    data-tariff="business"
-                >
-
-                    <div class="tariff-title">
-                        🚘 Бизнес
-                    </div>
-
-                    <div class="tariff-desc">
-                        Повышенный комфорт
-                    </div>
-
-                </div>
+    </label>
 
 
-                <div
-                    class="tariff-card"
-                    data-tariff="minivan"
-                >
+    <label
+        class="tariff-card"
+        data-tariff="minivan"
+    >
 
-                    <div class="tariff-title">
-                        🚐 Минивэн
-                    </div>
+        <input
+            class="tariff-radio"
+            type="radio"
+            name="tariff"
+            value="minivan"
+        >
 
-                    <div class="tariff-desc">
-                        Для 4-6 человек
-                    </div>
+        <span class="tariff-title">
+            🚐 Минивэн
+        </span>
 
-                </div>
+        <span class="tariff-desc">
+            Для 4-6 человек
+        </span>
 
-            </div>
+    </label>
+
+</div>
 
 
             <button type="submit">

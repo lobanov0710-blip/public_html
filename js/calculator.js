@@ -100,21 +100,24 @@ window.initCalculator = function () {
   // STATE
   // ==========================
 
-  let selectedTariff =
-    document.querySelector(
-      ".tariff-card.active"
-    )?.dataset?.tariff ||
-    "comfort";
+  const checkedTariff =
+  form.querySelector(
+    'input[type="radio"][name="tariff"]:checked'
+  );
 
-  selectedTariff =
-    String(
-      selectedTariff
-    )
-      .trim()
-      .toLowerCase();
+let selectedTariff =
+  checkedTariff?.value ||
+  form.querySelector(
+    ".tariff-card.active"
+  )?.dataset?.tariff ||
+  "comfort";
 
-  let isLoading =
-    false;
+selectedTariff =
+  String(
+    selectedTariff
+  )
+    .trim()
+    .toLowerCase();
 
   // ==========================
   // FORMATTERS
@@ -606,58 +609,109 @@ window.initCalculator = function () {
   }
 
   // ==========================
-  // TARIFF
-  // ==========================
+// TARIFF
+// ==========================
 
-  document
-    .querySelectorAll(
+const tariffCards =
+  Array.from(
+    form.querySelectorAll(
       ".tariff-card"
     )
-    .forEach(
-      card => {
+  );
 
-        card.addEventListener(
-          "click",
+function activateTariff(
+  card,
+  tariff
+) {
+
+  if (!card) {
+    return;
+  }
+
+  tariffCards
+    .forEach(
+      item => {
+
+        item
+          .classList
+          .toggle(
+            "active",
+            item === card
+          );
+      }
+    );
+
+  selectedTariff =
+    String(
+      tariff ||
+      card.dataset?.tariff ||
+      "comfort"
+    )
+      .trim()
+      .toLowerCase();
+
+  const radio =
+    card.querySelector(
+      'input[type="radio"][name="tariff"]'
+    );
+
+  if (
+    radio &&
+    !radio.checked
+  ) {
+
+    radio.checked =
+      true;
+  }
+
+  log(
+    "TARIFF:",
+    selectedTariff
+  );
+}
+
+
+tariffCards
+  .forEach(
+    card => {
+
+      const radio =
+        card.querySelector(
+          'input[type="radio"][name="tariff"]'
+        );
+
+      if (radio) {
+
+        radio.addEventListener(
+          "change",
           () => {
 
-            document
-              .querySelectorAll(
-                ".tariff-card"
-              )
-              .forEach(
-                item => {
+            if (!radio.checked) {
+              return;
+            }
 
-                  item
-                    .classList
-                    .remove(
-                      "active"
-                    );
-                }
-              );
-
-            card
-              .classList
-              .add(
-                "active"
-              );
-
-            selectedTariff =
-              String(
-                card.dataset
-                  .tariff ||
-                "comfort"
-              )
-                .trim()
-                .toLowerCase();
-
-            log(
-              "TARIFF:",
-              selectedTariff
+            activateTariff(
+              card,
+              radio.value
             );
           }
         );
+
+        return;
       }
-    );
+
+      card.addEventListener(
+        "click",
+        () => {
+
+          activateTariff(
+            card,
+            card.dataset?.tariff
+          );
+        }
+      );
+    }
+  );
 
   // ==========================
   // CALCULATE
