@@ -232,7 +232,7 @@
     ></script>
 
     <script
-        src="/js/form.js?v=20260905-2"
+        src="/js/form.js?v=20261016-1"
         defer
     ></script>
 
@@ -1365,6 +1365,7 @@
         <form
             id="tgForm"
             class="contact-form"
+            method="post"
             autocomplete="on"
         >
 
@@ -1461,9 +1462,15 @@
             </div>
 
 
+            <p class="form-note" data-booking-fallback>
+                Если форма недоступна, воспользуйтесь
+                кнопкой звонка на странице.
+            </p>
+
             <button
                 type="submit"
                 class="btn"
+                disabled
             >
                 Отправить заявку
             </button>

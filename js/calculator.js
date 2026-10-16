@@ -622,14 +622,35 @@ window.initCalculator = function () {
       )
     );
 
+  const tariffRadios =
+    Array.from(
+      form.querySelectorAll(
+        'input[type="radio"][name="tariff"]'
+      )
+    ).filter(
+      radio => !radio.disabled
+    );
+
   function activateTariff(
     card,
     tariff
   ) {
 
-    if (!card) {
+    if (!card || isLoading) {
       return;
     }
+
+    const nextTariff =
+      String(
+        tariff ||
+        card.dataset?.tariff ||
+        "comfort"
+      )
+        .trim()
+        .toLowerCase();
+
+    const tariffChanged =
+      nextTariff !== selectedTariff;
 
     tariffCards
       .forEach(
@@ -645,13 +666,7 @@ window.initCalculator = function () {
       );
 
     selectedTariff =
-      String(
-        tariff ||
-        card.dataset?.tariff ||
-        "comfort"
-      )
-        .trim()
-        .toLowerCase();
+      nextTariff;
 
     const radio =
       card.querySelector(
@@ -665,6 +680,18 @@ window.initCalculator = function () {
 
       radio.checked =
         true;
+    }
+
+    if (tariffChanged) {
+
+      clearBookingData();
+
+      result.innerText =
+        "Тариф изменён. Рассчитайте стоимость заново.";
+
+      result.classList.add(
+        "show"
+      );
     }
 
     log(
@@ -757,8 +784,17 @@ window.initCalculator = function () {
         return;
       }
 
+      const requestTariff =
+        selectedTariff;
+
       isLoading =
         true;
+
+      tariffRadios.forEach(
+        radio => {
+          radio.disabled = true;
+        }
+      );
 
       button.disabled =
         true;
@@ -797,7 +833,7 @@ window.initCalculator = function () {
                   to,
 
                   tariff:
-                    selectedTariff
+                    requestTariff
                 })
             }
           );
@@ -938,7 +974,7 @@ window.initCalculator = function () {
           price,
 
           tariff:
-            selectedTariff,
+            requestTariff,
 
           route:
             data.route ||
@@ -961,7 +997,7 @@ window.initCalculator = function () {
         result.innerHTML = `
           🚗 ${distance.toFixed(1)} км<br>
           ⏱ ${formatDuration(duration)}<br>
-          🚘 ${tariffLabel(selectedTariff)}<br>
+          🚘 ${tariffLabel(requestTariff)}<br>
           💰 <b>${formatPrice(price)} ₽</b><br><br>
 
           <button
@@ -1025,6 +1061,12 @@ window.initCalculator = function () {
           "Ошибка сети";
 
       } finally {
+
+        tariffRadios.forEach(
+          radio => {
+            radio.disabled = false;
+          }
+        );
 
         button.disabled =
           false;
