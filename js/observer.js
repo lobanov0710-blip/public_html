@@ -1,19 +1,133 @@
 window.initObserver = function () {
 
-    const items = document.querySelectorAll(".fade-up, section");
+    // =========================
+    // ELEMENTS
+    // =========================
 
-    if (!("IntersectionObserver" in window)) {
-        items.forEach(el => el.classList.add("show"));
+    const items =
+        document.querySelectorAll(
+            ".fade-up, section"
+        );
+
+    if (!items.length) {
         return;
     }
 
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if (e.isIntersecting) {
-                e.target.classList.add("show");
-            }
-        });
-    }, { threshold: 0.1 });
 
-    items.forEach(el => observer.observe(el));
+    // =========================
+    // REDUCED MOTION
+    // =========================
+
+    const prefersReducedMotion =
+        window.matchMedia &&
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+    if (prefersReducedMotion) {
+
+        items.forEach(element => {
+
+            element.classList.remove(
+                "reveal-pending"
+            );
+
+            element.classList.add(
+                "show"
+            );
+        });
+
+        return;
+    }
+
+
+    // =========================
+    // FALLBACK
+    // =========================
+
+    if (
+        !(
+            "IntersectionObserver"
+            in window
+        )
+    ) {
+
+        items.forEach(element => {
+
+            element.classList.remove(
+                "reveal-pending"
+            );
+
+            element.classList.add(
+                "show"
+            );
+        });
+
+        return;
+    }
+
+
+    // =========================
+    // PREPARE
+    // =========================
+
+    items.forEach(element => {
+
+        element.classList.add(
+            "reveal-pending"
+        );
+    });
+
+
+    // =========================
+    // OBSERVER
+    // =========================
+
+    const observer =
+        new IntersectionObserver(
+            entries => {
+
+                entries.forEach(entry => {
+
+                    if (
+                        !entry.isIntersecting
+                    ) {
+                        return;
+                    }
+
+                    const element =
+                        entry.target;
+
+                    element.classList.remove(
+                        "reveal-pending"
+                    );
+
+                    element.classList.add(
+                        "show"
+                    );
+
+                    observer.unobserve(
+                        element
+                    );
+                });
+            },
+            {
+                threshold: 0.08,
+                rootMargin:
+                    "0px 0px -40px 0px"
+            }
+        );
+
+
+    // =========================
+    // START
+    // =========================
+
+    items.forEach(element => {
+
+        observer.observe(
+            element
+        );
+    });
+
 };

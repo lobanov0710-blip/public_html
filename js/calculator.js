@@ -100,8 +100,14 @@ window.initCalculator = function () {
   // STATE
   // ==========================
 
+  const checkedTariff =
+    form.querySelector(
+      'input[type="radio"][name="tariff"]:checked'
+    );
+
   let selectedTariff =
-    document.querySelector(
+    checkedTariff?.value ||
+    form.querySelector(
       ".tariff-card.active"
     )?.dataset?.tariff ||
     "comfort";
@@ -609,50 +615,101 @@ window.initCalculator = function () {
   // TARIFF
   // ==========================
 
-  document
-    .querySelectorAll(
-      ".tariff-card"
-    )
+  const tariffCards =
+    Array.from(
+      form.querySelectorAll(
+        ".tariff-card"
+      )
+    );
+
+  function activateTariff(
+    card,
+    tariff
+  ) {
+
+    if (!card) {
+      return;
+    }
+
+    tariffCards
+      .forEach(
+        item => {
+
+          item
+            .classList
+            .toggle(
+              "active",
+              item === card
+            );
+        }
+      );
+
+    selectedTariff =
+      String(
+        tariff ||
+        card.dataset?.tariff ||
+        "comfort"
+      )
+        .trim()
+        .toLowerCase();
+
+    const radio =
+      card.querySelector(
+        'input[type="radio"][name="tariff"]'
+      );
+
+    if (
+      radio &&
+      !radio.checked
+    ) {
+
+      radio.checked =
+        true;
+    }
+
+    log(
+      "TARIFF:",
+      selectedTariff
+    );
+  }
+
+
+  tariffCards
     .forEach(
       card => {
+
+        const radio =
+          card.querySelector(
+            'input[type="radio"][name="tariff"]'
+          );
+
+        if (radio) {
+
+          radio.addEventListener(
+            "change",
+            () => {
+
+              if (!radio.checked) {
+                return;
+              }
+
+              activateTariff(
+                card,
+                radio.value
+              );
+            }
+          );
+
+          return;
+        }
 
         card.addEventListener(
           "click",
           () => {
 
-            document
-              .querySelectorAll(
-                ".tariff-card"
-              )
-              .forEach(
-                item => {
-
-                  item
-                    .classList
-                    .remove(
-                      "active"
-                    );
-                }
-              );
-
-            card
-              .classList
-              .add(
-                "active"
-              );
-
-            selectedTariff =
-              String(
-                card.dataset
-                  .tariff ||
-                "comfort"
-              )
-                .trim()
-                .toLowerCase();
-
-            log(
-              "TARIFF:",
-              selectedTariff
+            activateTariff(
+              card,
+              card.dataset?.tariff
             );
           }
         );
@@ -723,8 +780,8 @@ window.initCalculator = function () {
       try {
 
         const response =
-  await fetch(
-    CALCULATE_API,
+          await fetch(
+            CALCULATE_API,
             {
               method:
                 "POST",
