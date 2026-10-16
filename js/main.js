@@ -108,6 +108,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let cookieChoice = null;
 
+        let analyticsStarted = false;
+
+        function startAnalytics() {
+
+            const counterId = Number(
+                document.querySelector(
+                    "script[data-metrika-id]"
+                )?.dataset.metrikaId
+            );
+
+            if (
+                analyticsStarted ||
+                !Number.isInteger(counterId) ||
+                counterId <= 0
+            ) {
+                return;
+            }
+
+            analyticsStarted = true;
+
+            window.ym = window.ym || function () {
+                (window.ym.a = window.ym.a || []).push(arguments);
+            };
+
+            window.ym.l = Date.now();
+
+            window.ym(counterId, "init", {
+                ssr: true,
+                webvisor: true,
+                clickmap: true,
+                ecommerce: "dataLayer",
+                referrer: document.referrer,
+                url: location.href,
+                accurateTrackBounce: true,
+                trackLinks: true
+            });
+
+            const script = document.createElement("script");
+            script.async = true;
+            script.src =
+                `https://mc.yandex.ru/metrika/tag.js?id=${counterId}`;
+
+            document.head.appendChild(script);
+        }
+
         try {
 
             cookieChoice =
@@ -123,6 +168,10 @@ document.addEventListener("DOMContentLoaded", () => {
             );
         }
 
+
+        if (cookieChoice === "accepted") {
+            startAnalytics();
+        }
 
         // Если пользователь ещё не сделал выбор —
         // показываем cookie banner
@@ -165,6 +214,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     cookieBanner
                         .classList
                         .remove("show");
+
+                    startAnalytics();
                 }
             );
 

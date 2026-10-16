@@ -218,7 +218,7 @@
 
     <link
         rel="stylesheet"
-        href="/style.css"
+        href="/style.css?v=20261016-2"
     >
 
 
@@ -227,12 +227,12 @@
     ========================== -->
 
     <script
-        src="/js/slider.js"
+        src="/js/slider.js?v=20261016-2"
         defer
     ></script>
 
     <script
-        src="/js/form.js?v=20261016-1"
+        src="/js/form.js?v=20261016-2"
         defer
     ></script>
 
@@ -252,7 +252,7 @@
     ></script>
 
     <script
-        src="/js/main.js"
+        src="/js/main.js?v=20261016-2"
         defer
     ></script>
 
@@ -1355,49 +1355,69 @@
 
             <div class="form-row">
 
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Ваше имя"
-                    autocomplete="name"
-                    required
-                >
+                <div class="form-field">
+                    <label for="booking-name">Ваше имя</label>
+                    <input
+                        type="text"
+                        id="booking-name"
+                        name="name"
+                        placeholder="Ваше имя"
+                        autocomplete="name"
+                        required
+                    >
+                </div>
 
-                <input
-                    type="tel"
-                    name="phone"
-                    placeholder="+7 (___) ___-__-__"
-                    autocomplete="tel"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-row">
-
-                <input
-                    type="text"
-                    name="route"
-                    value="Нижний Новгород → Москва"
-                    required
-                >
+                <div class="form-field">
+                    <label for="booking-phone">Телефон</label>
+                    <input
+                        type="tel"
+                        id="booking-phone"
+                        name="phone"
+                        placeholder="+7 (___) ___-__-__"
+                        autocomplete="tel"
+                        required
+                    >
+                </div>
 
             </div>
 
 
             <div class="form-row">
 
-                <input
-                    type="date"
-                    name="date"
-                    required
-                >
+                <div class="form-field">
+                    <label for="booking-route">Маршрут поездки</label>
+                    <input
+                        type="text"
+                        id="booking-route"
+                        name="route"
+                        value="Нижний Новгород → Москва"
+                        required
+                    >
+                </div>
 
-                <textarea
-                    name="comment"
-                    placeholder="Например: аэропорт Шереметьево, терминал, количество пассажиров"
-                ></textarea>
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-field">
+                    <label for="booking-date">Дата поездки</label>
+                    <input
+                        type="date"
+                        id="booking-date"
+                        name="date"
+                        required
+                    >
+                </div>
+
+                <div class="form-field">
+                    <label for="booking-comment">Комментарий (необязательно)</label>
+                    <textarea
+                        id="booking-comment"
+                        name="comment"
+                        placeholder="Например: аэропорт Шереметьево, терминал, количество пассажиров"
+                    ></textarea>
+                </div>
 
             </div>
 
@@ -1418,27 +1438,29 @@
                         required
                     >
 
-                    Я согласен на обработку
-                    персональных данных
-                    в соответствии с
+                    <span>
+                        Я согласен на обработку
+                        персональных данных
+                        в соответствии с
 
-                    <a
-                        href="/privacy.html"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Политикой конфиденциальности
-                    </a>
+                        <a
+                            href="/privacy.html"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Политикой конфиденциальности
+                        </a>
 
-                    и
+                        и
 
-                    <a
-                        href="/agreement.html"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Согласием на обработку данных
-                    </a>.
+                        <a
+                            href="/agreement.html"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Согласием на обработку данных
+                        </a>.
+                    </span>
 
                 </label>
 

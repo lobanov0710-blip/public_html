@@ -78,6 +78,27 @@ window.initSlider = function () {
     window.__fleetSliderInitialized =
         true;
 
+    const hasMultipleCars = cards.length > 1;
+
+    prevButton.hidden = !hasMultipleCars;
+    nextButton.hidden = !hasMultipleCars;
+
+    fleet.querySelector(".car-slider")?.classList.toggle(
+        "car-slider--single",
+        !hasMultipleCars
+    );
+
+    const dotsContainer = fleet.querySelector(".car-dots");
+
+    if (dotsContainer) {
+        dotsContainer.hidden = !hasMultipleCars;
+    }
+
+    dots.forEach((dot, dotIndex) => {
+        dot.hidden = dotIndex >= cards.length;
+        dot.disabled = dotIndex >= cards.length;
+    });
+
 
     // =========================
     // STATE

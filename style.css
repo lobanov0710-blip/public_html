@@ -229,9 +229,23 @@ button {
 }
 
 .form-row > input,
-.form-row > textarea {
+.form-row > textarea,
+.form-row > .form-field {
     flex: 1;
     min-width: 0;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 7px;
+}
+
+.form-field > label {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 14px;
+    line-height: 1.4;
 }
 
 .contact-form input,
@@ -314,6 +328,11 @@ button {
 
     accent-color: var(--accent-strong);
     cursor: pointer;
+}
+
+.privacy-box label > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .privacy-box a,
@@ -1308,7 +1327,8 @@ section.hero h1 {
  * Это правило только для обычных полей калькулятора.
  */
 
-.home-page #calcForm > input {
+.home-page #calcForm > input,
+.home-page #calcForm .form-field > input {
     min-height: 54px;
 }
 
@@ -2224,6 +2244,10 @@ section.hero h1 {
     margin-top: 32px;
 }
 
+.car-slider--single {
+    grid-template-columns: minmax(0, 1fr);
+}
+
 .car-viewport {
     width: 100%;
     max-width: 1120px;
@@ -2574,6 +2598,12 @@ section.hero h1 {
 
     gap: 8px;
     margin-top: 18px;
+}
+
+.car-btn[hidden],
+.car-dots[hidden],
+.car-dot[hidden] {
+    display: none;
 }
 
 .car-dot {

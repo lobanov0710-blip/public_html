@@ -530,6 +530,13 @@ window.initForm = function () {
 
       setLoading();
 
+      // The PHP upstream timeout is 25 seconds; allow time for the host as well.
+      const requestController = new AbortController();
+      const timeoutId = setTimeout(
+        () => requestController.abort(),
+        35000
+      );
+
       try {
 
         const response =
@@ -538,6 +545,8 @@ window.initForm = function () {
             {
               method:
                 "POST",
+
+              signal: requestController.signal,
 
               headers: {
                 "Content-Type":
@@ -555,7 +564,12 @@ window.initForm = function () {
           await response
             .json()
             .catch(
-              () => null
+              error => {
+                if (requestController.signal.aborted) {
+                  throw error;
+                }
+                return null;
+              }
             );
 
         // =========================
@@ -612,12 +626,21 @@ window.initForm = function () {
           error
         );
 
+        const confirmationMissing =
+          requestController.signal.aborted ||
+          error instanceof TypeError;
+
         alert(
-          error?.message ||
-          "Ошибка отправки заявки"
+          confirmationMissing
+            ? "Не удалось получить подтверждение отправки. Заявка могла быть принята. Свяжитесь с нами перед повторной отправкой."
+            : error?.message || "Ошибка отправки заявки"
         );
 
         resetButton();
+
+      } finally {
+
+        clearTimeout(timeoutId);
       }
     }
   );
