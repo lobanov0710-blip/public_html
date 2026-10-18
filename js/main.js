@@ -45,22 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try { window.initRoutes?.(); } catch (e) { console.error("routes fail", e); }
 
 
-    document.addEventListener("DOMContentLoaded", () => {
-    const banner = document.getElementById("promoBanner");
-    const closeBtn = document.getElementById("promoBannerClose");
 
-    if (!banner || !closeBtn) return;
-
-    if (localStorage.getItem("promoBannerClosed") === "1") {
-        banner.classList.add("hidden");
-        return;
-    }
-
-    closeBtn.addEventListener("click", () => {
-        banner.classList.add("hidden");
-        localStorage.setItem("promoBannerClosed", "1");
-    });
-});
 
     // =========================
     // COPY BLOCK
