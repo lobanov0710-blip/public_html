@@ -1,58 +1,203 @@
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
 
     // =========================
-    // SAFE MODULE INIT
+    // SAFE INIT HELPER
     // =========================
 
-    try {
-        if (typeof window.initMap === "function") {
-            const mapInstance = window.initMap();
+    function safeInit(name, initFunction) {
 
-            // 🔥 КРИТИЧНО: фикс глобальной карты
-            if (mapInstance) {
-                window.map = mapInstance;
-            }
+        if (typeof initFunction !== "function") {
+            return null;
         }
-    } catch (e) {
-        console.error("map fail", e);
+
+        try {
+            return initFunction();
+        } catch (error) {
+            console.error(
+                `[INIT] ${name} failed:`,
+                error
+            );
+
+            return null;
+        }
     }
 
-    // =========================
-    // WAIT MAP STABILIZATION
-    // =========================
-    await new Promise(resolve => setTimeout(resolve, 400));
 
     // =========================
-    // CALCULATOR AFTER MAP
+    // MAP
     // =========================
 
-    try {
-        if (typeof window.initCalculator === "function") {
-            window.initCalculator();
-        }
-    } catch (e) {
-        console.error("calc fail", e);
+    const mapInstance = safeInit(
+        "map",
+        window.initMap
+    );
+
+    if (mapInstance) {
+        window.map = mapInstance;
     }
 
+
     // =========================
-    // LEGACY MODULES
+    // CALCULATOR
     // =========================
 
-    try { window.initSlider?.(); } catch (e) { console.error("slider fail", e); }
-    try { window.initForm?.(); } catch (e) { console.error("form fail", e); }
-    try { window.initScroll?.(); } catch (e) { console.error("scroll fail", e); }
-    try { window.initObserver?.(); } catch (e) { console.error("observer fail", e); }
-    try { window.initRoutes?.(); } catch (e) { console.error("routes fail", e); }
-
-
+    safeInit(
+        "calculator",
+        window.initCalculator
+    );
 
 
     // =========================
-    // COPY BLOCK
+    // UI MODULES
     // =========================
 
-    document.addEventListener("copy", (e) => {
-        e.preventDefault();
-    });
+    safeInit(
+        "slider",
+        window.initSlider
+    );
+
+    safeInit(
+        "fleet-gallery",
+        window.initFleetGallery
+    );
+
+    safeInit(
+        "form",
+        window.initForm
+    );
+
+    safeInit(
+        "scroll",
+        window.initScroll
+    );
+
+    safeInit(
+        "observer",
+        window.initObserver
+    );
+
+    safeInit(
+        "routes",
+        window.initRoutes
+    );
+
+    // =========================
+    // COOKIE CONSENT
+    // =========================
+
+    const cookieBanner =
+        document.getElementById(
+            "cookieBanner"
+        );
+
+    const acceptCookiesButton =
+        document.getElementById(
+            "acceptCookies"
+        );
+
+    const declineCookiesButton =
+        document.getElementById(
+            "declineCookies"
+        );
+
+    if (
+        cookieBanner &&
+        acceptCookiesButton &&
+        declineCookiesButton
+    ) {
+
+        let cookieChoice = null;
+
+        try {
+
+            cookieChoice =
+                localStorage.getItem(
+                    "cookieConsent"
+                );
+
+        } catch (error) {
+
+            console.warn(
+                "[COOKIES] localStorage unavailable:",
+                error
+            );
+        }
+
+
+        // Если пользователь ещё не сделал выбор —
+        // показываем cookie banner
+
+        if (
+            cookieChoice !== "accepted" &&
+            cookieChoice !== "declined"
+        ) {
+
+            cookieBanner
+                .classList
+                .add("show");
+        }
+
+
+        // =========================
+        // ACCEPT COOKIES
+        // =========================
+
+        acceptCookiesButton
+            .addEventListener(
+                "click",
+                () => {
+
+                    try {
+
+                        localStorage.setItem(
+                            "cookieConsent",
+                            "accepted"
+                        );
+
+                    } catch (error) {
+
+                        console.warn(
+                            "[COOKIES] Could not save consent:",
+                            error
+                        );
+                    }
+
+                    cookieBanner
+                        .classList
+                        .remove("show");
+                }
+            );
+
+
+        // =========================
+        // DECLINE COOKIES
+        // =========================
+
+        declineCookiesButton
+            .addEventListener(
+                "click",
+                () => {
+
+                    try {
+
+                        localStorage.setItem(
+                            "cookieConsent",
+                            "declined"
+                        );
+
+                    } catch (error) {
+
+                        console.warn(
+                            "[COOKIES] Could not save decline:",
+                            error
+                        );
+                    }
+
+                    cookieBanner
+                        .classList
+                        .remove("show");
+                }
+            );
+    }
 
 });

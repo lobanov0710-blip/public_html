@@ -100,8 +100,14 @@ window.initCalculator = function () {
   // STATE
   // ==========================
 
+  const checkedTariff =
+    form.querySelector(
+      'input[type="radio"][name="tariff"]:checked'
+    );
+
   let selectedTariff =
-    document.querySelector(
+    checkedTariff?.value ||
+    form.querySelector(
       ".tariff-card.active"
     )?.dataset?.tariff ||
     "comfort";
@@ -609,50 +615,128 @@ window.initCalculator = function () {
   // TARIFF
   // ==========================
 
-  document
-    .querySelectorAll(
-      ".tariff-card"
-    )
+  const tariffCards =
+    Array.from(
+      form.querySelectorAll(
+        ".tariff-card"
+      )
+    );
+
+  const tariffRadios =
+    Array.from(
+      form.querySelectorAll(
+        'input[type="radio"][name="tariff"]'
+      )
+    ).filter(
+      radio => !radio.disabled
+    );
+
+  function activateTariff(
+    card,
+    tariff
+  ) {
+
+    if (!card || isLoading) {
+      return;
+    }
+
+    const nextTariff =
+      String(
+        tariff ||
+        card.dataset?.tariff ||
+        "comfort"
+      )
+        .trim()
+        .toLowerCase();
+
+    const tariffChanged =
+      nextTariff !== selectedTariff;
+
+    tariffCards
+      .forEach(
+        item => {
+
+          item
+            .classList
+            .toggle(
+              "active",
+              item === card
+            );
+        }
+      );
+
+    selectedTariff =
+      nextTariff;
+
+    const radio =
+      card.querySelector(
+        'input[type="radio"][name="tariff"]'
+      );
+
+    if (
+      radio &&
+      !radio.checked
+    ) {
+
+      radio.checked =
+        true;
+    }
+
+    if (tariffChanged) {
+
+      clearBookingData();
+
+      result.innerText =
+        "Тариф изменён. Рассчитайте стоимость заново.";
+
+      result.classList.add(
+        "show"
+      );
+    }
+
+    log(
+      "TARIFF:",
+      selectedTariff
+    );
+  }
+
+
+  tariffCards
     .forEach(
       card => {
+
+        const radio =
+          card.querySelector(
+            'input[type="radio"][name="tariff"]'
+          );
+
+        if (radio) {
+
+          radio.addEventListener(
+            "change",
+            () => {
+
+              if (!radio.checked) {
+                return;
+              }
+
+              activateTariff(
+                card,
+                radio.value
+              );
+            }
+          );
+
+          return;
+        }
 
         card.addEventListener(
           "click",
           () => {
 
-            document
-              .querySelectorAll(
-                ".tariff-card"
-              )
-              .forEach(
-                item => {
-
-                  item
-                    .classList
-                    .remove(
-                      "active"
-                    );
-                }
-              );
-
-            card
-              .classList
-              .add(
-                "active"
-              );
-
-            selectedTariff =
-              String(
-                card.dataset
-                  .tariff ||
-                "comfort"
-              )
-                .trim()
-                .toLowerCase();
-
-            log(
-              "TARIFF:",
-              selectedTariff
+            activateTariff(
+              card,
+              card.dataset?.tariff
             );
           }
         );
@@ -700,8 +784,17 @@ window.initCalculator = function () {
         return;
       }
 
+      const requestTariff =
+        selectedTariff;
+
       isLoading =
         true;
+
+      tariffRadios.forEach(
+        radio => {
+          radio.disabled = true;
+        }
+      );
 
       button.disabled =
         true;
@@ -723,8 +816,8 @@ window.initCalculator = function () {
       try {
 
         const response =
-  await fetch(
-    CALCULATE_API,
+          await fetch(
+            CALCULATE_API,
             {
               method:
                 "POST",
@@ -740,7 +833,7 @@ window.initCalculator = function () {
                   to,
 
                   tariff:
-                    selectedTariff
+                    requestTariff
                 })
             }
           );
@@ -881,7 +974,7 @@ window.initCalculator = function () {
           price,
 
           tariff:
-            selectedTariff,
+            requestTariff,
 
           route:
             data.route ||
@@ -904,7 +997,7 @@ window.initCalculator = function () {
         result.innerHTML = `
           🚗 ${distance.toFixed(1)} км<br>
           ⏱ ${formatDuration(duration)}<br>
-          🚘 ${tariffLabel(selectedTariff)}<br>
+          🚘 ${tariffLabel(requestTariff)}<br>
           💰 <b>${formatPrice(price)} ₽</b><br><br>
 
           <button
@@ -968,6 +1061,12 @@ window.initCalculator = function () {
           "Ошибка сети";
 
       } finally {
+
+        tariffRadios.forEach(
+          radio => {
+            radio.disabled = false;
+          }
+        );
 
         button.disabled =
           false;

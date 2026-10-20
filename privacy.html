@@ -1,150 +1,598 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
-<title>Политика конфиденциальности | Comfort Transfer</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<meta name="description" content="Политика конфиденциальности сервиса Comfort Transfer. Правила обработки и защиты персональных данных пользователей.">
+    <title>
+        Политика конфиденциальности | Transfer Servis
+    </title>
 
-<meta name="robots" content="index, follow">
+    <meta
+        name="description"
+        content="Политика конфиденциальности сайта Transfer Servis: сведения об обработке данных при отправке заявки на междугородний трансфер."
+    >
 
-<link rel="canonical" href="https://transfer-servis52.ru/privacy.html">
+    <meta
+        name="robots"
+        content="noindex, follow"
+    >
 
-<style>
-body{
-    font-family: Arial, sans-serif;
-    background:#f5f6fa;
-    margin:0;
-    padding:40px 20px;
-    color:#222;
-    line-height:1.7;
-}
+    <link
+        rel="canonical"
+        href="https://transfer-servis52.ru/privacy.html"
+    >
 
-.container{
-    max-width:900px;
-    margin:auto;
-    background:#fff;
-    padding:40px;
-    border-radius:16px;
-    box-shadow:0 10px 35px rgba(0,0,0,.08);
-}
+    <link
+        rel="icon"
+        href="/images/favicon.png"
+        type="image/png"
+    >
 
-h1{
-    margin-top:0;
-    margin-bottom:30px;
-}
+    <meta
+        name="theme-color"
+        content="#070a0f"
+    >
 
-h2{
-    margin-top:30px;
-    margin-bottom:10px;
-}
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
 
-ul{
-    padding-left:20px;
-}
+        html {
+            scroll-behavior: smooth;
+        }
 
-.back-home{
-    margin-top:40px;
-    padding:20px;
-    text-align:center;
-    background:#f5f7fb;
-    border-radius:12px;
-}
+        body {
+            position: relative;
 
-.home-btn{
-    display:inline-block;
-    margin-top:12px;
-    padding:12px 22px;
-    background:#111827;
-    color:#fff;
-    text-decoration:none;
-    border-radius:10px;
-    transition:.25s;
-}
+            min-height: 100vh;
 
-.home-btn:hover{
-    background:#000;
-}
-</style>
+            margin: 0;
+            padding: 40px 20px;
+
+            color: #f4f6f8;
+
+            background:
+                url("/images/backgraund.webp")
+                center top / cover
+                no-repeat
+                fixed;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            line-height: 1.7;
+        }
+
+        body::before {
+            content: "";
+
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+
+            background:
+                rgba(5, 8, 12, 0.72);
+        }
+
+        .privacy-container {
+            width: 100%;
+            max-width: 920px;
+
+            margin: 0 auto;
+
+            padding:
+                clamp(
+                    28px,
+                    5vw,
+                    52px
+                );
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.10);
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(15, 21, 31, 0.82),
+                    rgba(9, 14, 21, 0.76)
+                );
+
+            -webkit-backdrop-filter:
+                blur(12px);
+
+            backdrop-filter:
+                blur(12px);
+
+            box-shadow:
+                0 24px 70px
+                rgba(0, 0, 0, 0.28);
+        }
+
+        .privacy-brand {
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            color: #f1d77a;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin:
+                0
+                0
+                18px;
+
+            color: #ffffff;
+
+            font-size:
+                clamp(
+                    32px,
+                    5vw,
+                    48px
+                );
+
+            line-height: 1.15;
+        }
+
+        .privacy-lead {
+            margin:
+                0
+                0
+                36px;
+
+            color:
+                rgba(255, 255, 255, 0.72);
+
+            font-size: 17px;
+        }
+
+        .privacy-section {
+            padding:
+                28px
+                0;
+
+            border-top:
+                1px solid
+                rgba(255, 255, 255, 0.08);
+        }
+
+        .privacy-section h2 {
+            margin:
+                0
+                0
+                14px;
+
+            color: #ffffff;
+
+            font-size:
+                clamp(
+                    21px,
+                    3vw,
+                    27px
+                );
+
+            line-height: 1.25;
+        }
+
+        .privacy-section p {
+            margin:
+                0
+                0
+                14px;
+
+            color:
+                rgba(255, 255, 255, 0.72);
+        }
+
+        .privacy-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        ul {
+            margin:
+                0;
+            padding-left: 22px;
+
+            color:
+                rgba(255, 255, 255, 0.72);
+        }
+
+        li + li {
+            margin-top: 8px;
+        }
+
+        a {
+            color: #f1d77a;
+
+            text-underline-offset: 3px;
+        }
+
+        .privacy-contact {
+            padding: 20px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.08);
+
+            border-radius: 16px;
+
+            background:
+                rgba(255, 255, 255, 0.045);
+        }
+
+        .privacy-actions {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            margin-top: 34px;
+        }
+
+        .privacy-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 48px;
+
+            padding:
+                12px
+                20px;
+
+            border-radius: 12px;
+
+            color: #05080c;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffcc00,
+                    #ff9900
+                );
+
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+        .privacy-button--secondary {
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.14);
+
+            color: #ffffff;
+
+            background:
+                rgba(255, 255, 255, 0.05);
+        }
+
+        .privacy-note {
+            margin-top: 26px;
+
+            color:
+                rgba(255, 255, 255, 0.48);
+
+            font-size: 13px;
+        }
+
+        @media (max-width: 640px) {
+
+            body {
+                padding:
+                    20px
+                    12px;
+
+                background-attachment:
+                    scroll;
+            }
+
+            .privacy-container {
+                padding:
+                    26px
+                    20px;
+
+                border-radius: 18px;
+            }
+
+            .privacy-actions {
+                flex-direction: column;
+            }
+
+            .privacy-button {
+                width: 100%;
+            }
+
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="container">
+    <main class="privacy-container">
 
-<h1>Политика конфиденциальности</h1>
+        <span class="privacy-brand">
+            Transfer Servis
+        </span>
 
-<p>Настоящая Политика конфиденциальности определяет порядок обработки и защиты персональных данных пользователей сайта transfer-servis52.ru.</p>
+        <h1>
+            Политика конфиденциальности
+        </h1>
 
-<h2>1. Общие положения</h2>
+        <p class="privacy-lead">
+            В этом документе описывается,
+            какие данные могут обрабатываться
+            при использовании сайта
+            transfer-servis52.ru
+            и отправке заявки на поездку.
+        </p>
 
-<p>Используя сайт, пользователь подтверждает согласие с настоящей Политикой конфиденциальности и условиями обработки персональных данных.</p>
 
-<h2>2. Какие данные собираются</h2>
+        <section class="privacy-section">
 
-<p>При использовании сайта могут обрабатываться:</p>
+            <h2>
+                1. Общие положения
+            </h2>
 
-<ul>
-<li>Имя пользователя</li>
-<li>Номер телефона</li>
-<li>Маршрут поездки</li>
-<li>Дата поездки</li>
-<li>Комментарий к заявке</li>
-<li>Технические данные устройства и браузера</li>
-</ul>
+            <p>
+                Настоящая Политика относится
+                к сайту transfer-servis52.ru
+                и к данным, которые пользователь
+                передаёт через формы сайта
+                или при последующем общении
+                по заявке.
+            </p>
 
-<h2>3. Цели обработки данных</h2>
+            <p>
+                Отправляя форму заявки
+                и подтверждая согласие
+                с обработкой персональных данных,
+                пользователь передаёт сведения,
+                необходимые для обработки
+                обращения и организации поездки.
+            </p>
 
-<ul>
-<li>Обработка заявок</li>
-<li>Связь с клиентом</li>
-<li>Организация поездки</li>
-<li>Улучшение качества сервиса</li>
-<li>Работа сайта и аналитика</li>
-</ul>
+        </section>
 
-<h2>4. Защита данных</h2>
 
-<p>Мы принимаем необходимые технические и организационные меры для защиты персональных данных пользователей от неправомерного доступа, изменения или уничтожения.</p>
+        <section class="privacy-section">
 
-<h2>5. Передача третьим лицам</h2>
+            <h2>
+                2. Какие данные могут обрабатываться
+            </h2>
 
-<p>Персональные данные не передаются третьим лицам, за исключением случаев, предусмотренных законодательством.</p>
+            <ul>
+                <li>
+                    имя;
+                </li>
 
-<h2>6. Cookies</h2>
+                <li>
+                    номер телефона;
+                </li>
 
-<p>Сайт может использовать cookies для корректной работы и анализа посещаемости.</p>
+                <li>
+                    маршрут поездки;
+                </li>
 
-<h2>7. Контакты</h2>
+                <li>
+                    дата поездки;
+                </li>
 
-<p>
-Comfort Transfer<br>
-Телефон: +7 (920) 251-51-03
-</p>
+                <li>
+                    комментарий,
+                    указанный пользователем
+                    в заявке;
+                </li>
 
-<div class="back-home">
-    <p>Через <span id="timer">20</span> сек. произойдёт возврат на главную страницу</p>
-    <a href="/" class="home-btn">Вернуться сейчас</a>
-</div>
+                <li>
+                    техническая информация,
+                    которая автоматически
+                    передаётся браузером
+                    при работе сайта.
+                </li>
+            </ul>
 
-</div>
+        </section>
 
-<script>
-let seconds = 20;
-const timer = document.getElementById("timer");
 
-const countdown = setInterval(() => {
-    seconds--;
-    timer.textContent = seconds;
+        <section class="privacy-section">
 
-    if(seconds <= 0){
-        clearInterval(countdown);
-        window.location.href="/";
-    }
-},1000);
-</script>
+            <h2>
+                3. Для чего используются данные
+            </h2>
+
+            <ul>
+                <li>
+                    обработка заявки;
+                </li>
+
+                <li>
+                    связь с пользователем;
+                </li>
+
+                <li>
+                    уточнение маршрута,
+                    стоимости,
+                    автомобиля
+                    и деталей поездки;
+                </li>
+
+                <li>
+                    организация оказания услуги;
+                </li>
+
+                <li>
+                    обеспечение работы сайта;
+                </li>
+
+                <li>
+                    анализ работы сайта
+                    и улучшение сервиса.
+                </li>
+            </ul>
+
+        </section>
+
+
+        <section class="privacy-section">
+
+            <h2>
+                4. Хранение и защита данных
+            </h2>
+
+            <p>
+                Для защиты информации
+                применяются доступные
+                технические
+                и организационные меры,
+                направленные на снижение риска
+                неправомерного доступа,
+                изменения,
+                утраты
+                или раскрытия данных.
+            </p>
+
+        </section>
+
+
+        <section class="privacy-section">
+
+            <h2>
+                5. Передача и использование
+                сторонних сервисов
+            </h2>
+
+            <p>
+                Для работы сайта,
+                обработки заявок,
+                связи,
+                размещения инфраструктуры
+                и анализа посещаемости
+                могут использоваться
+                технические сервисы
+                и поставщики услуг.
+            </p>
+
+            <p>
+                Информация также может быть
+                предоставлена в случаях,
+                когда это требуется
+                применимыми обязательными
+                требованиями.
+            </p>
+
+        </section>
+
+
+        <section class="privacy-section">
+
+            <h2>
+                6. Cookies и технические данные
+            </h2>
+
+            <p>
+                Сайт может использовать
+                cookies,
+                локальное хранилище браузера
+                и другие технические механизмы
+                для работы интерфейса,
+                сохранения пользовательских
+                настроек
+                и анализа работы сайта.
+            </p>
+
+            <p>
+                На сайте также могут применяться
+                сервисы веб-аналитики,
+                которые получают техническую
+                информацию о посещении сайта
+                в соответствии
+                с настройками таких сервисов
+                и текущей конфигурацией сайта.
+            </p>
+
+        </section>
+
+
+        <section class="privacy-section">
+
+            <h2>
+                7. Обращения по вопросам данных
+            </h2>
+
+            <p>
+                Пользователь может обратиться
+                по вопросам,
+                связанным с переданными
+                через сайт данными,
+                используя контактный телефон
+                сервиса.
+            </p>
+
+            <div class="privacy-contact">
+
+                <strong>
+                    Transfer Servis
+                </strong>
+
+                <br>
+
+                Телефон:
+
+                <a href="tel:+79202515103">
+                    +7 (920) 251-51-03
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <div class="privacy-actions">
+
+            <a
+                href="/"
+                class="privacy-button"
+            >
+                На главную
+            </a>
+
+            <a
+                href="/#tgForm"
+                class="privacy-button privacy-button--secondary"
+            >
+                Оставить заявку
+            </a>
+
+        </div>
+
+        <p class="privacy-note">
+            Актуальная версия политики
+            размещается на этой странице.
+        </p>
+
+    </main>
 
 </body>
+
 </html>

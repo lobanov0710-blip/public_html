@@ -23,13 +23,63 @@ window.initForm = function () {
     return;
   }
 
-  form.dataset.initialized =
-    "true";
-
   const btn =
     form.querySelector(
       'button[type="submit"]'
     );
+
+  if (!btn) {
+    return;
+  }
+
+  const dateField =
+    form.querySelector(
+      'input[type="date"][name="date"]'
+    );
+
+  function updateDateMinimum() {
+
+    const today =
+      new Date();
+
+    const year =
+      today.getFullYear();
+
+    const month =
+      String(
+        today.getMonth() + 1
+      ).padStart(
+        2,
+        "0"
+      );
+
+    const day =
+      String(
+        today.getDate()
+      ).padStart(
+        2,
+        "0"
+      );
+
+    const todayValue =
+      `${year}-${month}-${day}`;
+
+    if (
+      dateField &&
+      (
+        !dateField.min ||
+        dateField.min < todayValue
+      )
+    ) {
+
+      dateField.min =
+        todayValue;
+    }
+
+    return todayValue;
+  }
+
+  updateDateMinimum();
 
   let loading =
     false;
@@ -406,6 +456,26 @@ window.initForm = function () {
       );
     }
 
+    const today =
+      updateDateMinimum();
+
+    if (payload.date < today) {
+
+      return (
+        "Дата поездки не может быть в прошлом"
+      );
+    }
+
+    if (
+      dateField &&
+      !dateField.checkValidity()
+    ) {
+
+      return (
+        "Проверьте дату поездки"
+      );
+    }
+
     return null;
   }
 
@@ -551,4 +621,21 @@ window.initForm = function () {
       }
     }
   );
+
+  // Enable submission only after the handler is installed.
+  form.dataset.initialized =
+    "true";
+
+  btn.disabled =
+    false;
+
+  const fallback =
+    form.querySelector(
+      "[data-booking-fallback]"
+    );
+
+  if (fallback) {
+    fallback.hidden =
+      true;
+  }
 };
