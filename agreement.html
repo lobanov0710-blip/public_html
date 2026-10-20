@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Согласие на обработку персональных данных | Comfort Transfer</title>
+<title>Согласие на обработку персональных данных | Transfer Servis</title>
 
-<meta name="description" content="Согласие на обработку персональных данных сервиса Comfort Transfer.">
+<meta name="description" content="Согласие на обработку персональных данных сервиса Transfer Servis.">
 
 <meta name="robots" content="index, follow">
 
@@ -29,6 +29,7 @@ body{
     padding:40px;
     border-radius:16px;
     box-shadow:0 10px 35px rgba(0,0,0,.08);
+    overflow-wrap:anywhere;
 }
 
 h1{
@@ -66,6 +67,12 @@ ul{
 
 .home-btn:hover{
     background:#000;
+}
+
+@media (max-width:640px){
+    body{padding:20px 12px;}
+    .container{padding:24px 20px;}
+    h1{font-size:clamp(24px,6vw,32px);}
 }
 </style>
 </head>
@@ -106,26 +113,10 @@ ul{
 <p>Пользователь подтверждает, что ознакомился с Политикой конфиденциальности и понимает порядок обработки персональных данных.</p>
 
 <div class="back-home">
-    <p>Через <span id="timer">15</span> сек. произойдёт возврат на главную страницу</p>
-    <a href="/" class="home-btn">Вернуться сейчас</a>
+    <a href="/" class="home-btn">Вернуться на главную</a>
 </div>
 
 </div>
-
-<script>
-let seconds = 15;
-const timer = document.getElementById("timer");
-
-const countdown = setInterval(() => {
-    seconds--;
-    timer.textContent = seconds;
-
-    if(seconds <= 0){
-        clearInterval(countdown);
-        window.location.href="/";
-    }
-},1000);
-</script>
 
 </body>
 </html>

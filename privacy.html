@@ -89,6 +89,8 @@
             width: 100%;
             max-width: 920px;
 
+            overflow-wrap: anywhere;
+
             margin: 0 auto;
 
             padding:
@@ -297,6 +299,10 @@
         }
 
         @media (max-width: 640px) {
+
+            h1 {
+                font-size: clamp(20px, 6vw, 32px);
+            }
 
             body {
                 padding:

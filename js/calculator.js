@@ -813,6 +813,12 @@ window.initCalculator = function () {
 
       clearBookingData();
 
+      const requestController = new AbortController();
+      const timeoutId = setTimeout(
+        () => requestController.abort(),
+        35000
+      );
+
       try {
 
         const response =
@@ -821,6 +827,8 @@ window.initCalculator = function () {
             {
               method:
                 "POST",
+
+              signal: requestController.signal,
 
               headers: {
                 "Content-Type":
@@ -842,7 +850,12 @@ window.initCalculator = function () {
           await response
             .json()
             .catch(
-              () => null
+              error => {
+                if (requestController.signal.aborted) {
+                  throw error;
+                }
+                return null;
+              }
             );
 
         log(
@@ -1058,9 +1071,13 @@ window.initCalculator = function () {
         );
 
         result.innerText =
-          "Ошибка сети";
+          requestController.signal.aborted
+            ? "Расчёт занял слишком много времени. Попробуйте ещё раз."
+            : "Ошибка сети";
 
       } finally {
+
+        clearTimeout(timeoutId);
 
         tariffRadios.forEach(
           radio => {
