@@ -1,10 +1,16 @@
 <?php
 declare(strict_types=1);
 
-// Isolated staging gateway. This file is never part of the production API.
+// Служебный обработчик staging: вне публичного каталога веб-сервера.
+// Здесь находятся подпись запросов и проверка временного доступа.
+// Production API не подключает этот файл.
 
 const STAGING_UPSTREAM = 'https://uber-v3-staging.lobanov0710.workers.dev';
 
+/**
+ * Секрет читаем только из защищённого файла, путь передаёт администратор PHP-FPM.
+ * Запрещаем путь внутри document root: его нельзя раскрыть через HTTP.
+ */
 function stagingSecret(string $variable): string
 {
     $path = getenv($variable);
@@ -27,6 +33,10 @@ function stagingSecret(string $variable): string
     return trim($secret);
 }
 
+/**
+ * HMAC рассчитывается по ТОЧНЫМ байтам тела и пути Worker.
+ * Повторное кодирование JSON после получения запроса сломало бы проверку подписи.
+ */
 function stagingSignature(string $secret, string $timestamp, string $path, string $body): string
 {
     return hash_hmac('sha256', $timestamp . "\n" . $path . "\n" . $body, $secret);
@@ -39,6 +49,11 @@ function stagingError(int $status, string $message): never
     exit;
 }
 
+/**
+ * Закрытый шлюз Android Debug → staging Worker.
+ * Сначала проверяем независимый тестовый токен, только затем читаем запрос;
+ * в Worker передаётся серверная HMAC-подпись, которой нет в APK.
+ */
 function stagingProxy(string $path, int $limit): never
 {
     header('Content-Type: application/json; charset=utf-8');
