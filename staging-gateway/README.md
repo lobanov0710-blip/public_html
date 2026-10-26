@@ -1,28 +1,46 @@
-# Transfer Servis staging PHP gateway
+# Staging PHP Gateway — Transfer Servis
 
-Status: source code only. NOT deployed. Never replace the production api/*.php files.
+**Статус: черновик. На хостинге не развёрнут.**
 
-Deploy only as the document root of an independent HTTPS staging virtual host. It implements the existing Android routes: POST /api/calculate.php, /api/order.php and /api/order-status.php; they forward to the fixed uber-v3-staging Worker.
+## Зачем нужен шлюз
 
-## Secrets and access control
+Android-приложение использует PHP API для подписи запросов к Cloudflare Worker. Секрет HMAC нельзя передавать на телефон, поэтому **отдельный тестовый сервер** подписывает обращения к `uber-v3-staging`. Production API и его секреты не затрагиваем.
 
-Configure two **separate** PHP-FPM environment variables with absolute file paths outside the vhost document root:
+## Структура каталогов
 
-- TS_STAGING_HMAC_SECRET_FILE: exact value of the staging Worker's PROXY_HMAC_SECRET.
-- TS_STAGING_TESTER_TOKEN_FILE: independent short-lived random tester token of at least 32 characters.
+```text
+staging-gateway/
+├── public/                 <-- ТОЛЬКО ЭТА ПАПКА — DOCUMENT_ROOT staging-хоста
+│   └── api/
+│       ├── calculate.php   <-- POST /api/calculate.php
+│       ├── order.php       <-- POST /api/order.php
+│       └── order-status.php <-- POST /api/order-status.php
+├── _bootstrap.php          <-- серверная HMAC-подпись, вне document root
+├── tests/                  <-- локальные тесты, вне document root
+└── README.md               <-- документация, вне document root
+```
 
-Never reuse a production HMAC file, production token or live customer data. Both files must be unreadable over HTTP and readable only by the PHP process. With missing configuration the gateway fails closed with HTTP 503. With missing or invalid X-Staging-Access-Token it responds HTTP 403.
+**Критично:** не назначать `staging-gateway/` корневым каталогом веб-сервера и не копировать `_bootstrap.php`, `tests/` или `README.md` в публичный каталог. Для staging используется отдельный HTTPS vhost/поддомен, а не production `transfer-servis52.ru`.
 
-Before making the vhost public, restrict source IPs or protect it with equivalent network access control AND add rate limiting. The temporary tester token also needs to be configured locally for the Android Debug build; it is embedded in the Debug APK and therefore must be rotated after tests. Do not distribute the Debug APK. No production secrets are placed in the APK.
+## Изолированные секреты
 
-The original staging HMAC value is only known to the local development PowerShell session; if no longer available, rotate the staging Worker HMAC separately, then put that exact new value in the staging PHP secret file. Never write secret values to Git, public web directories or chat.
+В конфигурации *отдельного* staging PHP-FPM окружения указываются пути к двум файлам, физически размещённым вне DOCUMENT_ROOT:
 
-## Release boundary
+- `TS_STAGING_HMAC_SECRET_FILE` — значение **только staging** Worker `PROXY_HMAC_SECRET`.
+- `TS_STAGING_TESTER_TOKEN_FILE` — другой случайный одноразовый тестовый токен, минимум 32 символа.
 
-1. php -l for all PHP source; php staging-gateway/tests/gateway-test.php.
-2. Obtain explicit approval before installing the staging vhost, TLS, files or modifying server configuration.
-3. Confirm no-credential calls fail and only the staging Worker receives requests.
-4. Complete Android Debug E2E tests, then rotate the temporary tester token.
-5. Production PHP handlers, Worker, orders and Telegram/FCM must remain unchanged.
+Содержимое файлов нельзя добавлять в Git, выводить в логи, помещать в APK или отправлять в чат. PHP должен иметь возможность прочитать файлы, но HTTP-доступ к ним должен быть невозможен. Если локальный staging HMAC больше неизвестен, перевыпустить **только staging** HMAC и установить одно и то же новое значение в staging Worker и в файле PHP.
 
-This PR does not deploy anything, create orders, or change live site files.
+Для доступа клиент передаёт `X-Staging-Access-Token`. При отсутствующей конфигурации шлюз закрыт (503), при неправильном токене — 403. Дополнительно, **до публикации**, необходимы ACL по IP или сопоставимая сетевая защита, ограничение частоты запросов и TLS.
+
+Тестовый токен встраивается в **Debug APK** как временная авторизация. Debug APK не распространяем; после тестов токен перевыпускаем. Production HMAC никогда не попадает на устройство.
+
+## Проверка и граница ответственности
+
+1. CI проверяет `php -l` и `php staging-gateway/tests/gateway-test.php`; это модульная, не E2E-проверка.
+2. После разрешения владельца администратор выделяет отдельный HTTPS vhost с DOCUMENT_ROOT именно `staging-gateway/public`, настроенной сетевой защитой и секретами.
+3. Проверить отказ без токена (403), ошибку при отсутствии конфигурации (503) и некорректный JSON (400) на staging.
+4. Проверить только staging API: расчёт, заказ, сохранение, идемпотентность, чтение собственного заказа и Android-перезапуск.
+5. После приёмки удалить/перевыпустить тестовый токен.
+
+**Ни один production-обработчик `api/*.php`, серверный секрет, production Worker или production D1 этим PR не изменяется. Слияние и публикация требуют отдельного решения владельца.**
