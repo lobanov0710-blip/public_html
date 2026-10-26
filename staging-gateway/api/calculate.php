@@ -1,0 +1,4 @@
+<?php
+declare(strict_types=1);
+require_once dirname(__DIR__) . '/_bootstrap.php';
+stagingProxy('/calculate', 32768);
