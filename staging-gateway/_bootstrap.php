@@ -65,6 +65,87 @@ function stagingIsJsonObject(string $body): bool
     return is_object(json_decode($body));
 }
 
+/**
+ * Authenticated staging quotas for shared hosting:
+ * /calculate 30/min, /orders 10/min, /order-status 120/min.
+ * File contains only counters, lives outside DOCUMENT_ROOT, uses flock.
+ * If state cannot be stored, fail closed rather than forward to Worker.
+ */
+function stagingRateAllowed(string $path, string $directory, int $now): bool
+{
+    $quotas = [
+        '/calculate' => 30,
+        '/orders' => 10,
+        '/order-status' => 120,
+    ];
+    if (!isset($quotas[$path])) {
+        throw new RuntimeException('unknown staging route');
+    }
+    if (!is_dir($directory) || !is_writable($directory)) {
+        throw new RuntimeException('staging rate-limit directory unavailable');
+    }
+
+    $file = @fopen($directory . '/staging-rate-limit.json', 'c+');
+    if ($file === false) {
+        throw new RuntimeException('staging rate-limit file unavailable');
+    }
+
+    try {
+        if (!flock($file, LOCK_EX)) {
+            throw new RuntimeException('staging rate-limit lock failed');
+        }
+        rewind($file);
+        $raw = stream_get_contents($file);
+        if (!is_string($raw)) {
+            throw new RuntimeException('staging rate-limit read failed');
+        }
+        if ($raw === '') {
+            $state = [];
+        } else {
+            $state = json_decode($raw, true);
+            if (!is_array($state)) {
+                throw new RuntimeException('staging rate-limit state corrupt');
+            }
+        }
+
+        $bucket = $state[$path] ?? null;
+        $windowStart = $now;
+        $count = 0;
+        if (is_array($bucket)
+            && isset($bucket['start'], $bucket['count'])
+            && is_int($bucket['start']) && is_int($bucket['count'])
+            && $bucket['start'] <= $now
+            && $now - $bucket['start'] < 60
+            && $bucket['count'] >= 0) {
+            $windowStart = $bucket['start'];
+            $count = $bucket['count'];
+        }
+        $allowed = $count < $quotas[$path];
+        $state[$path] = ['start' => $windowStart, 'count' => $allowed ? $count + 1 : $count];
+
+        $encoded = json_encode($state);
+        if (!is_string($encoded) || !rewind($file) || !ftruncate($file, 0)) {
+            throw new RuntimeException('staging rate-limit write preparation failed');
+        }
+        $length = strlen($encoded);
+        $written = 0;
+        while ($written < $length) {
+            $chunk = fwrite($file, substr($encoded, $written));
+            if ($chunk === false || $chunk === 0) {
+                throw new RuntimeException('staging rate-limit write failed');
+            }
+            $written += $chunk;
+        }
+        if (!fflush($file)) {
+            throw new RuntimeException('staging rate-limit flush failed');
+        }
+        return $allowed;
+    } finally {
+        flock($file, LOCK_UN);
+        fclose($file);
+    }
+}
+
 function stagingError(int $status, string $message): never
 {
     http_response_code($status);
@@ -98,6 +179,16 @@ function stagingProxy(string $path, int $limit): never
 
     if (!hash_equals($access, (string) ($_SERVER['HTTP_X_STAGING_ACCESS_TOKEN'] ?? ''))) {
         stagingError(403, 'forbidden');
+    }
+
+    try {
+        $allowed = stagingRateAllowed($path, __DIR__ . '/private', time());
+    } catch (Throwable $exception) {
+        stagingError(503, 'rate limiter unavailable');
+    }
+    if (!$allowed) {
+        header('Retry-After: 60');
+        stagingError(429, 'rate limited');
     }
 
     if ((int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > $limit) {
