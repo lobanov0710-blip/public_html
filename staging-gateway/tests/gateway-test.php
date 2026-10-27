@@ -4,6 +4,14 @@ require_once dirname(__DIR__) . '/_bootstrap.php';
 function check(bool $ok, string $message): void {
     if (!$ok) { throw new RuntimeException($message); }
 }
+// Пустой JSON-объект допустим; пустой массив и некорректный JSON запрещены.
+check(stagingIsJsonObject('{}'), 'empty JSON object accepted');
+check(stagingIsJsonObject('{"probe":"ok"}'), 'nonempty JSON object accepted');
+check(stagingIsJsonObject('{"items":[]}'), 'nested array in object accepted');
+check(!stagingIsJsonObject('[]'), 'empty JSON array rejected');
+check(!stagingIsJsonObject('[1,2]'), 'JSON array rejected');
+check(!stagingIsJsonObject('null'), 'JSON null rejected');
+check(!stagingIsJsonObject('{"'), 'invalid JSON rejected');
 $secret = str_repeat('s', 48);
 $body = '{"from":"test"}';
 $stamp = '1793000000';
