@@ -62,4 +62,35 @@ try {
     unlink($temp);
     putenv('TS_STAGING_TESTER_TOKEN_FILE');
 }
+// Isolated, deterministic rate-limit fixture: never uses server credentials.
+$rateDir = sys_get_temp_dir() . '/ts-rate-' . bin2hex(random_bytes(8));
+check(mkdir($rateDir, 0700), 'create rate-limit fixture');
+try {
+    $now = 1793000000;
+    for ($i = 0; $i < 30; $i++) {
+        check(stagingRateAllowed('/calculate', $rateDir, $now), 'calculate within quota');
+    }
+    check(!stagingRateAllowed('/calculate', $rateDir, $now), 'calculate rejects 31st');
+    for ($i = 0; $i < 10; $i++) {
+        check(stagingRateAllowed('/orders', $rateDir, $now), 'order within separate quota');
+    }
+    check(!stagingRateAllowed('/orders', $rateDir, $now), 'order rejects 11th');
+    check(stagingRateAllowed('/order-status', $rateDir, $now), 'status has separate quota');
+    check(stagingRateAllowed('/calculate', $rateDir, $now + 60), 'calculate resets after window');
+
+    // Corrupt limiter state must NOT silently allow the request.
+    check(file_put_contents($rateDir . '/staging-rate-limit.json', '{broken') === 7,
+        'write corrupt fixture');
+    $rateRejected = false;
+    try { stagingRateAllowed('/orders', $rateDir, $now + 61); }
+    catch (RuntimeException $e) { $rateRejected = true; }
+    check($rateRejected, 'corrupt rate-limit state fails closed');
+    $unknownRouteRejected = false;
+    try { stagingRateAllowed('/unknown', $rateDir, $now); }
+    catch (RuntimeException $e) { $unknownRouteRejected = true; }
+    check($unknownRouteRejected, 'unknown route rejected');
+} finally {
+    @unlink($rateDir . '/staging-rate-limit.json');
+    @rmdir($rateDir);
+}
 echo "STAGING GATEWAY TESTS PASSED\n";
