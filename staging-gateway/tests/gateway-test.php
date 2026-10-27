@@ -14,11 +14,30 @@ check(
 );
 check(stagingSignature($secret, $stamp, '/orders', $body) !==
     stagingSignature($secret, $stamp, '/calculate', $body), 'HMAC path binding');
+// На Timeweb переменные окружения необязательны: секрет читается из private/.
 putenv('TS_STAGING_TESTER_TOKEN_FILE');
-$rejected = false;
-try { stagingSecret('TS_STAGING_TESTER_TOKEN_FILE'); }
-catch (RuntimeException $e) { $rejected = true; }
-check($rejected, 'missing configuration must fail closed');
+$privateDir = dirname(__DIR__) . '/private';
+$defaultFile = $privateDir . '/staging-access.key';
+if (!is_file($defaultFile)) {
+    $createdDir = !is_dir($privateDir);
+    if ($createdDir) {
+        check(mkdir($privateDir, 0700), 'create private fixture directory');
+    }
+    try {
+        check(file_put_contents($defaultFile, $secret) === strlen($secret),
+            'write default secret fixture');
+        $_SERVER['DOCUMENT_ROOT'] = dirname(__DIR__) . '/public';
+        check(stagingSecret('TS_STAGING_TESTER_TOKEN_FILE') === $secret,
+            'Timeweb private default path');
+    } finally {
+        @unlink($defaultFile);
+        if ($createdDir) { @rmdir($privateDir); }
+    }
+    $rejected = false;
+    try { stagingSecret('TS_STAGING_TESTER_TOKEN_FILE'); }
+    catch (RuntimeException $e) { $rejected = true; }
+    check($rejected, 'missing default file must fail closed');
+}
 $temp = tempnam(sys_get_temp_dir(), 'tss');
 check(is_string($temp), 'temp file');
 try {
