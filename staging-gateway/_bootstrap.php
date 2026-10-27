@@ -13,9 +13,22 @@ const STAGING_UPSTREAM = 'https://uber-v3-staging.lobanov0710.workers.dev';
  */
 function stagingSecret(string $variable): string
 {
-    $path = getenv($variable);
-    if (!is_string($path) || $path === '' || $path[0] !== '/') {
-        throw new RuntimeException('missing staging configuration');
+    // На Timeweb можно хранить секреты в соседнем с public_html каталоге
+    // без настройки переменных окружения в PHP-FPM/Apache.
+    // Явная переменная окружения, если задана, сохраняет приоритет.
+    $defaultFiles = [
+        'TS_STAGING_HMAC_SECRET_FILE' => 'staging-hmac.key',
+        'TS_STAGING_TESTER_TOKEN_FILE' => 'staging-access.key',
+    ];
+    if (!isset($defaultFiles[$variable])) {
+        throw new RuntimeException('unknown staging secret');
+    }
+    $configuredPath = getenv($variable);
+    $path = is_string($configuredPath) && $configuredPath !== ''
+        ? $configuredPath
+        : __DIR__ . '/private/' . $defaultFiles[$variable];
+    if ($path[0] !== '/') {
+        throw new RuntimeException('invalid staging configuration');
     }
     $resolved = realpath($path);
     $root = realpath((string) ($_SERVER['DOCUMENT_ROOT'] ?? ''));
