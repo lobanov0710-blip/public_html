@@ -55,6 +55,16 @@ function stagingSignature(string $secret, string $timestamp, string $path, strin
     return hash_hmac('sha256', $timestamp . "\n" . $path . "\n" . $body, $secret);
 }
 
+/**
+ * Проверяем именно JSON-объект: при декодировании в массивы пустой {}
+ * неотличим от пустого [], поэтому не используем json_decode(..., true).
+ * Тело запроса не преобразуем, иначе HMAC-подпись изменится.
+ */
+function stagingIsJsonObject(string $body): bool
+{
+    return is_object(json_decode($body));
+}
+
 function stagingError(int $status, string $message): never
 {
     http_response_code($status);
@@ -100,8 +110,7 @@ function stagingProxy(string $path, int $limit): never
     if (strlen($body) > $limit) {
         stagingError(413, 'request too large');
     }
-    $json = json_decode($body, true);
-    if (!is_array($json) || array_is_list($json)) {
+    if (!stagingIsJsonObject($body)) {
         stagingError(400, 'invalid json object');
     }
     if (!function_exists('curl_init')) {
