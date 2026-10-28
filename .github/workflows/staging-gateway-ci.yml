@@ -1,0 +1,18 @@
+name: Staging PHP Gateway
+on:
+  pull_request:
+    paths:
+      - "staging-gateway/**"
+      - ".github/workflows/staging-gateway-ci.yml"
+  push:
+    branches: ["feature/staging-php-gateway-v1"]
+    paths:
+      - "staging-gateway/**"
+      - ".github/workflows/staging-gateway-ci.yml"
+jobs:
+  php:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: find staging-gateway -name '*.php' -print0 | xargs -0 -n 1 php -l
+      - run: php staging-gateway/tests/gateway-test.php
