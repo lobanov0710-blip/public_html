@@ -86,7 +86,7 @@ if ($method === 'POST') {
     $token = $payload['token'];
     if ($payload['platform'] !== 'android'
         || !is_string($token) || $token === ''
-        || strlen($token) > 4096 || preg_match('/\\s/', $token)) {
+        || strlen($token) > 4096 || preg_match('/\s/', $token)) {
         pushDeviceError(400, 'invalid push device');
     }
 }
