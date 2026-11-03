@@ -1,6 +1,42 @@
 const ORDERS_API =
   "/api/order.php";
 
+// Translate API errors before they reach the customer. The Worker response
+// contract remains unchanged; no backend changes are needed.
+function bookingErrorInRussian(error, status) {
+  const code = String(error || "").trim().toLowerCase();
+
+  const messages = {
+    "invalid phone": "Укажите номер телефона с +7 или 8 (всего 11 цифр).",
+    "invalid date": "Проверьте дату поездки. Прошедшие даты недоступны.",
+    "missing name": "Введите имя.",
+    "missing route": "Укажите маршрут поездки.",
+    "invalid quoteid": "Расчёт маршрута недействителен. Рассчитайте стоимость заново.",
+    "invalid quote route": "Проверьте маршрут и рассчитайте стоимость заново.",
+    "invalid quote tariff": "Выберите тариф и рассчитайте стоимость заново.",
+    "quote already used": "По этому расчёту заявка уже оформлена. Свяжитесь с нами, чтобы уточнить её статус.",
+    "quote expired or not found": "Расчёт стоимости устарел. Рассчитайте маршрут заново.",
+    "invalid order data": "Проверьте данные заявки.",
+    "invalid json": "Ошибка формата заявки.",
+    "rate limited": "Слишком много запросов. Попробуйте позже.",
+    "request too large": "Слишком большой объём данных заявки."
+  };
+
+  if (Object.prototype.hasOwnProperty.call(messages, code)) {
+    return messages[code];
+  }
+
+  if (status === 429) {
+    return "Слишком много запросов. Попробуйте позже.";
+  }
+
+  if (status >= 500) {
+    return "Сервер временно недоступен. Попробуйте позже.";
+  }
+
+  return "Не удалось отправить заявку. Проверьте данные и попробуйте ещё раз.";
+}
+
 window.initForm = function () {
 
   // =========================
@@ -31,6 +67,10 @@ window.initForm = function () {
   if (!btn) {
     return;
   }
+
+  // Native browser validation messages follow the browser UI language,
+  // not <html lang="ru">. Use our Russian messages instead.
+  form.noValidate = true;
 
   const dateField =
     form.querySelector(
@@ -476,6 +516,14 @@ window.initForm = function () {
       );
     }
 
+    // HTML5 previously prevented submit if the consent checkbox was not
+    // checked. Keep that protection when native validation is disabled.
+    const consentField = form.querySelector('input[type="checkbox"][required]');
+
+    if (consentField && !consentField.checked) {
+      return "Подтвердите согласие на обработку персональных данных";
+    }
+
     return null;
   }
 
@@ -597,8 +645,7 @@ window.initForm = function () {
           }
 
           throw new Error(
-            data?.error ||
-            `Ошибка сервера (${response.status})`
+            bookingErrorInRussian(data?.error, response.status)
           );
         }
 
