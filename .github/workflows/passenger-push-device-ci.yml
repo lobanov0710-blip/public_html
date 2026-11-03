@@ -1,0 +1,59 @@
+name: PUSH-01C PHP device gateway checks
+
+on:
+  pull_request:
+    branches:
+      - main
+      - feature/**
+    paths:
+      - ".github/workflows/passenger-push-device-ci.yml"
+      - "api/passenger-push-device.php"
+      - "api/passenger-push-grant.php"
+      - "api/_proxy_auth.php"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gateway:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: PHP syntax
+        run: |
+          php --version
+          php -l api/_proxy_auth.php
+          php -l api/passenger-push-grant.php
+          php -l api/passenger-push-device.php
+      - name: HTTP fail-closed for grant, register and revoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -S 127.0.0.1:8877 -t . >/tmp/push01c-php.log 2>&1 &
+          pid=$!
+          trap 'kill "$pid" || true' EXIT
+          for _ in {1..12}; do
+            if curl -fsS http://127.0.0.1:8877/ >/dev/null; then break; fi
+            sleep 1
+          done
+          origin=http://127.0.0.1:8877
+          test "$(curl -sS -o /tmp/get -w '%{http_code}' "$origin/api/passenger-push-device.php")" = "405"
+          test "$(curl -sS -o /tmp/register -w '%{http_code}' -X POST \
+            -H 'Content-Type: application/json' \
+            --data '{"grantToken":"dummy","platform":"android","token":"dummy"}' \
+            "$origin/api/passenger-push-device.php")" = "503"
+          test "$(curl -sS -o /tmp/revoke -w '%{http_code}' -X DELETE \
+            -H 'Content-Type: application/json' \
+            --data '{"grantToken":"dummy"}' \
+            "$origin/api/passenger-push-device.php")" = "503"
+          test "$(curl -sS -o /tmp/grant -w '%{http_code}' -X POST \
+            -H 'Content-Type: application/json' \
+            --data '{"accessToken":"dummy","installationId":"5d98e332-05e9-4e90-a4e1-bc61c1342030"}' \
+            "$origin/api/passenger-push-grant.php")" = "503"
+          for file in register revoke grant; do
+            grep -q 'passenger push unavailable' "/tmp/$file"
+          done
+          echo 'PASSENGER_PUSH_DEVICE_GATEWAY_FAIL_CLOSED=PASS'
