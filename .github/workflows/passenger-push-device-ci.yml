@@ -10,6 +10,8 @@ on:
       - "api/passenger-push-device.php"
       - "api/passenger-push-grant.php"
       - "api/_proxy_auth.php"
+      - "api/_passenger_push_proxy_auth.php"
+      - "tests/passengerPushNonceSigner.test.php"
   workflow_dispatch:
 
 permissions:
@@ -28,6 +30,10 @@ jobs:
           php -l api/_proxy_auth.php
           php -l api/passenger-push-grant.php
           php -l api/passenger-push-device.php
+          php -l api/_passenger_push_proxy_auth.php
+          php -l tests/passengerPushNonceSigner.test.php
+      - name: Verify nonce-bound PHP signatures and distinct requests
+        run: php tests/passengerPushNonceSigner.test.php
       - name: HTTP fail-closed for grant, register and revoke
         shell: bash
         run: |

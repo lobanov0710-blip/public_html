@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/_proxy_auth.php';
+require_once __DIR__ . '/_passenger_push_proxy_auth.php';
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
@@ -89,7 +89,7 @@ if (!is_string($token) || $token === '' || strlen($token) > 8192
 // Sign the EXACT raw body with the exact upstream path. Never forward
 // a browser-supplied HMAC header and never include the token in the URL.
 try {
-    $proxyHeaders = buildProxyAuthHeaders(PASSENGER_PUSH_WORKER_PATH, $body);
+    $proxyHeaders = buildPassengerPushAuthHeaders('POST', PASSENGER_PUSH_WORKER_PATH, $body);
 } catch (Throwable $error) {
     pushGrantReply(500, 'proxy authentication unavailable');
 }
@@ -114,6 +114,7 @@ curl_setopt_array($connection, [
         'User-Agent: TransferServis52-PassengerPushGrant/1.0',
         $proxyHeaders[0],
         $proxyHeaders[1],
+        $proxyHeaders[2],
     ],
 ]);
 
