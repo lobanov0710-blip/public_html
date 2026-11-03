@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/_proxy_auth.php';
+require_once __DIR__ . '/_passenger_push_proxy_auth.php';
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
@@ -92,7 +92,7 @@ if ($method === 'POST') {
 }
 
 try {
-    $proxyHeaders = buildProxyAuthHeaders(PASSENGER_DEVICE_WORKER_PATH, $body);
+    $proxyHeaders = buildPassengerPushAuthHeaders($method, PASSENGER_DEVICE_WORKER_PATH, $body);
 } catch (Throwable $error) {
     pushDeviceError(500, 'proxy authentication unavailable');
 }
@@ -115,6 +115,7 @@ curl_setopt_array($connection, [
         'User-Agent: TransferServis52-PassengerPushDevice/1.0',
         $proxyHeaders[0],
         $proxyHeaders[1],
+        $proxyHeaders[2],
     ],
 ]);
 $response = curl_exec($connection);
