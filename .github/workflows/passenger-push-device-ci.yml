@@ -9,6 +9,8 @@ on:
       - ".github/workflows/passenger-push-device-ci.yml"
       - "api/passenger-push-device.php"
       - "api/passenger-push-grant.php"
+      - "api/_passenger_push_grant_validation.php"
+      - "tests/passengerPushGrantValidation.test.php"
       - "api/_proxy_auth.php"
       - "api/_passenger_push_proxy_auth.php"
       - "tests/passengerPushNonceSigner.test.php"
@@ -29,9 +31,13 @@ jobs:
           php --version
           php -l api/_proxy_auth.php
           php -l api/passenger-push-grant.php
+          php -l api/_passenger_push_grant_validation.php
+          php -l tests/passengerPushGrantValidation.test.php
           php -l api/passenger-push-device.php
           php -l api/_passenger_push_proxy_auth.php
           php -l tests/passengerPushNonceSigner.test.php
+      - name: Validate manage/revoke grant request formats offline
+        run: php tests/passengerPushGrantValidation.test.php
       - name: Verify nonce-bound PHP signatures and distinct requests
         run: php tests/passengerPushNonceSigner.test.php
       - name: HTTP fail-closed for grant, register and revoke

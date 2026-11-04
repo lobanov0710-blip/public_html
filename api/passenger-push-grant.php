@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/_passenger_push_proxy_auth.php';
+require_once __DIR__ . '/_passenger_push_grant_validation.php';
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
@@ -69,20 +70,7 @@ $payload = json_decode($body, true);
 if (!is_array($payload) || array_is_list($payload)) {
     pushGrantReply(400, 'invalid json');
 }
-$keys = array_keys($payload);
-sort($keys);
-if ($keys !== ['accessToken', 'installationId']) {
-    pushGrantReply(400, 'invalid push grant request');
-}
-
-$token = $payload['accessToken'];
-$installationId = $payload['installationId'];
-if (!is_string($token) || $token === '' || strlen($token) > 8192
-    || !is_string($installationId)
-    || !preg_match(
-        '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i',
-        $installationId
-    )) {
+if (!isValidPassengerPushGrantPayload($payload)) {
     pushGrantReply(400, 'invalid push grant request');
 }
 
