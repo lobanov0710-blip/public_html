@@ -1,0 +1,27 @@
+name: Booking form validation
+
+on:
+  push:
+    branches:
+      - 'fix/**'
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check booking form JavaScript syntax
+        run: node --check js/form.js
+      - name: Test phone validation
+        run: node tests/booking-phone-validation.test.cjs
