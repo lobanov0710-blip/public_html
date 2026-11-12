@@ -367,6 +367,7 @@ window.initCalculator = function () {
 
     window.__lastRouteData =
       null;
+    result.querySelector(".calc-book-btn")?.remove();
 
     try {
 
@@ -381,6 +382,22 @@ window.initCalculator = function () {
 
   window.clearTransferBookingData =
     clearBookingData;
+
+  function isCurrentRoute({ from, to }) {
+    return fromInput.value.trim() === from && toInput.value.trim() === to;
+  }
+
+  function invalidateRoute() {
+    clearBookingData();
+    result.innerText = "Маршрут изменён. Рассчитайте стоимость заново.";
+    result.classList.add("show");
+  }
+
+  for (const input of [fromInput, toInput]) {
+    input.addEventListener("input", () => {
+      if (isLoading || getBookingData()) invalidateRoute();
+    });
+  }
 
   // ==========================
   // BOOKING FORM
@@ -405,6 +422,11 @@ window.initCalculator = function () {
       return false;
     }
 
+    if (!isCurrentRoute(data)) {
+      invalidateRoute();
+      return false;
+    }
+
     // Дополнительная локальная
     // проверка срока quote.
     if (
@@ -413,12 +435,7 @@ window.initCalculator = function () {
         Date.now()
     ) {
 
-      clearBookingData();
-
-      alert(
-        "Расчёт стоимости устарел. Рассчитайте маршрут заново."
-      );
-
+      result.innerText = "Расчёт стоимости устарел. Рассчитайте маршрут заново.";
       return false;
     }
 
@@ -863,6 +880,11 @@ window.initCalculator = function () {
           data
         );
 
+        if (!isCurrentRoute({ from, to })) {
+          invalidateRoute();
+          return;
+        }
+
         if (
           !response.ok ||
           !data ||
@@ -870,8 +892,9 @@ window.initCalculator = function () {
         ) {
 
           result.innerText =
-            data?.error ||
-            "Ошибка расчёта";
+            response.status === 429
+              ? "Слишком много запросов. Попробуйте позже."
+              : "Не удалось рассчитать маршрут. Проверьте адреса и попробуйте ещё раз.";
 
           return;
         }
