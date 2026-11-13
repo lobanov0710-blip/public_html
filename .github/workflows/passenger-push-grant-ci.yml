@@ -1,0 +1,46 @@
+name: Passenger push grant gateway checks
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/passenger-push-grant-ci.yml"
+      - "api/passenger-push-grant.php"
+      - "api/_proxy_auth.php"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  php-gateway:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check PHP runtime and syntax
+        run: |
+          php --version
+          php -l api/_proxy_auth.php
+          php -l api/passenger-push-grant.php
+
+      - name: Fail closed without private enable flag
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -S 127.0.0.1:8866 -t . > /tmp/passenger-push-php.log 2>&1 &
+          echo $! > /tmp/passenger-push-php.pid
+          trap 'kill "$(cat /tmp/passenger-push-php.pid)" || true' EXIT
+          for _ in 1 2 3 4 5 6 7 8 9 10; do
+            if curl -sS http://127.0.0.1:8866/api/passenger-push-grant.php >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          test "$(curl -sS -o /tmp/get-result -w '%{http_code}'             http://127.0.0.1:8866/api/passenger-push-grant.php)" = "405"
+          test "$(curl -sS -o /tmp/post-result -w '%{http_code}' -X POST             -H 'Content-Type: application/json'             --data '{"accessToken":"dummy","installationId":"5d98e332-05e9-4e90-a4e1-bc61c1342030"}'             http://127.0.0.1:8866/api/passenger-push-grant.php)" = "503"
+          grep -Fq 'passenger push unavailable' /tmp/post-result
+          echo "PASSENGER_PUSH_PHP_FAIL_CLOSED=PASS"
