@@ -35,6 +35,9 @@ function stagingSecret(string $variable, bool $allowEnvironmentPath = true): str
     if ($resolved === false || !is_file($resolved) || !is_readable($resolved)) {
         throw new RuntimeException('unavailable staging secret');
     }
+    if (!$allowEnvironmentPath && $resolved !== $path) {
+        throw new RuntimeException('QA secret must be a local file');
+    }
     if ($root !== false && ($resolved === $root ||
         str_starts_with($resolved, $root . DIRECTORY_SEPARATOR))) {
         throw new RuntimeException('staging secret inside document root');
@@ -169,7 +172,8 @@ function stagingProxy(string $path, int $limit, ?Closure $qaUpstream = null): ne
     header('X-Content-Type-Options: nosniff');
     header('Referrer-Policy: no-referrer');
 
-    if ($path === '/v2/order-status' && getenv('PASSENGER_ASSIGNMENT_V2_ENABLED') !== 'true') {
+    if ($path === '/v2/order-status' && $qaUpstream === null &&
+        getenv('PASSENGER_ASSIGNMENT_V2_ENABLED') !== 'true') {
         stagingError(404, 'not found');
     }
 
@@ -183,6 +187,7 @@ function stagingProxy(string $path, int $limit, ?Closure $qaUpstream = null): ne
     }
 
     try {
+        $origin = $qaUpstream === null ? STAGING_UPSTREAM : $qaUpstream();
         $access = stagingSecret('TS_STAGING_TESTER_TOKEN_FILE', $qaUpstream === null);
         $hmac = stagingSecret('TS_STAGING_HMAC_SECRET_FILE', $qaUpstream === null);
     } catch (Throwable $exception) {
@@ -222,11 +227,6 @@ function stagingProxy(string $path, int $limit, ?Closure $qaUpstream = null): ne
 
     $timestamp = (string) time();
     $signature = stagingSignature($hmac, $timestamp, $path, $body);
-    try {
-        $origin = $qaUpstream === null ? STAGING_UPSTREAM : $qaUpstream();
-    } catch (Throwable $exception) {
-        stagingError(503, 'QA gateway unavailable');
-    }
     $curl = curl_init($origin . $path);
     if ($curl === false) {
         stagingError(502, 'upstream unavailable');
