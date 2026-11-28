@@ -88,7 +88,7 @@ try {
     writeKeys(qaRoot, tester, env.PROXY_HMAC_SECRET);
     cpSync(bootstrap, join(qaRoot, '_bootstrap.php'));
   } else writeKeys(gateway, tester, env.PROXY_HMAC_SECRET);
-  if (isolated) writeFileSync(qaOriginFile, 'https://uber-v3-staging.lobanov0710.workers.dev\n', { mode: 0o600 });
+  if (isolated) writeFileSync(qaOriginFile, 'https://uber-v3.lobanov0710.workers.dev\n', { mode: 0o600 });
   const certificate = join(temp, 'tls.pem');
   const key = join(temp, 'tls.key');
   execFileSync('openssl', ['req', '-x509', '-nodes', '-newkey', 'rsa:2048', '-days', '1',

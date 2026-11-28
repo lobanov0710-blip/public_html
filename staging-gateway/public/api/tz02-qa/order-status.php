@@ -7,7 +7,10 @@ stagingProxy('/v2/order-status', 32768, static function () use ($qaRoot): string
     $file = $qaRoot . '/private/passenger-qa-upstream.txt';
     $value = realpath($file) === $file ? @file_get_contents($file, false, null, 0, 256) : false;
     $origin = is_string($value) ? trim($value) : '';
-    if ($origin !== 'https://uber-v3-tz02-qa.lobanov0710.workers.dev') {
+    if (!in_array($origin, [
+        'https://uber-v3-staging.lobanov0710.workers.dev',
+        'https://uber-v3-tz02-qa.lobanov0710.workers.dev',
+    ], true)) {
         throw new RuntimeException('QA Worker origin unavailable');
     }
     return $origin;
