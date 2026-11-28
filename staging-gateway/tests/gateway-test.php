@@ -22,6 +22,10 @@ check(
 );
 check(stagingSignature($secret, $stamp, '/orders', $body) !==
     stagingSignature($secret, $stamp, '/calculate', $body), 'HMAC path binding');
+check(stagingSignature($secret, $stamp, '/v2/order-status', $body) ===
+    hash_hmac('sha256', $stamp . "\n/v2/order-status\n" . $body, $secret), 'v2 path signed exactly');
+check(stagingSignature($secret, $stamp, '/v2/order-status', $body) !==
+    stagingSignature($secret, $stamp, '/order-status', $body), 'v1 and v2 signatures differ');
 // На Timeweb переменные окружения необязательны: секрет читается из private/.
 putenv('TS_STAGING_TESTER_TOKEN_FILE');
 $privateDir = dirname(__DIR__) . '/private';
@@ -76,6 +80,11 @@ try {
     }
     check(!stagingRateAllowed('/orders', $rateDir, $now), 'order rejects 11th');
     check(stagingRateAllowed('/order-status', $rateDir, $now), 'status has separate quota');
+    for ($i = 1; $i < 120; $i++) {
+        check(stagingRateAllowed('/v2/order-status', $rateDir, $now), 'v2 shares v1 quota');
+    }
+    check(!stagingRateAllowed('/order-status', $rateDir, $now), 'v1 cannot bypass v2 limit');
+    check(!stagingRateAllowed('/v2/order-status', $rateDir, $now), 'v2 cannot bypass v1 limit');
     check(stagingRateAllowed('/calculate', $rateDir, $now + 60), 'calculate resets after window');
 
     // Corrupt limiter state must NOT silently allow the request.

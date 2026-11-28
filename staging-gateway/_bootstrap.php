@@ -67,12 +67,16 @@ function stagingIsJsonObject(string $body): bool
 
 /**
  * Authenticated staging quotas for shared hosting:
- * /calculate 30/min, /orders 10/min, /order-status 120/min.
+ * /calculate 30/min, /orders 10/min, status v1/v2 share 120/min.
  * File contains only counters, lives outside DOCUMENT_ROOT, uses flock.
  * If state cannot be stored, fail closed rather than forward to Worker.
  */
 function stagingRateAllowed(string $path, string $directory, int $now): bool
 {
+    // Both versions read the same order status and share one quota.
+    if ($path === '/v2/order-status') {
+        $path = '/order-status';
+    }
     $quotas = [
         '/calculate' => 30,
         '/orders' => 10,
@@ -165,9 +169,17 @@ function stagingProxy(string $path, int $limit): never
     header('X-Content-Type-Options: nosniff');
     header('Referrer-Policy: no-referrer');
 
+    if ($path === '/v2/order-status' && getenv('PASSENGER_ASSIGNMENT_V2_ENABLED') !== 'true') {
+        stagingError(404, 'not found');
+    }
+
     if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
         header('Allow: POST');
         stagingError(405, 'method not allowed');
+    }
+
+    if ($path === '/v2/order-status' && ($_SERVER['QUERY_STRING'] ?? '') !== '') {
+        stagingError(400, 'invalid request');
     }
 
     try {

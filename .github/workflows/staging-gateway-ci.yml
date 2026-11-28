@@ -16,3 +16,32 @@ jobs:
       - uses: actions/checkout@v4
       - run: find staging-gateway -name '*.php' -print0 | xargs -0 -n 1 php -l
       - run: php staging-gateway/tests/gateway-test.php
+  passenger-status-v2:
+    if: github.event_name == 'pull_request' && github.head_ref == 'feature/tz02-staging-order-status-v2'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: lobanov0710-blip/uber-v3
+          ref: 88488e9a8be10424a0998a4f1c396a79c3a645bc
+          path: .worker-fixture
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Install locked test dependencies
+        working-directory: .worker-fixture
+        run: |
+          npm install --global npm@11.9.0 --ignore-scripts
+          npm ci --ignore-scripts --no-audit
+      - name: Check PHP to Worker to D1 with synthetic data
+        run: |
+          php -r 'exit(extension_loaded("curl") ? 0 : 1);'
+          node staging-gateway/tests/passenger-status-v2-integration.mjs .worker-fixture
