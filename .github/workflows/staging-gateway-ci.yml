@@ -5,7 +5,7 @@ on:
       - "staging-gateway/**"
       - ".github/workflows/staging-gateway-ci.yml"
   push:
-    branches: ["feature/staging-php-gateway-v1"]
+    branches: ["feature/staging-php-gateway-v1", "qa/tz02-isolated-php"]
     paths:
       - "staging-gateway/**"
       - ".github/workflows/staging-gateway-ci.yml"
@@ -17,7 +17,7 @@ jobs:
       - run: find staging-gateway -name '*.php' -print0 | xargs -0 -n 1 php -l
       - run: php staging-gateway/tests/gateway-test.php
   passenger-status-v2:
-    if: github.event_name == 'pull_request' && github.head_ref == 'feature/tz02-staging-order-status-v2'
+    if: github.ref_name == 'qa/tz02-isolated-php' || github.head_ref == 'feature/tz02-staging-order-status-v2'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -29,7 +29,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: lobanov0710-blip/uber-v3
-          ref: 88488e9a8be10424a0998a4f1c396a79c3a645bc
+          ref: ${{ github.ref_name == 'qa/tz02-isolated-php' && '90c16dcbc1c6217ae6fb6ff06faa40065b65530a' || '88488e9a8be10424a0998a4f1c396a79c3a645bc' }}
           path: .worker-fixture
           persist-credentials: false
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
@@ -44,4 +44,8 @@ jobs:
       - name: Check PHP to Worker to D1 with synthetic data
         run: |
           php -r 'exit(extension_loaded("curl") ? 0 : 1);'
-          node staging-gateway/tests/passenger-status-v2-integration.mjs .worker-fixture
+          if [ "$GITHUB_REF_NAME" = qa/tz02-isolated-php ]; then
+            node staging-gateway/tests/passenger-status-v2-integration.mjs .worker-fixture --isolated-qa
+          else
+            node staging-gateway/tests/passenger-status-v2-integration.mjs .worker-fixture
+          fi
