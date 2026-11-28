@@ -11,7 +11,7 @@ const STAGING_UPSTREAM = 'https://uber-v3-staging.lobanov0710.workers.dev';
  * Секрет читаем только из защищённого файла, путь передаёт администратор PHP-FPM.
  * Запрещаем путь внутри document root: его нельзя раскрыть через HTTP.
  */
-function stagingSecret(string $variable): string
+function stagingSecret(string $variable, bool $allowEnvironmentPath = true): string
 {
     // На Timeweb можно хранить секреты в соседнем с public_html каталоге
     // без настройки переменных окружения в PHP-FPM/Apache.
@@ -23,7 +23,7 @@ function stagingSecret(string $variable): string
     if (!isset($defaultFiles[$variable])) {
         throw new RuntimeException('unknown staging secret');
     }
-    $configuredPath = getenv($variable);
+    $configuredPath = $allowEnvironmentPath ? getenv($variable) : false;
     $path = is_string($configuredPath) && $configuredPath !== ''
         ? $configuredPath
         : __DIR__ . '/private/' . $defaultFiles[$variable];
@@ -34,6 +34,9 @@ function stagingSecret(string $variable): string
     $root = realpath((string) ($_SERVER['DOCUMENT_ROOT'] ?? ''));
     if ($resolved === false || !is_file($resolved) || !is_readable($resolved)) {
         throw new RuntimeException('unavailable staging secret');
+    }
+    if (!$allowEnvironmentPath && $resolved !== $path) {
+        throw new RuntimeException('QA secret must be a local file');
     }
     if ($root !== false && ($resolved === $root ||
         str_starts_with($resolved, $root . DIRECTORY_SEPARATOR))) {
@@ -162,14 +165,15 @@ function stagingError(int $status, string $message): never
  * Сначала проверяем независимый тестовый токен, только затем читаем запрос;
  * в Worker передаётся серверная HMAC-подпись, которой нет в APK.
  */
-function stagingProxy(string $path, int $limit): never
+function stagingProxy(string $path, int $limit, ?Closure $qaUpstream = null): never
 {
     header('Content-Type: application/json; charset=utf-8');
     header('Cache-Control: no-store');
     header('X-Content-Type-Options: nosniff');
     header('Referrer-Policy: no-referrer');
 
-    if ($path === '/v2/order-status' && getenv('PASSENGER_ASSIGNMENT_V2_ENABLED') !== 'true') {
+    if ($path === '/v2/order-status' && $qaUpstream === null &&
+        getenv('PASSENGER_ASSIGNMENT_V2_ENABLED') !== 'true') {
         stagingError(404, 'not found');
     }
 
@@ -183,8 +187,9 @@ function stagingProxy(string $path, int $limit): never
     }
 
     try {
-        $access = stagingSecret('TS_STAGING_TESTER_TOKEN_FILE');
-        $hmac = stagingSecret('TS_STAGING_HMAC_SECRET_FILE');
+        $origin = $qaUpstream === null ? STAGING_UPSTREAM : $qaUpstream();
+        $access = stagingSecret('TS_STAGING_TESTER_TOKEN_FILE', $qaUpstream === null);
+        $hmac = stagingSecret('TS_STAGING_HMAC_SECRET_FILE', $qaUpstream === null);
     } catch (Throwable $exception) {
         stagingError(503, 'staging unavailable');
     }
@@ -222,7 +227,7 @@ function stagingProxy(string $path, int $limit): never
 
     $timestamp = (string) time();
     $signature = stagingSignature($hmac, $timestamp, $path, $body);
-    $curl = curl_init(STAGING_UPSTREAM . $path);
+    $curl = curl_init($origin . $path);
     if ($curl === false) {
         stagingError(502, 'upstream unavailable');
     }

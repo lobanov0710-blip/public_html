@@ -13,6 +13,7 @@ import { pathToFileURL, fileURLToPath } from 'node:url';
 import { setTimeout as delay } from 'node:timers/promises';
 
 const worker = resolve(process.argv[2] ?? '');
+const isolated = process.argv[3] === '--isolated-qa';
 const fromWorker = path => import(pathToFileURL(join(worker, path)).href);
 const [{ build }, { Miniflare, convertV4MiniflareOptions }, { sqliteD1 }, { seedRuleActors, ruleSecrets, driverId },
   { admissionScenario }, { signJWT }] = await Promise.all([
@@ -24,9 +25,11 @@ const env = { ...ruleSecrets, APP_ENV: 'staging', PASSENGER_ASSIGNMENT_V2_ENABLE
   PASSENGER_ORDER_SECRET: 'synthetic-integration-order-fixture-123456',
   PROXY_HMAC_SECRET: 'synthetic-integration-proxy-fixture-123456' };
 const tester = 'synthetic-integration-php-fixture-123456789';
-const upstream = 'uber-v3-staging.lobanov0710.workers.dev';
+const oldTester = 'synthetic-staging-existing-php-fixture-123456789';
+const upstream = isolated ? 'uber-v3-tz02-qa.lobanov0710.workers.dev' : 'uber-v3-staging.lobanov0710.workers.dev';
+if (isolated) env.TZ02_QA_WORKER_ORIGIN = 'https://' + upstream;
 const name = 'passenger-integration';
-const bundle = await build({ entryPoints: [join(worker, 'src/index.js')], bundle: true, write: false,
+const bundle = await build({ entryPoints: [join(worker, isolated ? 'qa/tz02/worker.js' : 'src/index.js')], bundle: true, write: false,
   format: 'esm', target: 'es2022', platform: 'browser' });
 const mf = new Miniflare(convertV4MiniflareOptions({ workers: [{ name, modules: true,
   script: bundle.outputFiles[0].text, bindings: env, d1Databases: ['DB'], compatibilityDate: '2026-08-20' }] }));
@@ -59,20 +62,33 @@ try {
       ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
     return { status: response.status, body: await response.json() };
   };
-  await seedRuleActors(DB);
-  const fixture = await admissionScenario({ DB, ...env }, send);
-  const id = 'local_php_passenger_order';
-  await fixture.order(id);
+  const fixture = isolated ? await fromWorker('qa/tz02/synthetic-order.mjs')
+    : await (async () => { await seedRuleActors(DB); return admissionScenario({ DB, ...env }, send); })();
+  const id = isolated ? fixture.orderId : 'local_php_passenger_order';
+  if (isolated) {
+    await DB.batch((await fixture.seed(Date.now(), '2026-11-28')).map(sql => DB.prepare(sql)));
+  } else await fixture.order(id);
   const accessToken = await signJWT(env.PASSENGER_ORDER_SECRET, { sub: id, scope: 'passenger_order:read' }, 300);
   const rawBody = `{\n  "accessToken": "${accessToken}"\n}\n`;
 
   const gateway = join(temp, 'gateway');
-  cpSync(fileURLToPath(new URL('../_bootstrap.php', import.meta.url)), join(gateway, '_bootstrap.php'));
+  const bootstrap = fileURLToPath(new URL('../_bootstrap.php', import.meta.url));
+  cpSync(bootstrap, join(gateway, '_bootstrap.php'));
   cpSync(fileURLToPath(new URL('../public/', import.meta.url)), join(gateway, 'public'), { recursive: true });
-  const privateDir = join(gateway, 'private');
-  mkdirSync(privateDir, { mode: 0o700 });
-  writeFileSync(join(privateDir, 'staging-access.key'), tester, { mode: 0o600 });
-  writeFileSync(join(privateDir, 'staging-hmac.key'), env.PROXY_HMAC_SECRET, { mode: 0o600 });
+  const writeKeys = (root, access, hmac) => {
+    const privateDir = join(root, 'private');
+    mkdirSync(privateDir, { recursive: true, mode: 0o700 });
+    writeFileSync(join(privateDir, 'staging-access.key'), access, { mode: 0o600 });
+    writeFileSync(join(privateDir, 'staging-hmac.key'), hmac, { mode: 0o600 });
+  };
+  const qaRoot = join(gateway, 'passenger-qa');
+  const qaOriginFile = join(qaRoot, 'private', 'passenger-qa-upstream.txt');
+  if (isolated) {
+    writeKeys(gateway, oldTester, 'synthetic-existing-staging-hmac-key-123456789');
+    writeKeys(qaRoot, tester, env.PROXY_HMAC_SECRET);
+    cpSync(bootstrap, join(qaRoot, '_bootstrap.php'));
+  } else writeKeys(gateway, tester, env.PROXY_HMAC_SECRET);
+  if (isolated) writeFileSync(qaOriginFile, 'https://uber-v3.lobanov0710.workers.dev\n', { mode: 0o600 });
   const certificate = join(temp, 'tls.pem');
   const key = join(temp, 'tls.key');
   execFileSync('openssl', ['req', '-x509', '-nodes', '-newkey', 'rsa:2048', '-days', '1',
@@ -123,18 +139,28 @@ try {
   await new Promise(resolveClose => reservation.close(resolveClose));
   const proxyUrl = `http://127.0.0.1:${proxyPort}`;
   php = spawn('php', ['-d', `curl.cainfo=${certificate}`, '-S', `127.0.0.1:${port}`, '-t', join(gateway, 'public')], {
-    env: { PATH: process.env.PATH, PASSENGER_ASSIGNMENT_V2_ENABLED: 'true',
+    env: { PATH: process.env.PATH, PASSENGER_ASSIGNMENT_V2_ENABLED: isolated ? 'false' : 'true',
+      ...(isolated ? { TS_STAGING_TESTER_TOKEN_FILE: join(gateway, 'private', 'staging-access.key'),
+        TS_STAGING_HMAC_SECRET_FILE: join(gateway, 'private', 'staging-hmac.key') } : {}),
       https_proxy: proxyUrl, HTTPS_PROXY: proxyUrl, ALL_PROXY: proxyUrl }, stdio: 'ignore'
   });
-  const url = `http://127.0.0.1:${port}/api/v2/order-status.php`;
+  const origin = `http://127.0.0.1:${port}`;
+  const url = `${origin}/api/${isolated ? 'tz02-qa' : 'v2'}/order-status.php`;
   for (let i = 0; i < 40; i++) {
     try { const r = await fetch(url); assert.equal(r.status, 405); break; }
     catch (error) { if (i === 39 || php.exitCode !== null) throw error; await delay(100); }
   }
-  const read = (token = tester, suffix = '') => fetch(url + suffix, { method: 'POST', body: rawBody,
+  const read = (token = tester, suffix = '', endpoint = url) => fetch(endpoint + suffix, { method: 'POST', body: rawBody,
     headers: { 'Content-Type': 'application/json', 'X-Staging-Access-Token': token } });
-  assert.equal((await read('incorrect')).status, 403);
   assert.equal((await read(tester, '?orderId=other')).status, 400);
+  if (isolated) {
+    assert.equal((await read()).status, 503);
+    writeFileSync(qaOriginFile, `https://${upstream}\n`);
+    assert.equal((await read(oldTester)).status, 403);
+    assert.equal((await read(tester, '', `${origin}/api/order-status.php`)).status, 403);
+    assert.equal((await read(oldTester, '', `${origin}/api/v2/order-status.php`)).status, 404);
+  }
+  assert.equal((await read('incorrect')).status, 403);
   assert.equal(forwarded, 0);
   const getOrder = async () => {
     const before = forwarded;
@@ -146,13 +172,20 @@ try {
     return (await r.json()).order;
   };
   assert.equal((await getOrder()).assignment, null);
-  assert.equal((await send('POST', `/v1/admin/orders/${id}/assign`, { driverId, vehicleId: fixture.vehicle.id,
+  if (isolated) await DB.batch(fixture.transitions['01-assign'].map(sql => DB.prepare(sql)));
+  else assert.equal((await send('POST', `/v1/admin/orders/${id}/assign`, { driverId, vehicleId: fixture.vehicle.id,
     expectedRevision: 1, reason: 'Synthetic' }, fixture.ownerToken, 'php-integration-assignment')).status, 200);
   const order = await getOrder();
   assert.equal(order.id, id);
   assert.equal(order.revision, 2);
   assert.equal(order.assignment.vehicle.make, 'Toyota');
   assert.equal(order.assignment.driverDisplayName, null);
+  if (isolated) {
+    await DB.batch(fixture.transitions['02-reassign'].map(sql => DB.prepare(sql)));
+    assert.equal((await getOrder()).assignment.vehicle.plate, 'QA-TZ02-02');
+    await DB.batch(fixture.transitions['03-finish'].map(sql => DB.prepare(sql)));
+    assert.equal((await getOrder()).assignment, null);
+  }
   console.log('PHP/cURL → local TLS → Worker → local D1 PASS: gate, exact body, HMAC, assignment, one forward');
 } finally {
   php?.kill();
